@@ -20,6 +20,10 @@ package com.floreantpos.main;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
+import java.awt.Window;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -30,6 +34,7 @@ import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
@@ -94,6 +99,7 @@ public class Application {
 
 	private Terminal terminal;
 	private PosWindow posWindow;
+	private PosWindow customerDisplayWindow;//hatran add
 	private User currentUser;
 	private RootView rootView;
 	private List<OrderType> orderTypes;
@@ -134,8 +140,31 @@ public class Application {
 		posWindow.getContentPane().add(rootView);
 		initializeSystem();
 		posWindow.setVisibleWelcomeHeader(false);
+		
+	    //hatran add extend window    
+	        customerDisplayWindow = new PosWindow();
+	        customerDisplayWindow.setTitle(getTitle());
+	        customerDisplayWindow.setIconImage(applicationIcon.getImage());
+	        customerDisplayWindow.setupSizeAndLocation();
+	        customerDisplayWindow.setVisible(true);
+	        customerDisplayWindow.setAlwaysOnTop(true);
+	        showFrameOnScreen(posWindow, 1);
+	        showFrameOnScreen(customerDisplayWindow, 2);
 	}
-
+	//hatran add 2 screen
+	public static void showFrameOnScreen(Window frame, int screen) {
+        GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice[] graphicsDevices = graphicsEnvironment.getScreenDevices();
+        GraphicsDevice graphicsDevice = ( screen > -1 && screen < graphicsDevices.length ) ? graphicsDevices[screen] : graphicsDevices.length > 0 ? graphicsDevices[0] : null;
+        if (graphicsDevice == null)
+        {
+            throw new RuntimeException( "There are no screens !" );
+        }
+        Rectangle bounds = graphicsDevice.getDefaultConfiguration().getBounds();
+        frame.setSize(bounds.width, bounds.height);
+        frame.setLocation(bounds.x, bounds.y);
+    }
+	
 	/*private void initializeTouchScroll() {
 		Toolkit.getDefaultToolkit().addAWTEventListener(new TouchScrollHandler(), AWTEvent.MOUSE_EVENT_MASK + AWTEvent.MOUSE_MOTION_EVENT_MASK);
 	}*/

@@ -624,7 +624,7 @@ public class TicketView extends JPanel {
 		ITicketItem selectedItem = (ITicketItem) ticketViewerTable.getSelected();
 
 		if (selectedItem != null) {
-			if (TerminalConfig.isActiveCustomerDisplay()) {
+			if (TerminalConfig.isActiveCustomerDisplay()) {//hatran customer display here
 				String sendMessageToCustomerDisplay = getDisplayMessage(selectedItem, ticket.getTotalAmount().toString());
 				DrawerUtil.setItemDisplay(TerminalConfig.getCustomerDisplayPort(), sendMessageToCustomerDisplay);
 			}
@@ -656,7 +656,7 @@ public class TicketView extends JPanel {
 	}
 
 	private void showCustomerDisplayInfo(Object selected) {
-		if (TerminalConfig.isActiveCustomerDisplay()) {
+		if (TerminalConfig.isActiveCustomerDisplay()) { //hatran show customer display infor
 			TicketItem ticketItem = null;
 			if (selected instanceof TicketItemModifier) {
 				ticketItem = ((TicketItemModifier) selected).getTicketItem();
