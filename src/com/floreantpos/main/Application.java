@@ -154,9 +154,21 @@ public class Application {
 	        customerDisplayWindow.setAlwaysOnTop(true);
 	        extendViewCustomer = ExtendViewCustomer.getInstance();
 	        customerDisplayWindow.getContentPane().add(extendViewCustomer);
+	        String os = System.getProperty("os.name");
+	        
+	       if( os.toLowerCase().indexOf("mac") >= 0)
+	        		{
 	        showFrameOnScreen(posWindow, 1);
 	        showFrameOnScreen(customerDisplayWindow, 2);
+	        		}
+	        else
+	        {
+	        	showFrameOnScreen(posWindow, 2);
+		        showFrameOnScreen(customerDisplayWindow, 1);
+	        }
+		
 	}
+	
 	//hatran add 2 screen
 	public static void showFrameOnScreen(Window frame, int screen) {
         GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();

@@ -627,7 +627,8 @@ public class TicketView extends JPanel {
 			if (TerminalConfig.isActiveCustomerDisplay()) {//hatran customer display here
 				String sendMessageToCustomerDisplay = getDisplayMessage(selectedItem, ticket.getTotalAmount().toString());
 				DrawerUtil.setItemDisplay(TerminalConfig.getCustomerDisplayPort(), sendMessageToCustomerDisplay);
-				Application.getExtendCustomWindow().showText(sendMessageToCustomerDisplay);
+				//Application.getExtendCustomWindow().showText(sendMessageToCustomerDisplay);
+				Application.getExtendCustomWindow().showTalbeTicket(ticketViewerTable,NumberUtil.formatNumber(ticket.getTotalAmount()));
 			}
 		}
 
@@ -669,6 +670,7 @@ public class TicketView extends JPanel {
 				String sendMessageToCustomerDisplay = getDisplayMessage(ticketItem, NumberUtil.formatNumber(ticket.getTotalAmount(), true));
 				DrawerUtil.setItemDisplay(TerminalConfig.getCustomerDisplayPort(), sendMessageToCustomerDisplay);
 				Application.getExtendCustomWindow().showText(sendMessageToCustomerDisplay);
+				Application.getExtendCustomWindow().showTalbeTicket(ticketViewerTable, NumberUtil.formatNumber(ticket.getTotalAmount()));
 
 			}
 		}
@@ -772,23 +774,25 @@ public class TicketView extends JPanel {
 
 	private String getDisplayMessage(ITicketItem item, String totalPrice) {
 		String itemName = item.getNameDisplay();
-		if (itemName.length() > 10) {
-			itemName = item.getNameDisplay().substring(0, 10);
-		}
-		else {
+//		if (itemName.length() > 10) {
+//			itemName = item.getNameDisplay().substring(0, 10);
+//		}
+//		else 
+		{
 			itemName = item.getNameDisplay();
 		}
+		String itemCount = item.getItemQuantityDisplay();
 		double itemPrice = item.getSubTotalAmountDisplay() == null ? 0 : item.getSubTotalAmountDisplay();
-		String line = String.format("%-10s %9s", itemName, NumberUtil.formatNumber(itemPrice, true)); //$NON-NLS-1$
-		if (line.length() > 20) {
-			line = line.substring(0, 20);
-		}
+		String line = String.format("%s %-10s %9s",itemCount, itemName, NumberUtil.formatNumber(itemPrice, true)); //$NON-NLS-1$
+//		if (line.length() > 20) {
+//			line = line.substring(0, 20);
+//		}
 
-		String total = "TOTAL" + CurrencyUtil.getCurrencySymbol(); //$NON-NLS-1$
+		String total = "\n TOTAL" + CurrencyUtil.getCurrencySymbol(); //$NON-NLS-1$
 		String line2 = String.format("%-8s %11s", total, totalPrice); //$NON-NLS-1$
-		if (line2.length() > 20) {
-			line2 = line2.substring(0, 20);
-		}
+//		if (line2.length() > 20) {
+//			line2 = line2.substring(0, 20);
+//		}
 		return line + line2;
 	}
 
