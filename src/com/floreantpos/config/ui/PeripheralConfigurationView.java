@@ -132,6 +132,7 @@ public class PeripheralConfigurationView extends ConfigurationView {
 				//TerminalConfig.setCustomerDisplayPort(tfCustomerDisplayPort.getText());
 				DrawerUtil.setCustomerDisplayMessage(tfCustomerDisplayPort.getText(), String.format("%200s", ""));
 				DrawerUtil.setCustomerDisplayMessage(tfCustomerDisplayPort.getText(), tfCustomerDisplayMessage.getText());
+				POSMessageDialog.showMessage(Application.getPosWindow(),  tfCustomerDisplayMessage.getText());
 			}
 		});
 

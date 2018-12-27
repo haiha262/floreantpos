@@ -67,8 +67,10 @@ public class DefaultOrderServiceExtension extends OrderServiceExtension {
 			numberOfGuests = PosGuiUtil.captureGuestNumber();
 		}
 		
-		if (TerminalConfig.isActiveCustomerDisplay()) {
+		if (TerminalConfig.isActiveCustomerDisplay()) {//hatran Customer display Welcome when create new ticket
 			DrawerUtil.setCustomerDisplayMessage(TerminalConfig.getCustomerDisplayPort(), "Welcome");
+			Application.getExtendCustomWindow().showText("WellCome");
+			
 		}
 
 		if (ticketType.isRequiredCustomerData() && customer == null) {

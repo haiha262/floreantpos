@@ -88,6 +88,7 @@ import com.floreantpos.util.GlobalConfigUtil;
 import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.ShiftUtil;
 import com.floreantpos.util.UserNotFoundException;
+import com.floreantpos.util.ExtendViewCustomer;
 import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
 import com.jgoodies.looks.plastic.theme.ExperienceBlue;
 import com.orocube.common.util.TerminalUtil;
@@ -102,6 +103,7 @@ public class Application {
 	private PosWindow customerDisplayWindow;//hatran add
 	private User currentUser;
 	private RootView rootView;
+	private static ExtendViewCustomer extendViewCustomer;
 	private List<OrderType> orderTypes;
 	private Shift currentShift;
 	public PrinterConfiguration printConfiguration;
@@ -146,8 +148,12 @@ public class Application {
 	        customerDisplayWindow.setTitle(getTitle());
 	        customerDisplayWindow.setIconImage(applicationIcon.getImage());
 	        customerDisplayWindow.setupSizeAndLocation();
+	        customerDisplayWindow.setVisibleWelcomeHeader(true);
+	        
 	        customerDisplayWindow.setVisible(true);
 	        customerDisplayWindow.setAlwaysOnTop(true);
+	        extendViewCustomer = ExtendViewCustomer.getInstance();
+	        customerDisplayWindow.getContentPane().add(extendViewCustomer);
 	        showFrameOnScreen(posWindow, 1);
 	        showFrameOnScreen(customerDisplayWindow, 2);
 	}
@@ -565,7 +571,11 @@ public class Application {
 	public static PosWindow getPosWindow() {
 		return getInstance().posWindow;
 	}
-
+	
+	public static ExtendViewCustomer getExtendCustomWindow() {
+		return extendViewCustomer;
+	}
+	
 	public Terminal getTerminal() {
 		return terminal;
 	}
