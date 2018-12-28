@@ -143,7 +143,8 @@ public class Application {
 		initializeSystem();
 		posWindow.setVisibleWelcomeHeader(false);
 		
-	    //hatran add extend window    
+	    //hatran add extend window  
+		if (TerminalConfig.isActiveCustomerDisplay()) { 
 	        customerDisplayWindow = new PosWindow();
 	        customerDisplayWindow.setTitle(getTitle());
 	        customerDisplayWindow.setIconImage(applicationIcon.getImage());
@@ -166,6 +167,7 @@ public class Application {
 	        	showFrameOnScreen(posWindow, 2);
 		        showFrameOnScreen(customerDisplayWindow, 1);
 	        }
+		}
 		
 	}
 	
