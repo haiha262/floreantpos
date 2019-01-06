@@ -175,6 +175,7 @@ public class MenuItemView extends SelectionView {
 
 	public class ItemButton extends PosButton implements ActionListener, MouseListener {
 		private int BUTTON_SIZE = 100;
+		//private int BUTTON_SIZE = 120;
 		MenuItem foodItem;
 
 		ItemButton(MenuItem menuItem) {
