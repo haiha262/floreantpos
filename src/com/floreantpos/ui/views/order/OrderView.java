@@ -52,6 +52,7 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.PosLog;
 import com.floreantpos.config.TerminalConfig;
+import com.floreantpos.customer.CustomerListTableModel;
 import com.floreantpos.customer.CustomerSelectorDialog;
 import com.floreantpos.customer.CustomerSelectorFactory;
 import com.floreantpos.extension.ExtensionManager;
@@ -80,11 +81,13 @@ import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.RefreshableView;
+import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.MiscTicketItemDialog;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.PasswordEntryDialog;
 import com.floreantpos.ui.dialog.SeatSelectionDialog;
+import com.floreantpos.ui.forms.QuickCustomerForm;
 import com.floreantpos.ui.tableselection.TableSelectorDialog;
 import com.floreantpos.ui.tableselection.TableSelectorFactory;
 import com.floreantpos.ui.views.CookingInstructionSelectionView;
@@ -721,18 +724,46 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 	}// GEN-LAST:event_doInsertMisc
 
 	protected void doAddEditCustomer() {
-		CustomerSelectorDialog dialog = CustomerSelectorFactory.createCustomerSelectorDialog(currentTicket.getOrderType());
-		dialog.setCreateNewTicket(false);
-		if (currentTicket != null) {
-			dialog.setTicket(currentTicket);
-		}
-		dialog.openUndecoratedFullScreen();
+		
+		boolean isUseNewCustomer = true;
+		 if (isUseNewCustomer){ //hatran : add customer into model
+			boolean setKeyPad = true;
 
-		if (!dialog.isCanceled()) {
-			currentTicket.setCustomer(dialog.getSelectedCustomer());
-			btnCustomer.setText("<html><body><center>CUSTOMER<br>\"" + dialog.getSelectedCustomer().getName() + "\"</center></body></html>");
+			QuickCustomerForm form = new QuickCustomerForm(setKeyPad);
 
+			//TODO: handle exception
+
+			form.enableCustomerFields(true);
+			BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), form);
+			dialog.setResizable(false);
+			dialog.open();
+
+			Customer selectedCustomer = new Customer();
+			if (!dialog.isCanceled()) {
+				selectedCustomer = (Customer) form.getBean();
+			}
+			
+			if (!dialog.isCanceled()) {
+				currentTicket.setCustomer(selectedCustomer); // hatran : set customer after choice customer
+				btnCustomer.setText("<html><body><center>CUSTOMER<br>\"" + selectedCustomer.getName() + "\"</center></body></html>");
+
+			}
 		}
+		 else
+		 {
+			CustomerSelectorDialog dialog = CustomerSelectorFactory.createCustomerSelectorDialog(currentTicket.getOrderType());//hatran create customer dialog
+			dialog.setCreateNewTicket(false);
+			if (currentTicket != null) {
+				dialog.setTicket(currentTicket);
+			}
+			dialog.openUndecoratedFullScreen();
+	
+			if (!dialog.isCanceled()) {
+				currentTicket.setCustomer(dialog.getSelectedCustomer()); // hatran : set customer after choice customer
+				btnCustomer.setText("<html><body><center>CUSTOMER<br>\"" + dialog.getSelectedCustomer().getName() + "\"</center></body></html>");
+	
+			}
+		 }
 	}
 
 	protected void addDiscount() {
