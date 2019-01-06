@@ -659,7 +659,13 @@ public class Ticket extends BaseTicket {
 		orderType = type;
 		setTicketType(type.getName());
 	}
-
+	//hatran add: Set ordertype by name
+	public void setOrderType(String type) {
+		OrderType orderType = getOrderType();
+		setTicketType(type);
+		orderType.setName(type);
+		
+	}
 	public boolean isPriceIncludesTax() {
 		return priceIncludesTax;
 	}
@@ -738,7 +744,7 @@ public class Ticket extends BaseTicket {
 		return s;
 	}
 
-	public void setCustomer(Customer customer) {
+	public void setCustomer(Customer customer) {//hatran set customer in ticket
 		if (customer != null) {
 			addProperty(Ticket.CUSTOMER_ID, String.valueOf(customer.getAutoId()));
 			addProperty(Ticket.CUSTOMER_NAME, customer.getFirstName());

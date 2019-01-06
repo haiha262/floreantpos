@@ -145,6 +145,7 @@ public class POSConstants {
 	public static final String TEL = Messages.getString("PosMessage.59"); //$NON-NLS-1$
 	public static final String SERVER = Messages.getString("PosMessage.60"); //$NON-NLS-1$
 	public static final String CUSTOMER_SELECTION_BUTTON_TEXT = Messages.getString("CUSTOMER_SELECTION_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String ORDER_HERE= Messages.getString("ORDER_HERE"); //$NON-NLS-1$
 	public static final String GENERAL = Messages.getString("PosMessage.62"); //$NON-NLS-1$
 	public static final String GROUP = Messages.getString("PosMessage.63"); //$NON-NLS-1$
 	public static final String UNGROUP = Messages.getString("UNGROUP"); //$NON-NLS-1$

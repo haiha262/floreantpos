@@ -24,6 +24,7 @@
 package com.floreantpos.ui.views.order;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -134,7 +135,11 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 	private com.floreantpos.swing.PosButton btnMisc = new com.floreantpos.swing.PosButton(POSConstants.MISC_BUTTON_TEXT);
 	private com.floreantpos.swing.PosButton btnOrderType = new com.floreantpos.swing.PosButton(POSConstants.ORDER_TYPE_BUTTON_TEXT);
 	private com.floreantpos.swing.PosButton btnTableNumber = new com.floreantpos.swing.PosButton(POSConstants.TABLE_NO_BUTTON_TEXT);
+	
+	//=== hatran add 2 more button PHONE & ORDER HERE
 	private com.floreantpos.swing.PosButton btnCustomer = new PosButton(POSConstants.CUSTOMER_SELECTION_BUTTON_TEXT);
+	private com.floreantpos.swing.PosButton btnOrderHere = new PosButton(POSConstants.ORDER_HERE);
+	//===
 	private PosButton btnCookingInstruction = new PosButton(IconFactory.getIcon("/ui_icons/", "cooking-instruction.png"));
 	//	private PosButton btnAddOn = new PosButton(POSConstants.ADD_ON);
 	private PosButton btnDiscount = new PosButton(Messages.getString("TicketView.43")); //$NON-NLS-1$
@@ -339,6 +344,16 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				doAddEditCustomer();
+				doUpdateOrderType("PHONE");
+				
+				
+			}
+		});
+		
+		btnOrderHere.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				doUpdateOrderType("SHOP FRONT");
 			}
 		});
 
@@ -437,6 +452,8 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 
 		actionButtonPanel.add(btnOrderType);
 		actionButtonPanel.add(btnCustomer);
+		actionButtonPanel.add(btnOrderHere);
+		
 		actionButtonPanel.add(btnDeliveryInfo);
 		actionButtonPanel.add(btnTableNumber);
 		actionButtonPanel.add(btnGuestNo);
@@ -722,7 +739,24 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 			ticketView.addTicketItem(ticketItem);
 		}
 	}// GEN-LAST:event_doInsertMisc
-
+//hatran add doUpdateOrderType
+	protected void doUpdateOrderType(String orderType) {
+		if(orderType == "PHONE")
+		{
+			btnCustomer.setBackground(Color.GRAY);
+			btnOrderHere.setBackground(null);
+		}
+		else
+		{
+			btnOrderHere.setBackground(Color.GRAY);
+			btnCustomer.setBackground(null);
+		}
+		if (currentTicket != null) {
+//			OrderType orderType = currentTicket.getOrderType();
+			currentTicket.setOrderType(orderType);
+			TicketDAO.getInstance().saveOrUpdate(currentTicket);
+		}
+	}
 	protected void doAddEditCustomer() {
 		
 		boolean isUseNewCustomer = true;
@@ -745,7 +779,7 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 			
 			if (!dialog.isCanceled()) {
 				currentTicket.setCustomer(selectedCustomer); // hatran : set customer after choice customer
-				btnCustomer.setText("<html><body><center>CUSTOMER<br>\"" + selectedCustomer.getName() + "\"</center></body></html>");
+				btnCustomer.setText("<html><body><center>PHONE<br>\"" + selectedCustomer.getName() + "\"</center></body></html>");
 
 			}
 		}
