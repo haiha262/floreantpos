@@ -59,6 +59,7 @@ import com.floreantpos.util.CurrencyUtil;
  * @author MShahriar
  */
 public class MenuItemView extends SelectionView {
+	private static int BUTTON_SIZE = 120;
 	public final static String VIEW_NAME = "ITEM_VIEW"; //$NON-NLS-1$
 
 	private Vector<ItemSelectionListener> listenerList = new Vector<ItemSelectionListener>();
@@ -70,7 +71,7 @@ public class MenuItemView extends SelectionView {
 
 	/** Creates new form GroupView */
 	public MenuItemView() {
-		super(com.floreantpos.POSConstants.ITEMS, PosUIManager.getSize(120), PosUIManager.getSize(80));
+		super(com.floreantpos.POSConstants.ITEMS, PosUIManager.getSize(BUTTON_SIZE), PosUIManager.getSize(BUTTON_SIZE));
 		remove(actionButtonPanel);
 
 		btnPrev.setText("<");
@@ -174,7 +175,6 @@ public class MenuItemView extends SelectionView {
 	}
 
 	public class ItemButton extends PosButton implements ActionListener, MouseListener {
-		private int BUTTON_SIZE = 100;
 		//private int BUTTON_SIZE = 120;
 		MenuItem foodItem;
 
@@ -182,7 +182,7 @@ public class MenuItemView extends SelectionView {
 			setFocusable(false);
 			setVerticalTextPosition(SwingConstants.BOTTOM);
 			setHorizontalTextPosition(SwingConstants.CENTER);
-			BUTTON_SIZE = PosUIManager.getSize(100);
+			//BUTTON_SIZE = PosUIManager.getSize(100);
 
 			updateView(menuItem);
 
