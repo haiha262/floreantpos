@@ -51,7 +51,7 @@ public class PosPrinters {
 	}
 
 	public void setReportPrinter(String reportPrinter) {
-		PosPrinters.reportPrinter = reportPrinter;
+		this.reportPrinter = reportPrinter;
 	}
 
 	public String getReceiptPrinter() {
@@ -59,7 +59,7 @@ public class PosPrinters {
 	}
 
 	public void setReceiptPrinter(String receiptPrinter) {
-		PosPrinters.receiptPrinter = receiptPrinter;
+		this.receiptPrinter = receiptPrinter;
 	}
 
 	public List<Printer> getKitchenPrinters() {
@@ -71,7 +71,7 @@ public class PosPrinters {
 	}
 
 	public void setKitchenPrinters(List<Printer> kitchenPrinters) {
-		PosPrinters.kitchenPrinters = kitchenPrinters;
+		this.kitchenPrinters = kitchenPrinters;
 	}
 
 	public void addKitchenPrinter(Printer printer) {
@@ -173,16 +173,16 @@ public class PosPrinters {
 			}
 			kitchenPrinters = terminalActivePrinters;
 
-//			if (receiptPrinter == null) {
-//				receiptPrinter = getDefaultPrinterName();
-//			}
+			if (receiptPrinter == null) {
+				receiptPrinter = getDefaultPrinterName();
+			}
 //			if (reportPrinter == null) {
 //				reportPrinter = getDefaultPrinterName();
 //			}
-//			if (kitchenPrinters == null || kitchenPrinters.isEmpty()) {
-//				Printer printer = new Printer(new VirtualPrinter(1, "kitchen"), getDefaultPrinterName()); //$NON-NLS-1$
-//				kitchenPrinters.add(printer);
-//			}
+			if (kitchenPrinters == null || kitchenPrinters.isEmpty()) {
+				Printer printer = new Printer(new VirtualPrinter(1, "kitchen"), getDefaultPrinterName()); //$NON-NLS-1$
+				kitchenPrinters.add(printer);
+			}
 			printers.populatePrinterMaps();
 
 			return printers;
@@ -194,7 +194,7 @@ public class PosPrinters {
 		return null;
 	}
 
-	private static String getDefaultPrinterName() {
+	public static String getDefaultPrinterName() {
 		PrintService defaultPrintService = PrintServiceLookup.lookupDefaultPrintService();
 		if (defaultPrintService != null) {
 			return defaultPrintService.getName();
