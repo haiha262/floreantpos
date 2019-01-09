@@ -53,6 +53,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 
 	private String customerName;
 	private Printer printer;
+	private String customerTimePickUp;
 
 	public OrderType getType() {
 		String type = getTicketType();
@@ -247,6 +248,10 @@ public class KitchenTicket extends BaseKitchenTicket {
 					if (StringUtils.isNotEmpty(ticket.getProperty(Ticket.CUSTOMER_NAME))) {
 						kitchenTicket.setCustomerName(ticket.getProperty(Ticket.CUSTOMER_NAME));
 					}
+					//TODO : // hatran add setCustomer Timepickup to kitchenTicket
+					if (StringUtils.isNotEmpty(ticket.getProperty(Ticket.CUSTOMER_TIME_PICKUP))) {
+						kitchenTicket.setCustomerTimePickUp(ticket.getProperty(Ticket.CUSTOMER_TIME_PICKUP));
+					}
 
 					KitchenTicketDAO.getInstance().saveOrUpdate(kitchenTicket);
 
@@ -415,5 +420,13 @@ public class KitchenTicket extends BaseKitchenTicket {
 
 	public void setCustomerName(String customerName) {
 		this.customerName = customerName;
+	}
+	
+	public String getCustomerTimePickUp() {
+		return customerTimePickUp;
+	}
+
+	public void setCustomerTimePickUp(String customerTimePickUp) {
+		this.customerTimePickUp = customerTimePickUp;
 	}
 }

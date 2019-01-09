@@ -101,7 +101,11 @@ public class Ticket extends BaseTicket {
 	public static final String CUSTOMER_MOBILE = "CUSTOMER_MOBILE"; //$NON-NLS-1$
 	public static final String CUSTOMER_NAME = "CUSTOMER_NAME"; //$NON-NLS-1$
 	public static final String CUSTOMER_ID = "CUSTOMER_ID"; //$NON-NLS-1$
+	
 	public static final String CUSTOMER_ZIP_CODE = "CUSTOMER_ZIP_CODE"; //$NON-NLS-1$
+	//TODO: //hatran add customer time pickup
+	public static final String CUSTOMER_TIME_PICKUP = "CUSTOMER_TIME_PICKUP";
+	
 	public static final String MANAGER_INSTRUCTION = "MANAGER_INSTRUCTION"; //$NON-NLS-1$
 	public static final String PHONE_EXTENSION = "PHONE_EXTENSION";
 
@@ -110,6 +114,7 @@ public class Ticket extends BaseTicket {
 	public static final String SPLIT = "split";
 	public static final String SPLIT_NUMBER = "split_number";
 	public static final String ORIGINAL_SPLIT_TICKET_ID = "original_split_ticket_id";
+
 
 	private String sortOrder;
 	private Customer customer;
@@ -744,12 +749,14 @@ public class Ticket extends BaseTicket {
 		return s;
 	}
 
-	public void setCustomer(Customer customer) {//hatran set customer in ticket
+	public void setCustomer(Customer customer) {//hatran add more addProperty of customer in ticket
 		if (customer != null) {
 			addProperty(Ticket.CUSTOMER_ID, String.valueOf(customer.getAutoId()));
 			addProperty(Ticket.CUSTOMER_NAME, customer.getFirstName());
 			addProperty(Ticket.CUSTOMER_MOBILE, customer.getMobileNo());
 			addProperty(Ticket.CUSTOMER_ZIP_CODE, customer.getZipCode());
+			SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("MMM d, HH:mm"); //hatran add format time for pick up
+			addProperty(Ticket.CUSTOMER_TIME_PICKUP, TIME_FORMAT.format(customer.getTimePickUp()));
 		}
 		if (customer != null) {
 			setCustomerId(customer.getAutoId());
@@ -761,6 +768,7 @@ public class Ticket extends BaseTicket {
 		removeProperty(CUSTOMER_NAME);
 		removeProperty(CUSTOMER_MOBILE);
 		removeProperty(CUSTOMER_ZIP_CODE);
+		removeProperty(CUSTOMER_TIME_PICKUP);//hatran add remove Property(CUSTOMER_TIME_PICKUP )
 	}
 
 	public String getSortOrder() {

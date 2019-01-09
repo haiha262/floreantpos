@@ -379,7 +379,7 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 			return false;
 		}
 		//hatran check current time > set time	
-		if(Calendar.getInstance().getTime().before(selectedItem))
+		if(Calendar.getInstance().getTime().after(selectedItem))
 		{		
 			POSMessageDialog.showError(null, Messages.getString("QuickCustomerForm.2")); //$NON-NLS-1$
 			return false;
