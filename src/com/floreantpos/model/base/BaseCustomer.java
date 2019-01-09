@@ -89,6 +89,7 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 		protected java.lang.Double creditSpent;
 		protected java.lang.String creditCardNo;
 		protected java.lang.String note;
+		protected java.util.Date timePickUp;
 
 	// collections
 	private java.util.List<com.floreantpos.model.DeliveryAddress> deliveryAddresses;
@@ -525,7 +526,20 @@ public abstract class BaseCustomer  implements Comparable, Serializable {
 		this.note = note;
 	}
 
+	/**
+	 * Return the value associated with the column: NOTE
+	 */
+	public java.util.Date getTimePickUp () {
+					return timePickUp;
+			}
 
+	/**
+	 * Set the value related to the column: NOTE
+	 * @param note the NOTE value
+	 */
+	public void setTimePickUp (java.util.Date timePickUp) {
+		this.timePickUp = timePickUp;
+	}
 
 	/**
 	 * Return the value associated with the column: deliveryAddresses
