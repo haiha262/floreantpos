@@ -78,6 +78,7 @@ import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.model.dao.ShopTableStatusDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.dao.UserDAO;
+import com.floreantpos.swing.OrderTypeLoginButton;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.TransparentPanel;
@@ -135,11 +136,8 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 	private com.floreantpos.swing.PosButton btnMisc = new com.floreantpos.swing.PosButton(POSConstants.MISC_BUTTON_TEXT);
 	private com.floreantpos.swing.PosButton btnOrderType = new com.floreantpos.swing.PosButton(POSConstants.ORDER_TYPE_BUTTON_TEXT);
 	private com.floreantpos.swing.PosButton btnTableNumber = new com.floreantpos.swing.PosButton(POSConstants.TABLE_NO_BUTTON_TEXT);
-	
-	//=== hatran add 2 more button PHONE & ORDER HERE
 	private com.floreantpos.swing.PosButton btnCustomer = new PosButton(POSConstants.CUSTOMER_SELECTION_BUTTON_TEXT);
-	private com.floreantpos.swing.PosButton btnOrderHere = new PosButton(POSConstants.ORDER_HERE);
-	//===
+
 	private PosButton btnCookingInstruction = new PosButton(IconFactory.getIcon("/ui_icons/", "cooking-instruction.png"));
 	//	private PosButton btnAddOn = new PosButton(POSConstants.ADD_ON);
 	private PosButton btnDiscount = new PosButton(Messages.getString("TicketView.43")); //$NON-NLS-1$
@@ -339,23 +337,18 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 				//doChangeOrderType(); fix
 			}
 		});
+//hatran rem: use for another actionListener
+//		btnCustomer.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				doAddEditCustomer();
+//				doUpdateOrderType("PHONE");
+//				
+//				
+//			}
+//		});
+	
 
-		btnCustomer.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				doAddEditCustomer();
-				doUpdateOrderType("PHONE");
-				
-				
-			}
-		});
-		
-		btnOrderHere.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				doUpdateOrderType("SHOP FRONT");
-			}
-		});
 
 		btnMisc.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -449,10 +442,32 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 				doShowDeliveryDialog();
 			}
 		});
+//hatran add :auto add the list of orderType button
+		List<com.floreantpos.model.OrderType> orderTypes = Application.getInstance().getOrderTypes();
 
-		actionButtonPanel.add(btnOrderType);
-		actionButtonPanel.add(btnCustomer);
-		actionButtonPanel.add(btnOrderHere);
+		for (com.floreantpos.model.OrderType orderType : orderTypes) {
+			if (!orderType.isEnabled() || orderType.getName().compareTo("TAKE ORDER")==0) {
+				continue;
+			}
+			com.floreantpos.swing.PosButton btn = new PosButton(orderType.getName());
+			
+			btn.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					
+					String commandName = e.getActionCommand();
+					if (commandName.compareTo("PHONE")==0)
+						doAddEditCustomer();
+					doUpdateOrderType(commandName);
+					
+					
+				}
+			});
+			actionButtonPanel.add(btn); //$NON-NLS-1$
+
+		}
+		//actionButtonPanel.add(btnOrderType);
+		//actionButtonPanel.add(btnCustomer);
 		
 		actionButtonPanel.add(btnDeliveryInfo);
 		actionButtonPanel.add(btnTableNumber);
@@ -741,20 +756,11 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 	}// GEN-LAST:event_doInsertMisc
 //hatran add doUpdateOrderType
 	protected void doUpdateOrderType(String orderType) {
-		if(orderType == "PHONE")
-		{
-			btnCustomer.setBackground(Color.GRAY);
-			btnOrderHere.setBackground(null);
-		}
-		else
-		{
-			btnOrderHere.setBackground(Color.GRAY);
-			btnCustomer.setBackground(null);
-		}
 		if (currentTicket != null) {
 //			OrderType orderType = currentTicket.getOrderType();
 			currentTicket.setOrderType(orderType);
-			TicketDAO.getInstance().saveOrUpdate(currentTicket);
+			//TicketDAO.getInstance().saveOrUpdate(currentTicket);
+			updateView();
 		}
 	}
 	protected void doAddEditCustomer() {
@@ -793,7 +799,7 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 			dialog.openUndecoratedFullScreen();
 	
 			if (!dialog.isCanceled()) {
-				currentTicket.setCustomer(dialog.getSelectedCustomer()); // hatran : set customer after choice customer
+				currentTicket.setCustomer(dialog.getSelectedCustomer()); 
 				btnCustomer.setText("<html><body><center>CUSTOMER<br>\"" + dialog.getSelectedCustomer().getName() + "\"</center></body></html>");
 	
 			}
@@ -1079,12 +1085,17 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 		btnCustomer.setText(POSConstants.CUSTOMER_SELECTION_BUTTON_TEXT);
 		if (currentTicket != null) {
 			OrderType type = currentTicket.getOrderType();
+			
 			if (type.isRetailOrder()) {
 				ticketView.updateView();
 				updateTicketSummeryView();
 				paymentView.setTicket(currentTicket);
 
 				setHideButtonForRetailView();
+			}
+			else
+			{
+				ticketView.updateView();//hatran add
 			}
 		}
 	}
