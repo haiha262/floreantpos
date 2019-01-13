@@ -456,7 +456,7 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 				public void actionPerformed(ActionEvent e) {
 					
 					String commandName = e.getActionCommand();
-					if (commandName.compareTo("PHONE")==0)
+					if (commandName.contains("PHONE ORDER"))
 						doAddEditCustomer();
 					doUpdateOrderType(commandName);
 					
@@ -475,7 +475,7 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 		actionButtonPanel.add(btnSeatNo);
 		actionButtonPanel.add(btnCookingInstruction);
 		//		actionButtonPanel.add(btnAddOn);
-		actionButtonPanel.add(btnMisc);
+//		actionButtonPanel.add(btnMisc);//hatran rem MISC btn
 		actionButtonPanel.add(btnHold);
 		actionButtonPanel.add(btnSend);
 		actionButtonPanel.add(btnCancel);

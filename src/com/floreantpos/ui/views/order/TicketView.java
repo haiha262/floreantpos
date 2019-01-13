@@ -283,7 +283,7 @@ public class TicketView extends JPanel {
 //			btnTotal.setEnabled(false);
 //		}
 
-		btnTotal.addActionListener(new ActionListener() {
+		btnTotal.addActionListener(new ActionListener() {// hatran : Total button action
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (ticket.getOrderType().isHasForHereAndToGo()) {
@@ -320,6 +320,7 @@ public class TicketView extends JPanel {
 		});
 
 		btnIncreaseAmount.setIcon(IconFactory.getIcon("/ui_icons/", "add_user.png", size)); //$NON-NLS-1$ //$NON-NLS-2$
+		btnIncreaseAmount.setToolTipText(POSConstants.TICKET_VIEW_INCREASE_AMOUNT);
 		btnIncreaseAmount.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 
@@ -339,6 +340,8 @@ public class TicketView extends JPanel {
 		});
 
 		btnDecreaseAmount.setIcon(IconFactory.getIcon("/ui_icons/", "minus.png", size)); //$NON-NLS-1$ //$NON-NLS-2$
+		btnIncreaseAmount.setToolTipText(POSConstants.TICKET_VIEW_DECREASE_AMOUNT);
+
 		btnDecreaseAmount.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				doDecreaseAmount();
@@ -444,7 +447,11 @@ public class TicketView extends JPanel {
 		if (!ticket.isBarTab() && (ticket.getTicketItems() == null || ticket.getTicketItems().size() == 0)) {
 			throw new PosException(com.floreantpos.POSConstants.TICKET_IS_EMPTY_);
 		}
-
+		//hatran add: check order type before press total btn
+		if(ticket.getOrderType().toString().compareTo("TAKE ORDER")==0)
+		{
+			throw new PosException("Please choose ticket type!");
+		}
 		ticket.calculatePrice();
 	}
 
@@ -455,7 +462,7 @@ public class TicketView extends JPanel {
 			}
 			updateModel();
 
-			OrderController.saveOrder(ticket);
+			OrderController.saveOrder(ticket); // hatran save order action
 
 			firePayOrderSelected();
 		} catch (PosException e) {
@@ -472,7 +479,7 @@ public class TicketView extends JPanel {
 
 	}// GEN-LAST:event_doDeleteSelection
 
-	private void doEditSelection() {// GEN-FIRST:event_doDeleteSelection
+	private void doEditSelection() {// GEN-FIRST:event_doDeleteSelection 
 		Object object = ticketViewerTable.getSelected();
 
 		if (object == null) {
@@ -508,7 +515,7 @@ public class TicketView extends JPanel {
 			updateTicketItemsSeatNumber(ticketItem);
 		}
 		else
-			OrderController.openModifierDialog((ITicketItem) object);
+			OrderController.openModifierDialog((ITicketItem) object); //hatran open Modifier item in Orderview
 
 		updateView();
 
@@ -643,16 +650,19 @@ public class TicketView extends JPanel {
 		}*/
 
 		if (ticket.getId() == null) {
-			titledBorder.setTitle(ticket.getTicketType() + " [New Ticket]"); //$NON-NLS-1$
+			titledBorder.setTitle(ticket.getTicketType()); //$NON-NLS-1$
 		}
 		else {
-			titledBorder.setTitle(ticket.getTicketType() + " " + Messages.getString("TicketView.37") + ticket.getId() + " Table# " + getTableNumbers(ticket.getTableNumbers()));
+			String  str = ticket.getTicketType() + " " + Messages.getString("TicketView.37") + ticket.getId();
+			//+ " Table# "+ getTableNumbers(ticket.getTableNumbers());
+			titledBorder.setTitle(str);
 
 			/*	titledBorder.setTitle(ticket.getTicketType()
 						+ " Ticket ["+ ticket.getId()+"]," + "Table [" + getTableNumbers(ticket.getTableNumbers())+"]"); //$NON-NLS-1$ //$NON-NLS-2$	
 			*/}
 
 		ticketViewerTable.updateView();
+		repaint();
 		showCustomerDisplayInfo(ticketViewerTable.getSelected());
 
 	}
