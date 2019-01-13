@@ -117,7 +117,7 @@ public class ExtendViewCustomer  extends com.floreantpos.swing.TransparentPanel 
 	
 		
 	}
-	public void showTalbeTicket(TicketViewerTable ticketViewerTable, String totalPrice)
+	public void showTalbeTicket(TicketViewerTable ticketViewerTable, String totalPrice) //hatran : print out contain of ticket to extend screen.
 	{
 		int count = ticketViewerTable.getActualRowCount();
 		txtlistItem = new JTextArea();
@@ -129,10 +129,12 @@ public class ExtendViewCustomer  extends com.floreantpos.swing.TransparentPanel 
 //			itemName =  String.format("%-40s", itemName);
 
 			String itemCount = item.getItemQuantityDisplay();
-			double itemPrice = item.getSubTotalAmountDisplay() == null ? 0 : item.getSubTotalAmountDisplay();
-			String line = String.format("%10s \t %-40s \t  %20s",itemCount, itemName, NumberUtil.formatNumber(itemPrice, true)); //$NON-NLS-1$
+//			double itemPrice = item.getSubTotalAmountDisplay() == null ? 0 : item.getSubTotalAmountDisplay();//hatran rem to modified : list sub items with its prices
+			double itemPrice = item.getSubTotalAmountWithoutModifiersDisplay() == null ? 0 : item.getSubTotalAmountWithoutModifiersDisplay();
+			String line = String.format("%10s \t %-40s \t  %s",itemCount, itemName, NumberUtil.formatNumber(itemPrice, true)); //$NON-NLS-1$
 
             txtlistItem.setText( txtlistItem.getText()+" \n "+line);
+            txtlistItem.setFont(new Font("Dialog", Font.BOLD, PosUIManager.getFontSize(18)));
         }
 		
 		txtTotal = new JTextArea();
@@ -141,6 +143,7 @@ public class ExtendViewCustomer  extends com.floreantpos.swing.TransparentPanel 
 		String total = "\n TOTAL: "; //$NON-NLS-1$
 		String line2 = String.format(" %10s \t \t \t \t %20s", total, CurrencyUtil.getCurrencySymbol() +" "+ totalPrice); //$NON-NLS-1$
 		txtTotal.setText( txtTotal.getText()+" \n  "+line2);
+		txtTotal.setFont(new Font("Dialog", Font.BOLD, PosUIManager.getFontSize(22)));
 		 centerPanel.removeAll();
 
 		 centerPanel.revalidate();
