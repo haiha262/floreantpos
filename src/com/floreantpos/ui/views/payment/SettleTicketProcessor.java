@@ -66,6 +66,7 @@ public class SettleTicketProcessor implements CardInputListener {
 	private String cardName;
 	private RefreshableView refreshableView;
 	public boolean terminate = false;
+	private boolean isUsingNormalEFPOS  = true; 
 
 	public SettleTicketProcessor(User currentUser, RefreshableView refreshableView) {
 		super();
@@ -144,7 +145,24 @@ public class SettleTicketProcessor implements CardInputListener {
 			case DEBIT_CARD:
 			case DEBIT_VISA:
 			case DEBIT_MASTER_CARD:
-				payUsingCard(cardName, tenderAmount);
+//				hatran edit : using normal EFPOS
+				if(isUsingNormalEFPOS)
+				{
+				if (!confirmPayment()) {
+					return;
+				}
+
+				transaction = paymentType.createTransaction();
+				transaction.setTicket(ticket);
+				transaction.setCaptured(true);
+				setTransactionAmounts(transaction);
+
+				settleTicket(transaction);
+				}
+				else
+				{
+					payUsingCard(cardName, tenderAmount);
+				}
 				break;
 
 			case GIFT_CERTIFICATE:
