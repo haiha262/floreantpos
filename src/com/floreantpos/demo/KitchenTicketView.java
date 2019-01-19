@@ -85,7 +85,7 @@ public class KitchenTicketView extends JPanel {
 		createHeader(ticket);
 		createTable(ticket);
 		createButtonPanel();
-
+//hatran : note : create frame for each ticket item list
 		statusSelector = new KitchenTicketStatusSelector((Frame) SwingUtilities.getWindowAncestor(this), ticket);
 		statusSelector.pack();
 
@@ -149,6 +149,8 @@ public class KitchenTicketView extends JPanel {
 	}
 
 	private void createTable(KitchenTicket ticket) {
+		//hatran TODO: relist the Kitchen display
+		List<KitchenTicketItem> list ;
 		tableModel = new KitchenTicketTableModel(ticket.getTicketItems());
 		table = new JTable(tableModel);
 		table.setRowSelectionAllowed(false);
@@ -162,7 +164,7 @@ public class KitchenTicketView extends JPanel {
 
 				KitchenTicketItem ticketItem = tableModel.getRowData(row);
 
-				if (ticketItem != null && ticketItem.getStatus() != null) {
+				if (ticketItem != null && ticketItem.getStatus() != null) {//hatran : set item background in kitchen display 
 					if (ticketItem.getStatus().equalsIgnoreCase(KitchenTicketStatus.DONE.name())) {
 						rendererComponent.setBackground(Color.green);
 					}
@@ -189,12 +191,15 @@ public class KitchenTicketView extends JPanel {
 		AbstractAction action = new AbstractAction() {
 
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {//hatran : action bump of each item in list
 				int row = Integer.parseInt(e.getActionCommand());
+				
 				KitchenTicketItem ticketItem = tableModel.getRowData(row);
+
 				if (!ticketItem.isCookable()) {
 					return;
 				}
+				
 				statusSelector.setTicketItem(ticketItem);
 				statusSelector.setLocationRelativeTo(KitchenTicketView.this);
 				statusSelector.setVisible(true);
@@ -248,7 +253,7 @@ public class KitchenTicketView extends JPanel {
 		});
 		//buttonPanel.add(btnVoid);
 
-		PosButton btnDone = new PosButton(POSConstants.BUMP); //$NON-NLS-1$
+		PosButton btnDone = new PosButton(POSConstants.BUMP); //$NON-NLS-1$ //hatran note : big bump btn
 		btnDone.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -259,7 +264,6 @@ public class KitchenTicketView extends JPanel {
 		btnDone.setPreferredSize(PosUIManager.getSize(100, 40));
 
 		buttonPanel.add(btnDone);
-
 		//		PosButton btnPrint = new PosButton("PRINT");
 		//		btnPrint.addActionListener(new ActionListener() {
 		//			@Override
@@ -295,7 +299,7 @@ public class KitchenTicketView extends JPanel {
 	private void resizeTableColumns() {
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		setColumnWidth(1, PosUIManager.getSize(40));
-		setColumnWidth(2, PosUIManager.getSize(50));
+		setColumnWidth(2, PosUIManager.getSize(100));//hatran :set width of Bump/rebump each line of item
 	}
 
 	private void setColumnWidth(int columnNumber, int width) {
@@ -341,7 +345,12 @@ public class KitchenTicketView extends JPanel {
 					}
 					return String.valueOf(ticketItem.getQuantity());
 				case 2:
-					return POSConstants.BUMP;
+					String status = POSConstants.BUMP;
+					if(ticketItem.getStatus().compareTo("DONE")==0) //hatran : add rebump label
+					{	
+						status = Messages.getString("KitchenTicketStatusSelector.REBUMP");
+					}
+					return status;
 			}
 			return null;
 		}
