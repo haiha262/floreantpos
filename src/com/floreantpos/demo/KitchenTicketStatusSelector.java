@@ -46,6 +46,7 @@ import com.floreantpos.ui.dialog.POSMessageDialog;
 public class KitchenTicketStatusSelector extends POSDialog implements ActionListener {
 	private PosButton btnVoid = new PosButton(KitchenTicketStatus.VOID.name());
 	private PosButton btnReady = new PosButton(Messages.getString("KitchenTicketStatusSelector.2")); //$NON-NLS-1$
+	private PosButton btnRebump = new PosButton(Messages.getString("KitchenTicketStatusSelector.REBUMP")); //$NON-NLS-1$
 
 	private KitchenTicket kitchenTicket;
 	private KitchenTicketItem ticketItem;
@@ -74,16 +75,19 @@ public class KitchenTicketStatusSelector extends POSDialog implements ActionList
 		panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		//panel.add(btnVoid);
 		panel.add(btnReady);
+		panel.add(btnRebump);
 
 		add(panel);
-
 		btnReady.setActionCommand(KitchenTicketStatus.DONE.name());
+		btnRebump.setActionCommand(KitchenTicketStatus.WAITING.name());
 		btnVoid.addActionListener(this);
 		btnReady.addActionListener(this);
+		btnRebump.addActionListener(this);
+		
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e) {//hatran action when press BUMP in KitchenTicketStatusSelector popup window
 		try {
 			KitchenTicketStatus status = KitchenTicketStatus.valueOf(e.getActionCommand());
 			ticketItem.setStatus(status.name());
@@ -129,7 +133,7 @@ public class KitchenTicketStatusSelector extends POSDialog implements ActionList
 			POSMessageDialog.showError(this, e2.getMessage(), e2);
 		}
 	}
-
+	
 	public KitchenTicketItem getTicketItem() {
 		return ticketItem;
 	}
