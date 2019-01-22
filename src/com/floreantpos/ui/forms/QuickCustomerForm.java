@@ -373,11 +373,11 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 		
 		Date selectedItem = (Date) timeList.getSelectedItem();
 
-		
-		if (StringUtils.isEmpty(mobile) && StringUtils.isEmpty(name)) {
-			POSMessageDialog.showError(null, Messages.getString("QuickCustomerForm.1")); //$NON-NLS-1$
-			return false;
-		}
+		//hatran rem: set the customer can empty
+//		if (StringUtils.isEmpty(mobile) && StringUtils.isEmpty(name)) {
+//			POSMessageDialog.showError(null, Messages.getString("QuickCustomerForm.1")); //$NON-NLS-1$
+//			return false;
+//		}
 		//hatran check current time > set time	
 		if(Calendar.getInstance().getTime().after(selectedItem))
 		{		
