@@ -120,11 +120,11 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		createMenus();
 		positionWindow();
 
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				close();
+				dispose();
 			}
 		});
 
@@ -148,12 +148,29 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 
 		setLocation(x, y);
 	}
+	public void refeshMenu()
+	{
+		if(menuBar != null)
+		{
+			remove(menuBar);
+//		menuBar.removeAll();
+		createMenus();
+//		menuBar.revalidate();
+		tabbedPane.removeAll();
+		tabbedPane.revalidate();
+		positionWindow();
+		}
+
+	}
 
 	private void createMenus() {
 		User user = Application.getCurrentUser();
 		UserType newUserType = user.getType();
+		isFullView = false;
 		if(user.getId()==9090) //hatran add full view report 
 			isFullView = true;
+
+			
 		Set<UserPermission> permissions = null;
 
 		if (newUserType != null) {

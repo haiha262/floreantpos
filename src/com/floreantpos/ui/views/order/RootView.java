@@ -19,9 +19,12 @@ package com.floreantpos.ui.views.order;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.MenuBar;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.JComponent;
+import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -244,9 +247,13 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 	public void showBackOffice() {
 
 		BackOfficeWindow window = com.floreantpos.util.POSUtil.getBackOfficeWindow();
-		//if (window == null) //hatran rem : for always revew window
+		if (window == null) //hatran rem for full view report 
 		{
 			window = new BackOfficeWindow();
+		}
+		else
+		{
+			window.refeshMenu();
 		}
 		window.setVisible(true);
 		window.toFront();
