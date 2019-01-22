@@ -541,7 +541,9 @@ public class ReceiptPrintService {
 					map.put("changedAmount", NumberUtil.formatNumber(changedAmount)); //$NON-NLS-1$
 				}
 				if (transaction.isCard()) {
-					map.put("cardPayment", true); //$NON-NLS-1$
+					
+					//hatran set cardPayment false: using external efpos
+					map.put("cardPayment", false); //$NON-NLS-1$
 					if (transaction.hasProperty("requireSignature")) {
 						Boolean requireSignature = Boolean.valueOf(transaction.getProperty("requireSignature"));
 						map.put("showSignatureField", requireSignature);
@@ -893,13 +895,13 @@ public class ReceiptPrintService {
 			map.put(TABLE_NO, POSConstants.RECEIPT_REPORT_TABLE_NO_LABEL + ticket.getTableNumbers());
 		}
 		
-		if(ticket.getType().toString().compareTo("PHONE")==0)
+		if(ticket.getType().toString().contains("PHONE"))
 		{
 				if (StringUtils.isNotEmpty(ticket.getCustomerName())) {//hatran
 					map.put("customer", Messages.getString("ReceiptPrintService.0") + ticket.getCustomerName()); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				if (StringUtils.isNotEmpty(ticket.getCustomerTimePickUp())) {
-					map.put("customerTimePickUp",  "Time pick up:"+ ticket.getCustomerTimePickUp()); //$NON-NLS-1$ //$NON-NLS-2$
+					map.put("customerTimePickUp",  "Time pick up: "+ ticket.getCustomerTimePickUp()); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 		}
 		map.put(SERVER_NAME, POSConstants.RECEIPT_REPORT_SERVER_LABEL + ticket.getServerName());
@@ -929,10 +931,13 @@ public class ReceiptPrintService {
 		if (ticket.getTableNumbers() != null && ticket.getTableNumbers().size() > 0) {
 			map.put(TABLE_NO, POSConstants.RECEIPT_REPORT_TABLE_NO_LABEL + ticket.getTableNumbers());
 		}
-		if(ticket.getType().toString().compareTo("PHONE")==0)
+		if(ticket.getType().toString().contains("PHONE"))
 		{
 			if (StringUtils.isNotEmpty(ticket.getCustomerName())) {
 				map.put("customer", Messages.getString("ReceiptPrintService.0") + ticket.getCustomerName()); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+			if (StringUtils.isNotEmpty(ticket.getCustomerPhoneNumber())) {
+				map.put("customerPhoneNo", Messages.getString("ReceiptPrintService.CustomerPhoneNumber") + ticket.getCustomerPhoneNumber()); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			if (StringUtils.isNotEmpty(ticket.getCustomerTimePickUp())) {
 				map.put("customerTimePickUp",  "Time pick up:"+ ticket.getCustomerTimePickUp()); //$NON-NLS-1$ //$NON-NLS-2$

@@ -54,6 +54,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 	private String customerName;
 	private Printer printer;
 	private String customerTimePickUp;
+	private String customerPhoneNumber;
 
 	public OrderType getType() {
 		String type = getTicketType();
@@ -252,6 +253,9 @@ public class KitchenTicket extends BaseKitchenTicket {
 					if (StringUtils.isNotEmpty(ticket.getProperty(Ticket.CUSTOMER_TIME_PICKUP))) {
 						kitchenTicket.setCustomerTimePickUp(ticket.getProperty(Ticket.CUSTOMER_TIME_PICKUP));
 					}
+					if (StringUtils.isNotEmpty(ticket.getProperty(Ticket.CUSTOMER_MOBILE))) {
+						kitchenTicket.setCustomerPhoneNumber(ticket.getProperty(Ticket.CUSTOMER_MOBILE));
+					}
 
 					KitchenTicketDAO.getInstance().saveOrUpdate(kitchenTicket);
 
@@ -314,6 +318,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 		ticket.markPrintedToKitchen();
 		return kitchenTickets;
 	}
+
 
 	private static void includeCookintInstructions(TicketItem ticketItem, KitchenTicket kitchenTicket) {
 		List<TicketItemCookingInstruction> cookingInstructions = ticketItem.getCookingInstructions();
@@ -420,6 +425,15 @@ public class KitchenTicket extends BaseKitchenTicket {
 
 	public void setCustomerName(String customerName) {
 		this.customerName = customerName;
+	}
+	
+	private void setCustomerPhoneNumber(String customerPhoneNumber) {
+		this.customerPhoneNumber = customerPhoneNumber;
+		
+	}
+	
+	public String getCustomerPhoneNumber() {
+		return customerPhoneNumber;
 	}
 	
 	public String getCustomerTimePickUp() {
