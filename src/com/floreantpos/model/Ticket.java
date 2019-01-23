@@ -105,6 +105,7 @@ public class Ticket extends BaseTicket {
 	public static final String CUSTOMER_ZIP_CODE = "CUSTOMER_ZIP_CODE"; //$NON-NLS-1$
 	//TODO: //hatran add customer time pickup
 	public static final String CUSTOMER_TIME_PICKUP = "CUSTOMER_TIME_PICKUP";
+	public static final String TICKET_NUMBER  = "TICKET_NUMBER";
 	
 	public static final String MANAGER_INSTRUCTION = "MANAGER_INSTRUCTION"; //$NON-NLS-1$
 	public static final String PHONE_EXTENSION = "PHONE_EXTENSION";

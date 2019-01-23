@@ -65,6 +65,7 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 	// collections
 	private java.util.List<Integer> tableNumbers;
 	private java.util.List<com.floreantpos.model.KitchenTicketItem> ticketItems;
+	private Integer ticketNumber;
 
 
 
@@ -87,9 +88,22 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 		this.hashCode = Integer.MIN_VALUE;
 	}
 
+	
+	/**
+	 * Return the value associated with the column: TICKET_NUMBER
+	 */
+	public java.lang.Integer getTicketNumber () {
+									return ticketNumber;
+					}
 
-
-
+	/**
+	 * Set the value related to the column: TICKET_NUMBER
+	 * @param ticketId the TICKET_ID value
+	 */
+	public void setTicketNumber (java.lang.Integer ticketNumber) {
+		this.ticketNumber = ticketNumber;
+	}
+	
 	/**
 	 * Return the value associated with the column: TICKET_ID
 	 */

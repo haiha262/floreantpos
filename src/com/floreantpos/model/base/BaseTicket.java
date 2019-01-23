@@ -116,6 +116,8 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 		protected java.lang.Boolean customerWillPickup;
 		protected java.lang.String extraDeliveryInfo;
 		protected java.lang.String ticketType;
+		protected java.lang.Integer ticketNumber;
+
 
 	// many to one
 	private com.floreantpos.model.Shift shift;
@@ -545,7 +547,20 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 		this.numberOfGuests = numberOfGuests;
 	}
 
+	/**
+	 * Return the value associated with the column: NUMBER_OF_GUESTS
+	 */
+	public java.lang.Integer getticketNumber () {
+									return ticketNumber == null ? Integer.valueOf(1) : ticketNumber;
+					}
 
+	/**
+	 * Set the value related to the column: NUMBER_OF_GUESTS
+	 * @param numberOfGuests the NUMBER_OF_GUESTS value
+	 */
+	public void setticketNumber (java.lang.Integer ticketNumber) {
+		this.ticketNumber = ticketNumber;
+	}
 
 	/**
 	 * Return the value associated with the column: STATUS

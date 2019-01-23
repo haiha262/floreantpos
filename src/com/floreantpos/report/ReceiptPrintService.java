@@ -17,14 +17,17 @@
  */
 package com.floreantpos.report;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -474,7 +477,8 @@ public class ReceiptPrintService {
 		map.put(SHOW_FOOTER, Boolean.valueOf(printProperties.isShowFooter()));
 
 		map.put(TERMINAL, POSConstants.RECEIPT_REPORT_TERMINAL_LABEL + Application.getInstance().getTerminal().getId());
-		map.put(CHECK_NO, POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ticket.getId());
+		map.put(CHECK_NO, POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ticket.getticketNumber());
+		map.put("ticketId","#" +  ticket.getId());
 		map.put(TABLE_NO, POSConstants.RECEIPT_REPORT_TABLE_NO_LABEL + ticket.getTableNumbers());
 		map.put(GUEST_COUNT, POSConstants.RECEIPT_REPORT_GUEST_NO_LABEL + ticket.getNumberOfGuests());
 		map.put(SERVER_NAME, POSConstants.RECEIPT_REPORT_SERVER_LABEL + ticket.getOwner());
@@ -890,14 +894,15 @@ public class ReceiptPrintService {
 		map.put("cardPayment", true); //$NON-NLS-1$
 		map.put(SHOW_HEADER_SEPARATOR, Boolean.TRUE);
 		map.put(SHOW_HEADER_SEPARATOR, Boolean.TRUE);
-		map.put(CHECK_NO, POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ticket.getTicketId());
+		map.put(CHECK_NO, ticket.getTicketNumber());
+		map.put("ticketId","#" +  ticket.getTicketId());
 		if (ticket.getTableNumbers() != null && ticket.getTableNumbers().size() > 0) {
 			map.put(TABLE_NO, POSConstants.RECEIPT_REPORT_TABLE_NO_LABEL + ticket.getTableNumbers());
 		}
 		
 		if(ticket.getType().toString().contains("PHONE"))
 		{
-				if (StringUtils.isNotEmpty(ticket.getCustomerName())) {//hatran
+				if (StringUtils.isNotEmpty(ticket.getCustomerName())) {//hatran add customer in Kitchen Ticket
 					map.put("customer", Messages.getString("ReceiptPrintService.0") + ticket.getCustomerName()); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				if (StringUtils.isNotEmpty(ticket.getCustomerTimePickUp())) {
@@ -919,6 +924,7 @@ public class ReceiptPrintService {
 		return createJasperPrint(ReportUtil.getReport("kitchen-receipt"), map, new JRTableModelDataSource(dataSource)); //$NON-NLS-1$
 	}
 
+	
 	public static JasperPrint createKitchenPrint(String virtualPrinterName, KitchenTicket ticket, String deviceName) throws Exception {
 		HashMap map = new HashMap();
 
@@ -927,7 +933,10 @@ public class ReceiptPrintService {
 		map.put("cardPayment", true); //$NON-NLS-1$
 		map.put(SHOW_HEADER_SEPARATOR, Boolean.TRUE);
 		map.put(SHOW_HEADER_SEPARATOR, Boolean.TRUE);
-		map.put(CHECK_NO, POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ticket.getTicketId() + "-" + ticket.getSequenceNumber());
+		
+		//hatran add infor customer in kitchen ticket
+
+		map.put(CHECK_NO, POSConstants.RECEIPT_REPORT_TICKET_NO_LABEL + ticket.getTicketNumber() + "-" + ticket.getSequenceNumber()  );
 		if (ticket.getTableNumbers() != null && ticket.getTableNumbers().size() > 0) {
 			map.put(TABLE_NO, POSConstants.RECEIPT_REPORT_TABLE_NO_LABEL + ticket.getTableNumbers());
 		}
@@ -955,6 +964,7 @@ public class ReceiptPrintService {
 		map.put("orderType", "* " + ticketType + " *"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		map.put("printerName", "Printer Name : " + virtualPrinterName); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		map.put("ticketId","#" +  ticket.getTicketId());
 
 		KitchenTicketDataSource dataSource = new KitchenTicketDataSource(ticket);
 
@@ -966,13 +976,42 @@ public class ReceiptPrintService {
 		return createJasperPrint(ReportUtil.getReport(reportName), map, new JRTableModelDataSource(dataSource)); //$NON-NLS-1$
 	}
 
+	private static boolean isSameDay(Date date1, Date date2) {
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.setTime(date1);
+        Calendar calendar2 = Calendar.getInstance();
+        calendar2.setTime(date2);
+        boolean sameYear = calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR);
+        boolean sameMonth = calendar1.get(Calendar.MONTH) == calendar2.get(Calendar.MONTH);
+        boolean sameDay = calendar1.get(Calendar.DAY_OF_MONTH) == calendar2.get(Calendar.DAY_OF_MONTH);
+        return (sameDay && sameMonth && sameYear);
+    }
+	private static int getNextTicketNumber(int ticketId)
+	{
+		int ticketNo = 1;
+		List<Ticket> tickets = TicketDAO.getInstance().findTicketByID(ticketId-1);
+		int ticketNumber = tickets.get(0).getticketNumber();
+		java.util.Date activeDate  = tickets.get(0).getActiveDate();
+		
+		Calendar now = Calendar.getInstance();
+		now.setTimeZone(TimeZone.getTimeZone("Australia/Tasmania"));
+			    
+		if (isSameDay(now.getTime(),activeDate ))
+		{
+			ticketNo = ++ticketNumber;
+		}
+		return ticketNo;
+	}
+	
 	public static void printToKitchen(Ticket ticket) {
 		Session session = null;
 		Transaction transaction = null;
 		try {
 			session = KitchenTicketDAO.getInstance().createNewSession();
 			transaction = session.beginTransaction();
-
+			//hatran TODO: set ticket NUMBER here ?
+			int ticketNumber = getNextTicketNumber(ticket.getId());
+			ticket.setticketNumber(ticketNumber);
 			List<KitchenTicket> kitchenTickets = KitchenTicket.fromTicket(ticket);
 
 			for (KitchenTicket kitchenTicket : kitchenTickets) {

@@ -256,9 +256,11 @@ public class KitchenTicket extends BaseKitchenTicket {
 					if (StringUtils.isNotEmpty(ticket.getProperty(Ticket.CUSTOMER_MOBILE))) {
 						kitchenTicket.setCustomerPhoneNumber(ticket.getProperty(Ticket.CUSTOMER_MOBILE));
 					}
-
+					//TODO : // hatran add set ticket Number to kitchenTicket
+					kitchenTicket.setTicketNumber(ticket.getticketNumber());
+					
 					KitchenTicketDAO.getInstance().saveOrUpdate(kitchenTicket);
-
+					
 					kitchenTicket.setPrinter(printer);
 
 					itemMap.put(printer, kitchenTicket);
@@ -443,4 +445,5 @@ public class KitchenTicket extends BaseKitchenTicket {
 	public void setCustomerTimePickUp(String customerTimePickUp) {
 		this.customerTimePickUp = customerTimePickUp;
 	}
+	
 }

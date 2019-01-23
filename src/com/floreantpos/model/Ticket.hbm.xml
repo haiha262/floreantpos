@@ -45,6 +45,7 @@
 		<property column="DELIVERY_EXTRA_INFO" name="extraDeliveryInfo" type="string" />
 
 		<property name="ticketType" column="TICKET_TYPE" length="20" type="string" />
+		<property name="ticketNumber" column="TICKET_NUMBER"  type="java.lang.Integer" />
 
 		<map name="properties" cascade="all" lazy="false" table="TICKET_PROPERTIES">
 			<key column="id" />

@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
@@ -104,12 +105,13 @@ public class TicketDAO extends BaseTicketDAO {
 			}
 		}
 	}
-
+	
+	
 	@Override
 	public void saveOrUpdate(Ticket ticket, Session session) {
 		//TODO: INVENTORY PLUGIN SUPPORT
 		adjustInventoryItems(session, ticket);
-
+		
 		ticket.setActiveDate(Calendar.getInstance().getTime());
 
 		adjustStockAmount(ticket, session);
@@ -480,7 +482,24 @@ public class TicketDAO extends BaseTicketDAO {
 			closeSession(session);
 		}
 	}
+	//hatran add findTicketByID
+	public List<Ticket> findTicketByID(Integer ticketId) {
+		Session session = null;
+		Criteria criteria = null;
 
+		try {
+			session = createNewSession();
+			criteria = session.createCriteria(getReferenceClass());
+			criteria.add(Restrictions.eq(Ticket.PROP_ID, ticketId));
+
+			List ticketList = criteria.list();
+			return ticketList;
+
+		} finally {
+			closeSession(session);
+		}
+	}
+	
 	public List<Ticket> findTicketByCustomer(Integer customerId) {
 		Session session = null;
 		Criteria criteria = null;
