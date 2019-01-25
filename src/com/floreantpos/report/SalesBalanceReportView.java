@@ -39,6 +39,7 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRTableModelDataSource;
 import net.sf.jasperreports.view.JRViewer;
 
 import org.apache.log4j.Logger;
@@ -46,8 +47,10 @@ import org.jdesktop.swingx.JXDatePicker;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.model.User;
+import com.floreantpos.model.dao.SalesSummaryDAO;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.model.util.DateUtil;
+import com.floreantpos.report.SalesStatistics.ShiftwiseDataTableModel;
 import com.floreantpos.report.service.ReportService;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.util.UiUtil;
@@ -64,7 +67,7 @@ public class SalesBalanceReportView extends JPanel {
 	private JButton btnGo = new JButton(com.floreantpos.POSConstants.GO);
 	private JPanel reportContainer;
 
-	public SalesBalanceReportView() {
+	public SalesBalanceReportView() { //hatran : TODO : 
 		super(new BorderLayout());
 
 		JPanel topPanel = new JPanel(new MigLayout());
@@ -151,11 +154,13 @@ public class SalesBalanceReportView extends JPanel {
 		map.put("toDate", shortDateFormatter.format(toDate)); //$NON-NLS-1$
 		map.put("reportTime", fullDateFormatter.format(new Date())); //$NON-NLS-1$
 		map.put("userName", user == null ? com.floreantpos.POSConstants.ALL : user.getFullName()); //$NON-NLS-1$
-
+		
 		map.put("grossTaxableSales", NumberUtil.formatNumber(report.getGrossTaxableSalesAmount())); //$NON-NLS-1$
 		map.put("grossNonTaxableSales", NumberUtil.formatNumber(report.getGrossNonTaxableSalesAmount())); //$NON-NLS-1$
 		map.put("discounts", NumberUtil.formatNumber(report.getDiscountAmount())); //$NON-NLS-1$
+		map.put("grossAfterDiscount", NumberUtil.formatNumber(report.getGrossAfterDiscount())); //$NON-NLS-1$
 		map.put("netSales", NumberUtil.formatNumber(report.getNetSalesAmount())); //$NON-NLS-1$
+		
 		map.put("salesTaxes", NumberUtil.formatNumber(report.getSalesTaxAmount())); //$NON-NLS-1$
 		map.put("totalRevenues", NumberUtil.formatNumber(report.getTotalRevenueAmount())); //$NON-NLS-1$
 		map.put("giftCertSold", NumberUtil.formatNumber(report.getGiftCertSalesAmount())); //$NON-NLS-1$
@@ -186,9 +191,16 @@ public class SalesBalanceReportView extends JPanel {
 		
 //		map.put("totalReceipts", NumberUtil.formatNumber(report.getCreditCardReceiptsAmount()));
 //		map.put("totalTips", NumberUtil.formatNumber(report.getGrossTipsPaidAmount()));
-
+		
+		SalesSummaryDAO dao = new SalesSummaryDAO();
+		SalesStatistics summary = dao.findKeyStatistics(fromDate, toDate, null, null);
+		map.put("VOIDChecks", String.valueOf(summary.getVoidChecks())); //$NON-NLS-1$
+		map.put("VOIDAmount", NumberUtil.formatNumber(summary.getVoidAmount())); //$NON-NLS-1$
+		
+		
 		JasperReport jasperReport = ReportUtil.getReport("sales_summary_balance_report"); //$NON-NLS-1$
-		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JREmptyDataSource());
+//		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JREmptyDataSource());
+		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map,  new JRTableModelDataSource(new ShiftwiseDataTableModel(summary.getSalesTableDataList())));
 		JRViewer viewer = new JRViewer(jasperPrint);
 		reportContainer.removeAll();
 		reportContainer.add(viewer);
