@@ -75,7 +75,14 @@ public abstract class BaseTaxGroupDAO extends com.floreantpos.model.dao._RootDAO
 	public java.util.List<com.floreantpos.model.TaxGroup> findAll () {
 		return super.findAll();
 	}
-
+	/**
+	 * Return all objects related to the implementation of this DAO with no filter.
+	 * Use the session given.
+	 * @param s the Session
+	 */
+	public java.util.List<com.floreantpos.model.TaxGroup> findAll (Session s) {
+		return super.findAll(s);
+	}
 	/**
 	 * Return all objects related to the implementation of this DAO with no filter.
 	 */

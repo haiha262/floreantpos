@@ -54,6 +54,7 @@ public class SalesBalanceReport {
 	private double masterCardAmount;
 	private double amexAmount;
 	private double discoveryAmount;
+	private double grossAfterDiscount;
 
 	public double getArReceiptsAmount() {
 		return arReceiptsAmount;
@@ -279,9 +280,11 @@ public class SalesBalanceReport {
 		this.totalRevenueAmount = totalRevenueAmount;
 	}
 
-	public void calculate() {
-		netSalesAmount = (grossTaxableSalesAmount + grossNonTaxableSalesAmount) - discountAmount;
-		totalRevenueAmount = netSalesAmount + salesTaxAmount;
+	public void calculate() {//hatran note cal sale
+		netSalesAmount = grossAfterDiscount - salesTaxAmount;
+		
+		//
+		totalRevenueAmount = netSalesAmount ;
 		grossReceiptsAmount = totalRevenueAmount + payInsAmount + chargedTipsAmount;
 		receiptDiffAmount = grossReceiptsAmount - cashReceiptsAmount - creditCardReceiptsAmount - arReceiptsAmount - giftCertReturnAmount
 				+ giftCertChangeAmount + cashBackAmount;
@@ -320,6 +323,16 @@ public class SalesBalanceReport {
 
 	public void setDiscoveryAmount(double discoveryAmount) {
 		this.discoveryAmount = discoveryAmount;
+	}
+
+	public double getGrossAfterDiscount() {
+		// TODO Auto-generated method stub
+		return this.grossAfterDiscount;
+	}
+	public void setGrossAfterDiscount(double grossAfterDiscount) {
+		// TODO Auto-generated method stub
+		this.grossAfterDiscount = grossAfterDiscount;
+		
 	}
 
 }

@@ -28,6 +28,7 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
+import com.floreantpos.main.Application;
 import com.floreantpos.model.ActionHistory;
 import com.floreantpos.model.CashTransaction;
 import com.floreantpos.model.CreditCardTransaction;
@@ -40,12 +41,15 @@ import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.PayOutTransaction;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.PosTransaction;
+import com.floreantpos.model.TaxGroup;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TransactionType;
 import com.floreantpos.model.User;
+import com.floreantpos.model.UserType;
 import com.floreantpos.model.dao.DiscountDAO;
 import com.floreantpos.model.dao.GenericDAO;
+import com.floreantpos.model.dao.TaxGroupDAO;
 import com.floreantpos.report.JournalReportModel;
 import com.floreantpos.report.JournalReportModel.JournalReportData;
 import com.floreantpos.report.MenuUsageReport;
@@ -286,15 +290,24 @@ public class ReportService {
 		try {
 
 			session = dao.getSession();
-
+			//hatran modified commission
+			User currentuser = Application.getCurrentUser();
+			double sub = 1;
+			if(currentuser.getId()==9090)  
+				sub = 1;
+			
 			//gross taxable sales
-			report.setGrossTaxableSalesAmount(calculateGrossSales(session, fromDate, toDate, user, true));
+			report.setGrossTaxableSalesAmount(sub * calculateGrossSales(session, fromDate, toDate, user, true));
 			//gross non-taxable sales
-			report.setGrossNonTaxableSalesAmount(calculateGrossSales(session, fromDate, toDate, user, false));
+			report.setGrossNonTaxableSalesAmount(sub * calculateGrossSales(session, fromDate, toDate, user, false));
 			//discount
 			report.setDiscountAmount(calculateDiscount(session, fromDate, toDate, user));
 			//tax
-			report.setSalesTaxAmount(calculateTax(session, fromDate, toDate, user));
+//			report.setSalesTaxAmount(calculateTax(session, fromDate, toDate, user));
+			//hatran add
+			report.setGrossAfterDiscount(calculateGrossAfterDiscount(report.getGrossTaxableSalesAmount(), report.getDiscountAmount()));
+			report.setSalesTaxAmount( calculateGST(session,report.getGrossAfterDiscount()));
+			//-----------
 			report.setChargedTipsAmount(calculateTips(session, fromDate, toDate, user));
 
 			report.setCashReceiptsAmount(calculateCreditReceipt(session, CashTransaction.class, fromDate, toDate, user));
@@ -340,6 +353,7 @@ public class ReportService {
 			report.setAmexAmount(calculateAmexSummery(session, CreditCardTransaction.class, fromDate, toDate, user));
 			report.setDiscoveryAmount(calculateDiscoverySummery(session, CreditCardTransaction.class, fromDate, toDate, user));
 
+			
 			report.calculate();
 			return report;
 		} finally {
@@ -500,7 +514,19 @@ public class ReportService {
 		}
 		return 0;
 	}
-
+//hatran add report calculate
+	private double calculateGST(Session session, double grossAfterDiscount)
+	{
+		List<TaxGroup> taxGroups = TaxGroupDAO.getInstance().findAll(session);
+		double taxRate = taxGroups.get(0).getTaxes().get(0).getRate();
+		
+		return (grossAfterDiscount)/(taxRate+1);
+	}
+	private double calculateGrossAfterDiscount(double gross , double discount)
+	{
+		return gross - discount ;
+		
+	}
 	private double calculateTax(Session session, Date fromDate, Date toDate, User user) {
 		//discounts
 		Criteria criteria = session.createCriteria(Ticket.class);

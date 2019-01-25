@@ -509,11 +509,18 @@ public class SalesSummaryDAO extends _RootDAO {
 				List shifts = criteria.list();
 				for (Object object : shifts) {
 					Shift shift = (Shift) object;
+					if(shift.getName().compareTo("General")==0)	{
+						List<OrderType> values = Application.getInstance().getOrderTypes(); //change enum
+						
+						for (OrderType ticketType : values) {
+							if(ticketType.getName().compareTo("TAKE ORDER")!= 0){
+								findRecordByProfitCenter(start, end, userType, terminal, session, salesSummary, shift, ticketType);
 
-					List<OrderType> values = Application.getInstance().getOrderTypes(); //change enum
-					for (OrderType ticketType : values) {
-						findRecordByProfitCenter(start, end, userType, terminal, session, salesSummary, shift, ticketType);
+							}
+						}
+						
 					}
+					
 
 				}
 			}
