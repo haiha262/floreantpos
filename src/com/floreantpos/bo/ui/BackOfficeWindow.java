@@ -212,26 +212,33 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 
 	private void createReportMenu(JMenuBar menuBar) {
 		JMenu reportMenu = new JMenu(com.floreantpos.POSConstants.REPORTS);
-		reportMenu.add(new SalesReportAction());
-		reportMenu.add(new KeyStatisticsSalesReportAction());
-		reportMenu.add(new SalesDetailReportAction());
+		reportMenu.add(new SalesBalanceReportAction());
+		
+		
 		if(isFullView)  //hatran add full view report 
 		{ 
+			reportMenu.add(new SalesReportAction());
+			reportMenu.add(new KeyStatisticsSalesReportAction());
+			reportMenu.add(new SalesDetailReportAction());
+			reportMenu.add(new SalesAnalysisReportAction());
+			reportMenu.add(new SalesExceptionReportAction());
+			
+			reportMenu.add(new DrawerPullReportExplorerAction());
+			reportMenu.add(new TicketExplorerAction());
 			reportMenu.add(new OpenTicketSummaryReportAction());
 			reportMenu.add(new HourlyLaborReportAction());
 			reportMenu.add(new PayrollReportAction());
 			reportMenu.add(new EmployeeAttendanceAction());
-			reportMenu.add(new SalesAnalysisReportAction());
+			
 			reportMenu.add(new CreditCardReportAction());
 			reportMenu.add(new CustomPaymentReportAction());
 			reportMenu.add(new MenuUsageReportAction());
 			reportMenu.add(new ServerProductivityReportAction());
 			reportMenu.add(new JournalReportAction());
-			reportMenu.add(new SalesBalanceReportAction());
-			reportMenu.add(new SalesExceptionReportAction());
 			
-			reportMenu.add(new DrawerPullReportExplorerAction());
-			reportMenu.add(new TicketExplorerAction());
+			
+			
+			
 		}
 		//reportMenu.add(new PurchaseReportAction());
 		//reportMenu.add(new InventoryOnHandReportAction());
@@ -280,8 +287,11 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		JMenu adminMenu = new JMenu(com.floreantpos.POSConstants.ADMIN);
 		adminMenu.add(new ConfigureRestaurantAction());
 		adminMenu.add(new CurrencyExplorerAction());
-		adminMenu.add(new UserExplorerAction());
-		adminMenu.add(new UserTypeExplorerAction());
+		if(isFullView)  //hatran add full view report 
+		{ 
+			adminMenu.add(new UserExplorerAction());
+			adminMenu.add(new UserTypeExplorerAction());
+		}
 //		adminMenu.add(new ViewGratuitiesAction());
 		adminMenu.add(new DataExportAction());
 		adminMenu.add(new DataImportAction());
