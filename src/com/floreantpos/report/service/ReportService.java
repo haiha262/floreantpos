@@ -292,7 +292,7 @@ public class ReportService {
 			session = dao.getSession();
 			//hatran modified commission
 			User currentuser = Application.getCurrentUser();
-			double sub = 1;
+			double sub = 0.85;
 			if(currentuser.getId()==9090)  
 				sub = 1;
 			
