@@ -107,13 +107,22 @@ public class ExtendViewCustomer  extends com.floreantpos.swing.TransparentPanel 
 		}
 		return instance;
 	}
-	public void showText(String text)
+	public void showText(String text,boolean isOrder)
 	{
 		centerPanel.removeAll();
-		JLabel lblDeliveryCharge = new javax.swing.JLabel();
-		lblDeliveryCharge.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-		lblDeliveryCharge.setText(text); //$NON-NLS-1$ //$NON-NLS-2$
-		centerPanel.add(lblDeliveryCharge,BorderLayout.CENTER);//hatran head menu 
+		JLabel lblText = new javax.swing.JLabel();
+		lblText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+		lblText.setText(text); //$NON-NLS-1$ //$NON-NLS-2$
+		if (isOrder)
+		{
+		lblText.setFont(new Font("Serif", Font.PLAIN, 200));
+		}
+		else
+		{
+			lblText.setFont(new Font("Serif", Font.PLAIN, 22));
+		}
+		
+		centerPanel.add(lblText,BorderLayout.CENTER);//hatran head menu 
 	
 		
 	}

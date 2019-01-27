@@ -630,15 +630,17 @@ public class TicketView extends JPanel {
 
 		ITicketItem selectedItem = (ITicketItem) ticketViewerTable.getSelected();
 
-		if (selectedItem != null) {
-			if (TerminalConfig.isActiveCustomerDisplay()) {//hatran customer display here
+		if (selectedItem != null) //hatran rem for update customer display after delete some item
+		{
+			if (TerminalConfig.isActiveCustomerDisplay()) {
 				String sendMessageToCustomerDisplay = getDisplayMessage(selectedItem, ticket.getTotalAmount().toString());
 				DrawerUtil.setItemDisplay(TerminalConfig.getCustomerDisplayPort(), sendMessageToCustomerDisplay);
-				//Application.getExtendCustomWindow().showText(sendMessageToCustomerDisplay);
-				Application.getExtendCustomWindow().showTalbeTicket(ticketViewerTable,NumberUtil.formatNumber(ticket.getTotalAmount()));
 			}
 		}
-
+		//hatran customer display here
+		if (TerminalConfig.isActiveCustomerDisplay()) {//hatran customer display here
+			Application.getExtendCustomWindow().showTalbeTicket(ticketViewerTable,NumberUtil.formatNumber(ticket.getTotalAmount()));
+		}
 		btnTotal.setText(POSConstants.TOTAL.toUpperCase() + " " + CurrencyUtil.getCurrencySymbol() + NumberUtil.formatNumber(ticket.getTotalAmount()));
 		/*if (ticket.getTotalAmount() > 0) {
 			//btnTotal.setText("<html><h2>Total " + Application.getCurrencySymbol() + NumberUtil.formatNumber(ticket.getTotalAmount()) + "</h2></html>");
@@ -679,7 +681,7 @@ public class TicketView extends JPanel {
 			if (ticketItem != null) {
 				String sendMessageToCustomerDisplay = getDisplayMessage(ticketItem, NumberUtil.formatNumber(ticket.getTotalAmount(), true));
 				DrawerUtil.setItemDisplay(TerminalConfig.getCustomerDisplayPort(), sendMessageToCustomerDisplay);
-				Application.getExtendCustomWindow().showText(sendMessageToCustomerDisplay);
+				Application.getExtendCustomWindow().showText(sendMessageToCustomerDisplay,false);
 				Application.getExtendCustomWindow().showTalbeTicket(ticketViewerTable, NumberUtil.formatNumber(ticket.getTotalAmount()));
 
 			}

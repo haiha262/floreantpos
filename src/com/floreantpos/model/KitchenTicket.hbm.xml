@@ -16,6 +16,7 @@
 		<property column="SEQUENCE_NUMBER" name="sequenceNumber" type="java.lang.Integer" />
 		<property column="STATUS" name="status" type="string" length="30" />
 		<property column="SERVER_NAME" name="serverName" type="string" length="30" />
+		<property name="ticketNumber" column="TICKET_NUMBER"  type="java.lang.Integer" />
 		
 		<property name="ticketType" column="TICKET_TYPE" length="20" type="string" />
 		

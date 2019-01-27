@@ -49,6 +49,8 @@ import org.hibernate.Transaction;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosLog;
+import com.floreantpos.config.TerminalConfig;
+import com.floreantpos.main.Application;
 import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.model.KitchenTicket.KitchenTicketStatus;
 import com.floreantpos.model.KitchenTicketItem;
@@ -116,7 +118,7 @@ public class KitchenTicketView extends JPanel {
 	private void createHeader(KitchenTicket ticket) {
 		String printerName = ticket.getPrinters().toString();
 
-		ticketInfo = new JLabel("Ticket# " + ticket.getTicketId() + "-" + ticket.getSequenceNumber() + " " + printerName + ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		ticketInfo = new JLabel("Ticket# " + ticket.getTicketNumber() + "-" + ticket.getSequenceNumber() + " " + printerName + ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
 		tableInfo = new JLabel();
 		if (ticket.getTableNumbers() != null && ticket.getTableNumbers().size() > 0) {
@@ -404,6 +406,11 @@ public class KitchenTicketView extends JPanel {
 					}
 					session.saveOrUpdate(parentTicket);
 					session.saveOrUpdate(kitchenTicketItem);
+					
+					//hatran : TODO : notify ORDER on customer screen
+					if (TerminalConfig.isActiveCustomerDisplay()) { //hatran Customer display cleanup when reset new ticket
+						Application.getExtendCustomWindow().showText("ORDER #"+ parentTicket.getticketNumber(),true);
+					}
 				}
 				tx.commit();
 
