@@ -114,6 +114,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="tfReceiptCashDrawerName" pref="178" max="32767" attributes="0"/>
                       <Component id="cbReceiptPrinterName" alignment="0" pref="178" max="32767" attributes="1"/>
+                      <Component id="cbReceiptCardPrinterName" alignment="0" pref="178" max="32767" attributes="1"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -128,6 +129,7 @@
                       <Component id="cbReceiptPrinterType" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lblSelectReceiptPrinter" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="cbReceiptPrinterName" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cbReceiptCardPrinterName" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -163,6 +165,13 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="cbReceiptPrinterName">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="0"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="cbReceiptCardPrinterName">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="0"/>

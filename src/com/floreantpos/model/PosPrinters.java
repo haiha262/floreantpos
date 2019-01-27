@@ -40,6 +40,7 @@ import com.floreantpos.model.dao.VirtualPrinterDAO;
 public class PosPrinters {
 	private static String reportPrinter;
 	private static String receiptPrinter;
+	private static String receiptCardPrinter;
 
 	private Printer defaultKitchenPrinter;
 	private static List<Printer> kitchenPrinters;
@@ -60,6 +61,14 @@ public class PosPrinters {
 
 	public void setReceiptPrinter(String receiptPrinter) {
 		this.receiptPrinter = receiptPrinter;
+	}
+	
+	public String getReceiptCardPrinter() {
+		return receiptCardPrinter;
+	}
+
+	public void setReceiptCardPrinter(String receiptCardPrinter) {
+		this.receiptCardPrinter = receiptCardPrinter;
 	}
 
 	public List<Printer> getKitchenPrinters() {
@@ -164,6 +173,9 @@ public class PosPrinters {
 				else if (printerType == VirtualPrinter.RECEIPT) {
 					receiptPrinter = terminalPrinter.getPrinterName();
 				}
+				else if (printerType == VirtualPrinter.RECEIPT_NO_DRAWER) {//hatran add receiptCardPrinter
+					receiptCardPrinter = terminalPrinter.getPrinterName();
+				}
 				else if (printerType == VirtualPrinter.KITCHEN_DISPLAY) {
 				}
 				else {
@@ -175,6 +187,9 @@ public class PosPrinters {
 
 			if (receiptPrinter == null) {
 				receiptPrinter = getDefaultPrinterName();
+			}
+			if (receiptCardPrinter == null) {
+				receiptCardPrinter = getDefaultPrinterName();
 			}
 //			if (reportPrinter == null) {
 //				reportPrinter = getDefaultPrinterName();

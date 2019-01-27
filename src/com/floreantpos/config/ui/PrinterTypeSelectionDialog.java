@@ -54,10 +54,11 @@ public class PrinterTypeSelectionDialog extends POSDialog implements ActionListe
 
 	private POSToggleButton btnReportPrinter;
 	private POSToggleButton btnReceiptPrinter;
+	private POSToggleButton btnReceiptNoDrawerPrinter;
 	private POSToggleButton btnKitchenPrinter;
 	private POSToggleButton btnPackingPrinter;
 	private POSToggleButton btnKitchenDisplayPrinter;
-
+	
 	private int selectedPrinterType;
 
 	public PrinterTypeSelectionDialog() {
@@ -98,7 +99,7 @@ public class PrinterTypeSelectionDialog extends POSDialog implements ActionListe
 
 		add(buttonsPanel, BorderLayout.CENTER);
 
-		setSize(500, 280);
+		setSize(900, 280);
 	}
 
 	private void initializeData() {
@@ -106,24 +107,28 @@ public class PrinterTypeSelectionDialog extends POSDialog implements ActionListe
 			ButtonGroup group = new ButtonGroup();
 			btnReportPrinter = new POSToggleButton(VirtualPrinter.PRINTER_TYPE_NAMES[VirtualPrinter.REPORT]);
 			btnReceiptPrinter = new POSToggleButton(VirtualPrinter.PRINTER_TYPE_NAMES[VirtualPrinter.RECEIPT]);
+			btnReceiptNoDrawerPrinter = new POSToggleButton(VirtualPrinter.PRINTER_TYPE_NAMES[VirtualPrinter.RECEIPT_NO_DRAWER]);
 			btnKitchenPrinter = new POSToggleButton(VirtualPrinter.PRINTER_TYPE_NAMES[VirtualPrinter.KITCHEN]);
 			btnPackingPrinter = new POSToggleButton(VirtualPrinter.PRINTER_TYPE_NAMES[VirtualPrinter.PACKING]);
 			btnKitchenDisplayPrinter = new POSToggleButton(VirtualPrinter.PRINTER_TYPE_NAMES[VirtualPrinter.KITCHEN_DISPLAY]);
 
 			btnReportPrinter.addActionListener(this);
 			btnReceiptPrinter.addActionListener(this);
+			btnReceiptNoDrawerPrinter.addActionListener(this);
 			btnKitchenPrinter.addActionListener(this);
 			btnPackingPrinter.addActionListener(this);
 			btnKitchenDisplayPrinter.addActionListener(this);
 
 			buttonsPanel.add(btnReportPrinter, "growy"); //$NON-NLS-1$
 			buttonsPanel.add(btnReceiptPrinter, "growy"); //$NON-NLS-1$
+			buttonsPanel.add(btnReceiptNoDrawerPrinter, "growy"); //$NON-NLS-1$
 			buttonsPanel.add(btnKitchenPrinter, "growy"); //$NON-NLS-1$
 			buttonsPanel.add(btnPackingPrinter, "growy"); //$NON-NLS-1$
 			buttonsPanel.add(btnKitchenDisplayPrinter, "growy"); //$NON-NLS-1$
 
 			group.add(btnReportPrinter);
 			group.add(btnReceiptPrinter);
+			group.add(btnReceiptNoDrawerPrinter);
 			group.add(btnKitchenPrinter);
 			group.add(btnPackingPrinter);
 			group.add(btnKitchenDisplayPrinter);
@@ -151,6 +156,9 @@ public class PrinterTypeSelectionDialog extends POSDialog implements ActionListe
 		}
 		else if (source == btnReceiptPrinter) {
 			selectedPrinterType = VirtualPrinter.RECEIPT;
+		}
+		else if (source == btnReceiptNoDrawerPrinter) {
+			selectedPrinterType = VirtualPrinter.RECEIPT_NO_DRAWER;
 		}
 		else if (source == btnKitchenPrinter) {
 			selectedPrinterType = VirtualPrinter.KITCHEN;

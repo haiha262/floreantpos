@@ -345,8 +345,11 @@ public class ReceiptPrintService {
 				paymentGateway.printTransaction(transaction, false, false);
 				return;
 			}
-
 			String receiptPrinter = Application.getPrinters().getReceiptPrinter();
+			if(transaction.getPaymentType().contains("CARD")) {//hatran add receipt Card printer
+				receiptPrinter = Application.getPrinters().getReceiptCardPrinter();
+			}
+
 			if (StringUtils.isEmpty(receiptPrinter)) {
 				return;
 			}

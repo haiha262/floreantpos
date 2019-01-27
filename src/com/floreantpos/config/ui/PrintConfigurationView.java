@@ -61,6 +61,7 @@ public class PrintConfigurationView extends ConfigurationView {
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private JComboBox cbReceiptPrinterName;
+	private JComboBox cbReceiptCardPrinterName;
 	private JComboBox cbReportPrinterName;
 	private JCheckBox chkKitchenBtn = new JCheckBox("Show KDS button on login screen");
 	private JTextField txtYellowTime;
@@ -86,15 +87,18 @@ public class PrintConfigurationView extends ConfigurationView {
 
 		cbReportPrinterName.setModel(new DefaultComboBoxModel(printServices));
 		cbReceiptPrinterName.setModel(new DefaultComboBoxModel(printServices));
+		cbReceiptCardPrinterName.setModel(new DefaultComboBoxModel(printServices));
 
 		PrintServiceComboRenderer comboRenderer = new PrintServiceComboRenderer();
 		cbReportPrinterName.setRenderer(comboRenderer);
 		cbReceiptPrinterName.setRenderer(comboRenderer);
+		cbReceiptCardPrinterName.setRenderer(comboRenderer);
 		//cbFullscreenMode.setSelected(TerminalConfig.isFullscreenMode());
 		chkKitchenBtn.setSelected(TerminalConfig.isShowKitchenBtnOnLoginScreen());
 		setSelectedPrinter(cbReportPrinterName, printers.getReportPrinter());
 		setSelectedPrinter(cbReceiptPrinterName, printers.getReceiptPrinter());
-
+		setSelectedPrinter(cbReceiptCardPrinterName, printers.getReceiptCardPrinter());
+		
 		String yellowTimeOut = AppConfig.getString("YellowTimeOut"); //$NON-NLS-1$
 		String redTimeOut = AppConfig.getString("RedTimeOut"); //$NON-NLS-1$
 
@@ -141,6 +145,8 @@ public class PrintConfigurationView extends ConfigurationView {
 		printers.setReceiptPrinter(printService == null ? null : printService.getName());
 		//AppConfig.put(PrintConfig.RECEIPT_PRINTER_NAME, printService == null ? null : printService.getName());
 
+		printService = (PrintService) cbReceiptCardPrinterName.getSelectedItem();
+		printers.setReceiptCardPrinter(printService == null ? null : printService.getName());
 		//printService = (PrintService) cbKitchenPrinterName.getSelectedItem();
 		//AppConfig.put(PrintConfig.KITCHEN_PRINTER_NAME, printService == null ? null : printService.getName());
 
@@ -173,13 +179,18 @@ public class PrintConfigurationView extends ConfigurationView {
 		//add(cbReportPrinterName, "cell 1 0,growx"); //$NON-NLS-1$
 		javax.swing.JLabel jLabel1 = new javax.swing.JLabel();
 		//add(jLabel1, "cell 0 1,alignx right"); //$NON-NLS-1$
-
 		jLabel1.setText(Messages.getString("PrintConfigurationView.8")); //$NON-NLS-1$
-		cbReceiptPrinterName = new javax.swing.JComboBox();
+		
+		cbReceiptPrinterName = new javax.swing.JComboBox();	
 		//add(cbReceiptPrinterName, "cell 1 1,growx"); //$NON-NLS-1$
 		javax.swing.JLabel jLabel2 = new javax.swing.JLabel();
 		//add(jLabel2, "cell 0 2,alignx right"); //$NON-NLS-1$
-
+		
+		cbReceiptCardPrinterName = new javax.swing.JComboBox();
+		//add(cbReceiptCardPrinterName, "cell 1 1,growx"); //$NON-NLS-1$
+		javax.swing.JLabel jLabel3 = new javax.swing.JLabel();
+		//add(jLabel3, "cell 0 2,alignx right"); //$NON-NLS-1$
+		
 		MultiPrinterPane multiPrinterPane = new MultiPrinterPane("Printers", printers.getKitchenPrinters()); //$NON-NLS-1$
 		contentPanel.add(multiPrinterPane, "cell 0 1 2 1,growx,h 200!"); //$NON-NLS-1$
 

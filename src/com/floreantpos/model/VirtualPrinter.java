@@ -27,11 +27,12 @@ public class VirtualPrinter extends BaseVirtualPrinter {
 
 	public final static int REPORT = 0;
 	public final static int RECEIPT = 1;
-	public final static int KITCHEN = 2;
-	public final static int PACKING = 3;
-	public final static int KITCHEN_DISPLAY = 4;
+	public final static int RECEIPT_NO_DRAWER = 2;
+	public final static int KITCHEN = 3;
+	public final static int PACKING = 4;
+	public final static int KITCHEN_DISPLAY = 5;
 
-	public final static String[] PRINTER_TYPE_NAMES = { "Report receipt", "Receipt", "Kitchen", "Packing", "KDS" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+	public final static String[] PRINTER_TYPE_NAMES = { "Report receipt", "Receipt","Receipt No Drawer", "Kitchen", "Packing", "KDS" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
 	public VirtualPrinter() {
