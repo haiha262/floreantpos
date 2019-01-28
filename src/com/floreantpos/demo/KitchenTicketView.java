@@ -409,7 +409,7 @@ public class KitchenTicketView extends JPanel {
 					
 					//hatran : TODO : notify ORDER on customer screen
 					if (TerminalConfig.isActiveCustomerDisplay()) { //hatran Customer display cleanup when reset new ticket
-						Application.getExtendCustomWindow().showText("ORDER #"+ parentTicket.getticketNumber(),true);
+						Application.getExtendCustomWindow().showText(""+ parentTicket.getticketNumber(),true);
 					}
 				}
 				tx.commit();

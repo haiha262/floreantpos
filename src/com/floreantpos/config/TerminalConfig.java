@@ -413,6 +413,13 @@ public class TerminalConfig {
 	public static String getCustomerDisplayMessage() {
 		return config.getString("customerDisplayMessage", "12345678912345678912"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
+	public static void setCustomerDisplayFontSize(String customerDisplayFontSize) {
+		config.setProperty("customerDisplayFontSize", customerDisplayFontSize); //$NON-NLS-1$
+	}
+	
+	public static String getCustomerDisplayFontSize() {
+		return config.getString("customerDisplayFontSize", "200"); //$NON-NLS-1$ //$NON-NLS-2$
+	}
 
 	public static String getScaleActivationValue() {
 		return config.getString("wd", ""); //$NON-NLS-1$ //$NON-NLS-2$

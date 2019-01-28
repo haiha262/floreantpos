@@ -1124,7 +1124,7 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 			categoryView.cleanup();
 			if (TerminalConfig.isActiveCustomerDisplay()) { //hatran Customer display cleanup when reset new ticket
 				DrawerUtil.setCustomerDisplayMessage(TerminalConfig.getCustomerDisplayPort(), "Thank You");
-				Application.getExtendCustomWindow().showText("Thank You",true);
+				Application.getExtendCustomWindow().showText("Thank You",false);
 			}
 		}
 		super.setVisible(aFlag);

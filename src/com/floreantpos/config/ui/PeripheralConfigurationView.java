@@ -43,6 +43,8 @@ public class PeripheralConfigurationView extends ConfigurationView {
 
 	private JTextField tfCustomerDisplayPort;
 	private JTextField tfCustomerDisplayMessage;
+	private JTextField tfCustomerDisplayFontSize;
+	
 	private JCheckBox cbScaleActive;
 	private JTextField tfScalePort;
 	private FixedLengthTextField tfScaleDisplayMessage;
@@ -122,8 +124,10 @@ public class PeripheralConfigurationView extends ConfigurationView {
 
 		cbCustomerDisplay = new JCheckBox(Messages.getString("PeripheralConfigurationView.6")); //$NON-NLS-1$
 		tfCustomerDisplayPort = new JTextField(20);
-		tfCustomerDisplayMessage = new FixedLengthTextField(20);
+		tfCustomerDisplayMessage = new FixedLengthTextField(50);
 
+		tfCustomerDisplayFontSize = new JTextField(20);
+		
 		JButton btnTest = new JButton(Messages.getString("PeripheralConfigurationView.7")); //$NON-NLS-1$
 		btnTest.addActionListener(new ActionListener() {
 
@@ -132,16 +136,20 @@ public class PeripheralConfigurationView extends ConfigurationView {
 				//TerminalConfig.setCustomerDisplayPort(tfCustomerDisplayPort.getText());
 				DrawerUtil.setCustomerDisplayMessage(tfCustomerDisplayPort.getText(), String.format("%200s", ""));
 				DrawerUtil.setCustomerDisplayMessage(tfCustomerDisplayPort.getText(), tfCustomerDisplayMessage.getText());
-				POSMessageDialog.showMessage(Application.getPosWindow(),  tfCustomerDisplayMessage.getText());
+				Application.getExtendCustomWindow().showTextTest(tfCustomerDisplayMessage.getText(),tfCustomerDisplayFontSize.getText());
+
 			}
 		});
 
+		
+		
 		JButton btnRestoreCustomerDefault = new JButton(Messages.getString("TerminalConfigurationView.32")); //$NON-NLS-1$
 		btnRestoreCustomerDefault.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				tfCustomerDisplayPort.setText("COM2"); //$NON-NLS-1$
 				tfCustomerDisplayMessage.setText("1234567891234567891"); //$NON-NLS-1$
+				tfCustomerDisplayFontSize.setText("150");
 			}
 		});
 
@@ -150,6 +158,8 @@ public class PeripheralConfigurationView extends ConfigurationView {
 		customerDisplayPanel.add(tfCustomerDisplayPort, "wrap"); //$NON-NLS-1$
 		customerDisplayPanel.add(new JLabel(Messages.getString("PeripheralConfigurationView.1"))); //$NON-NLS-1$
 		customerDisplayPanel.add(tfCustomerDisplayMessage);
+		customerDisplayPanel.add(new JLabel(Messages.getString("PeripheralConfigurationView.8")), "newline");
+		customerDisplayPanel.add(tfCustomerDisplayFontSize);
 		customerDisplayPanel.add(btnTest);
 		customerDisplayPanel.add(btnRestoreCustomerDefault);
 
@@ -230,6 +240,7 @@ public class PeripheralConfigurationView extends ConfigurationView {
 		TerminalConfig.setCustomerDisplay(cbCustomerDisplay.isSelected());
 		TerminalConfig.setCustomerDisplayPort(tfCustomerDisplayPort.getText());
 		TerminalConfig.setCustomerDisplayMessage(tfCustomerDisplayMessage.getText());
+		TerminalConfig.setCustomerDisplayFontSize(tfCustomerDisplayFontSize.getText());
 
 		TerminalConfig.setScaleDisplay(cbScaleActive.isSelected());
 		TerminalConfig.setScalePort(tfScalePort.getText());
@@ -266,6 +277,7 @@ public class PeripheralConfigurationView extends ConfigurationView {
 		cbCustomerDisplay.setSelected(TerminalConfig.isActiveCustomerDisplay());
 		tfCustomerDisplayPort.setText(TerminalConfig.getCustomerDisplayPort());
 		tfCustomerDisplayMessage.setText(TerminalConfig.getCustomerDisplayMessage());
+		tfCustomerDisplayFontSize.setText(TerminalConfig.getCustomerDisplayFontSize());
 
 		cbScaleActive.setSelected(TerminalConfig.isActiveScaleDisplay());
 		tfScalePort.setText(TerminalConfig.getScalePort());

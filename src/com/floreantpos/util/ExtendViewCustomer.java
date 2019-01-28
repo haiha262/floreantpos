@@ -97,6 +97,8 @@ public class ExtendViewCustomer  extends com.floreantpos.swing.TransparentPanel 
 		add(jBottom, "South");
 		jBottom.setPreferredSize(new Dimension(640, 40));
 	   
+		// MediaPanel slide = new MediaPanel();
+		// centerPanel.add(slide);
 	     add(centerPanel, BorderLayout.CENTER);
 	     centerPanel.setPreferredSize(new Dimension(640, 40));
 
@@ -107,22 +109,56 @@ public class ExtendViewCustomer  extends com.floreantpos.swing.TransparentPanel 
 		}
 		return instance;
 	}
+	public void showTextTest(String text,String fontSize)
+	{
+	
+		
+		centerPanel.removeAll();
+		JPanel contentPanel = new JPanel();
+		contentPanel.setLayout(new MigLayout("", "[grow]", "[][]"));
+		
+		JLabel lbOrder = new JLabel("Order # ");
+		lbOrder.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+		lbOrder.setFont(new Font("Serif", Font.PLAIN, 60));
+		
+		JLabel lblText = new javax.swing.JLabel();
+		lblText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+		lblText.setText("<html>" + text.replaceAll("<","&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br/>") + "</html>");
+		lblText.setFont(new Font("Serif", Font.PLAIN, Integer.parseInt(fontSize)));
+		
+		contentPanel.add(lbOrder,"align 50% 50%");
+		contentPanel.add(lblText,"align 50% 50%, newline");//hatran head menu 
+		centerPanel.add(contentPanel,BorderLayout.CENTER);//hatran head menu 
+	
+		
+	}
 	public void showText(String text,boolean isOrder)
 	{
 		centerPanel.removeAll();
+		JPanel contentPanel = new JPanel();
+		contentPanel.setLayout(new MigLayout("", "[grow]", "[][]"));
+		
+		JLabel lbOrder = new JLabel("Order # ");
+		lbOrder.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+		lbOrder.setFont(new Font("Serif", Font.PLAIN, 60));
+		
 		JLabel lblText = new javax.swing.JLabel();
 		lblText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-		lblText.setText(text); //$NON-NLS-1$ //$NON-NLS-2$
+		lblText.setText("<html>" + text.replaceAll("<","&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br/>") + "</html>");
+		int fontSize = Integer.parseInt(TerminalConfig.getCustomerDisplayFontSize());
+		lblText.setFont(new Font("Serif", Font.PLAIN, fontSize));
+		
 		if (isOrder)
 		{
-		lblText.setFont(new Font("Serif", Font.PLAIN, 200));
+			contentPanel.add(lbOrder,"align 50% 50%");
 		}
 		else
 		{
 			lblText.setFont(new Font("Serif", Font.PLAIN, 22));
 		}
 		
-		centerPanel.add(lblText,BorderLayout.CENTER);//hatran head menu 
+		contentPanel.add(lblText, "align 50% 50%, newline");//hatran head menu 
+		centerPanel.add(contentPanel,BorderLayout.CENTER);//hatran head menu 
 	
 		
 	}
