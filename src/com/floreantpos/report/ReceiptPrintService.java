@@ -371,12 +371,12 @@ public class ReceiptPrintService {
 				jasperPrint.setName("Ticket-" + ticket.getId() + "-CustomerCopy"); //$NON-NLS-1$ //$NON-NLS-2$
 				jasperPrint.setProperty(PROP_PRINTER_NAME, receiptPrinter);
 				printQuitely(jasperPrint);
-
-				map.put("copyType", Messages.getString("ReceiptPrintService.5")); //$NON-NLS-1$ //$NON-NLS-2$
-				jasperPrint = createPrint(ticket, map, transaction);
-				jasperPrint.setName("Ticket-" + ticket.getId() + "-MerchantCopy"); //$NON-NLS-1$ //$NON-NLS-2$
-				jasperPrint.setProperty(PROP_PRINTER_NAME, receiptPrinter);
-				printQuitely(jasperPrint);
+				
+//				map.put("copyType", Messages.getString("ReceiptPrintService.5")); //$NON-NLS-1$ //$NON-NLS-2$
+//				jasperPrint = createPrint(ticket, map, transaction);
+//				jasperPrint.setName("Ticket-" + ticket.getId() + "-MerchantCopy"); //$NON-NLS-1$ //$NON-NLS-2$
+//				jasperPrint.setProperty(PROP_PRINTER_NAME, receiptPrinter);
+//				printQuitely(jasperPrint);
 			}
 			else {
 				JasperPrint jasperPrint = createPrint(ticket, map, transaction);
