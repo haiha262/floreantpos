@@ -152,7 +152,7 @@ public class Application {
 	        customerDisplayWindow.setVisibleWelcomeHeader(true);
 	        
 	        customerDisplayWindow.setVisible(true);
-	        customerDisplayWindow.setAlwaysOnTop(true);
+	        //customerDisplayWindow.setAlwaysOnTop(true);
 	        extendViewCustomer = ExtendViewCustomer.getInstance();
 	        customerDisplayWindow.getContentPane().add(extendViewCustomer);
 	        String os = System.getProperty("os.name");
@@ -171,6 +171,19 @@ public class Application {
 		
 	}
 	
+	public static void toFront(Window window)
+	{
+		String os = System.getProperty("os.name");
+        
+		if( os.toLowerCase().indexOf("mac") >= 0)
+		{
+			showFrameOnScreen(window, 1);
+		}
+		else
+		{
+			showFrameOnScreen(window, 2);
+		}
+	}
 	//hatran add 2 screen
 	public static void showFrameOnScreen(Window frame, int screen) {
         GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -220,7 +233,15 @@ public class Application {
 			initLengthUnit();
 			initPlugins();
 
+			//hatran
+			//set default layout
 			RootView.getInstance().initializeViews();
+			
+			//set other layout
+			//TerminalConfig.setDefaultView(TerminalConfig.getDefaultView());
+			//LoginView.getInstance().doLogin();
+			
+			
 			LoginView.getInstance().initializeOrderButtonPanel();
 			LoginView.getInstance().setTerminalId(terminal.getId());
 			//if (hasUpdateScheduleToday())
