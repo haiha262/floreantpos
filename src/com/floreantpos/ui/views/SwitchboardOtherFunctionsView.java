@@ -43,9 +43,12 @@ import com.floreantpos.actions.ShowBackofficeAction;
 import com.floreantpos.actions.ShowKitchenDisplayAction;
 import com.floreantpos.actions.ShowOnlineTicketManagementAction;
 import com.floreantpos.actions.ShowTransactionsAuthorizationsAction;
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.extension.ExtensionManager;
 import com.floreantpos.extension.FloreantPlugin;
 import com.floreantpos.main.Application;
+import com.floreantpos.model.User;
+import com.floreantpos.model.UserPermission;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.ui.views.order.RootView;
@@ -124,6 +127,22 @@ public class SwitchboardOtherFunctionsView extends ViewPanel {
 	}
 
 	private void updateView() {
+		User currentUser = Application.getCurrentUser();
+		
+		if (currentUser.isAdministrator() || currentUser.hasPermission(UserPermission.DRAWER_PULL)) {
+			contentPanel.getComponent(2).setVisible(true);
+			contentPanel.getComponent(6).setVisible(true);
+		}else
+		{
+			contentPanel.getComponent(2).setVisible(false);
+			contentPanel.getComponent(6).setVisible(false);
+		}
+		if (currentUser.isAdministrator() || currentUser.hasPermission(UserPermission.AUTHORIZE_TICKETS)) {
+			contentPanel.getComponent(7).setVisible(true);
+		}else
+		{
+			contentPanel.getComponent(7).setVisible(false);
+		}
 		drawerAction.updateActionText();
 	}
 
