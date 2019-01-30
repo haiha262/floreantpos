@@ -258,14 +258,21 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		explorerMenu.add(new ItemExplorerAction());
 		explorerMenu.add(new ModifierGroupExplorerAction());
 		explorerMenu.add(new ModifierExplorerAction());
-//		explorerMenu.add(new ShiftExplorerAction());
 		explorerMenu.add(new CouponExplorerAction());
-//		explorerMenu.add(new CookingInstructionExplorerAction());
 		explorerMenu.add(new TaxExplorerAction());
 		explorerMenu.add(new CustomPaymentBrowserAction());
-//		explorerMenu.add(new DrawerPullReportExplorerAction());
-//		explorerMenu.add(new TicketExplorerAction());
-//		explorerMenu.add(new AttendanceHistoryAction());
+		if(isFullView)  //hatran add full view report 
+		{
+			explorerMenu.add(new ShiftExplorerAction());
+			explorerMenu.add(new CookingInstructionExplorerAction());
+			
+			explorerMenu.add(new DrawerPullReportExplorerAction());
+			explorerMenu.add(new TicketExplorerAction());
+			explorerMenu.add(new AttendanceHistoryAction());
+			explorerMenu.add(new MultiplierExplorerAction());
+
+		}
+
 //		explorerMenu.add(new PizzaExplorerAction());
 		//explorerMenu.add(subMenuPizza);
 
@@ -273,7 +280,6 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 //		subMenuPizza.add(new PizzaCrustExplorerAction());
 //		subMenuPizza.add(new PizzaItemExplorerAction());
 //		subMenuPizza.add(new PizzaModifierExplorerAction());
-//		explorerMenu.add(new MultiplierExplorerAction());
 
 		OrderServiceExtension plugin = (OrderServiceExtension) ExtensionManager.getPlugin(OrderServiceExtension.class);
 		if (plugin == null) {
@@ -291,8 +297,9 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		{ 
 			adminMenu.add(new UserExplorerAction());
 			adminMenu.add(new UserTypeExplorerAction());
+			adminMenu.add(new ViewGratuitiesAction());
 		}
-//		adminMenu.add(new ViewGratuitiesAction());
+
 		adminMenu.add(new DataExportAction());
 		adminMenu.add(new DataImportAction());
 		adminMenu.add(new LanguageSelectionAction());
