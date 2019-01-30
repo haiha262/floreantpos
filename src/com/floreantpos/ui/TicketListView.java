@@ -117,7 +117,7 @@ public class TicketListView extends JPanel implements ITicketList {
 		table.getTableHeader().setPreferredSize(new Dimension(100, PosUIManager.getSize(40)));
 
 		columnModel = (TableColumnModelExt) table.getColumnModel();
-		columnModel.getColumn(0).setPreferredWidth(30);
+		columnModel.getColumn(0).setPreferredWidth(40);
 		columnModel.getColumn(1).setPreferredWidth(20);
 		columnModel.getColumn(2).setPreferredWidth(100);
 		columnModel.getColumn(3).setPreferredWidth(100);
@@ -432,7 +432,7 @@ public class TicketListView extends JPanel implements ITicketList {
 
 	private class TicketListTableModel extends PaginatedTableModel {
 		public TicketListTableModel() {
-			super(new String[] { POSConstants.TICKET_LIST_COLUMN_ID, POSConstants.TICKET_LIST_COLUMN_TABLE, POSConstants.TICKET_LIST_COLUMN_SERVER,
+			super(new String[] { POSConstants.TICKET_LIST_COLUMN_TICKET_NUMBER, POSConstants.TICKET_LIST_COLUMN_ID, POSConstants.TICKET_LIST_COLUMN_TABLE, POSConstants.TICKET_LIST_COLUMN_SERVER,
 					POSConstants.TICKET_LIST_COLUMN_CREATE_DATE, POSConstants.TICKET_LIST_COLUMN_CUSTOMER, POSConstants.TICKET_LIST_COLUMN_DELIVERY_ADDRESS,
 					POSConstants.TICKET_LIST_COLUMN_DELIVERY_DATE, POSConstants.TICKET_LIST_COLUMN_TICKET_TYPE, POSConstants.TICKET_LIST_COLUMN_STATUS,
 					POSConstants.TICKET_LIST_COLUMN_TOTAL, POSConstants.TICKET_LIST_COLUMN_DUE });
@@ -443,20 +443,23 @@ public class TicketListView extends JPanel implements ITicketList {
 			Ticket ticket = (Ticket) rows.get(rowIndex);
 
 			switch (columnIndex) {
+			
 				case 0:
+					return Integer.valueOf(ticket.getticketNumber());
+				case 1:
 					return Integer.valueOf(ticket.getId());
 
-				case 1:
+				case 2:
 					return ticket.getTableNumbers();
 
-				case 2:
+				case 3:
 					User owner = ticket.getOwner();
 					return owner.getFirstName();
 
-				case 3:
+				case 4:
 					return ticket.getCreateDate();
 
-				case 4:
+				case 5:
 					String customerName = ticket.getProperty(Ticket.CUSTOMER_NAME);
 
 					if (customerName != null && !customerName.equals("")) { //$NON-NLS-1$
@@ -471,18 +474,18 @@ public class TicketListView extends JPanel implements ITicketList {
 
 					return Messages.getString("TicketListView.6"); //$NON-NLS-1$
 
-				case 5:
+				case 6:
 
 					return ticket.getDeliveryAddress();
 
-				case 6:
+				case 7:
 
 					return ticket.getDeliveryDate();
 
-				case 7:
+				case 8:
 					return ticket.getOrderType();
 
-				case 8:
+				case 9:
 					String status = ""; //$NON-NLS-1$
 					if (ticket.isPaid()) {
 						status = Messages.getString("TicketListView.8"); //$NON-NLS-1$
@@ -508,10 +511,10 @@ public class TicketListView extends JPanel implements ITicketList {
 
 					return status;
 
-				case 9:
+				case 10:
 					return ticket.getTotalAmount();
 
-				case 10:
+				case 11:
 					return ticket.getDueAmount();
 
 			}

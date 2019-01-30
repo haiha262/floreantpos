@@ -81,6 +81,7 @@ public class POSConstants {
 	public static final String TICKET_LIST_COLUMN_TOTAL = Messages.getString("TICKET_LIST_COLUMN_TOTAL"); //$NON-NLS-1$
 	public static final String TICKET_LIST_COLUMN_DUE = Messages.getString("TICKET_LIST_COLUMN_DUE"); //$NON-NLS-1$
 	public static final String TICKET_LIST_COLUMN_DELIVERY_ADDRESS = Messages.getString("TICKET_LIST_COLUMN_DELIVERY_ADDRESS"); //$NON-NLS-1$
+	public static final String TICKET_LIST_COLUMN_TICKET_NUMBER = Messages.getString("TICKET_LIST_COLUMN_TICKET_NUMBER"); //$NON-NLS-1$
 
 	public static final String EDIT_TAX_RATE = Messages.getString("PosMessage.0"); //$NON-NLS-1$
 	public static final String ENTER_PAYOUT_NOTE = Messages.getString("PosMessage.1"); //$NON-NLS-1$
