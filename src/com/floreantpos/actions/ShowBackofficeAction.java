@@ -22,6 +22,7 @@ import javax.swing.Action;
 import com.floreantpos.IconFactory;
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BackOfficeWindow;
+import com.floreantpos.main.Application;
 import com.floreantpos.model.UserPermission;
 
 public class ShowBackofficeAction extends PosAction {
@@ -50,6 +51,7 @@ public class ShowBackofficeAction extends PosAction {
 		}
 		window.setVisible(true);
 		window.toFront();
+		Application.toFront(window);
 	}
 
 }
