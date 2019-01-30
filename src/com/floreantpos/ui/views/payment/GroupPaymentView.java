@@ -417,7 +417,8 @@ public class GroupPaymentView extends JPanel {
 		});
 
 		btnGift = new PosButton(Messages.getString("PaymentView.35")); //$NON-NLS-1$
-		actionButtonPanel.add(btnGift, "grow,w " + width + "!"); //$NON-NLS-1$ //$NON-NLS-2$ 
+		//hatran rem btnGift
+		//actionButtonPanel.add(btnGift, "grow,w " + width + "!"); //$NON-NLS-1$ //$NON-NLS-2$ 
 		btnGift.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				groupSettleTicketView.doGroupSettle(PaymentType.GIFT_CERTIFICATE);

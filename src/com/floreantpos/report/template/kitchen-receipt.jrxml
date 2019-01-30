@@ -94,7 +94,7 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{customerTimePickUp}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="24" width="196" height="12"/>
 				<textElement>
 					<font size="9"/>

@@ -82,7 +82,7 @@ public class KitchenTicketDataSource extends AbstractReportDataSource {
 					}
 					return String.valueOf(itemQuantity) + item.getUnitName();
 				}
-				if (item.getQuantity() == 0) {
+				if (item.getQuantity() == 0 || item.getMenuItemCode()== "") {
 					return "";
 				}
 				return String.valueOf(item.getQuantity());

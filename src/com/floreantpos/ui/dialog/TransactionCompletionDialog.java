@@ -147,13 +147,14 @@ public class TransactionCompletionDialog extends POSDialog {
 		});
 
 		JPanel p = new JPanel();
-
-		if (isCard) {
-			p.add(btnPrintAllCopy, "newline,skip, h 50"); //$NON-NLS-1$
-			p.add(btnPrintStoreCopy, "skip, h 50"); //$NON-NLS-1$
-			p.add(btnClose, "skip, h 50"); //$NON-NLS-1$
-		}
-		else {
+//hatran rem: not need print MerchantCopy || set label
+//		if (isCard) {
+//			p.add(btnPrintAllCopy, "newline,skip, h 50"); //$NON-NLS-1$
+//			p.add(btnPrintStoreCopy, "skip, h 50"); //$NON-NLS-1$
+//			p.add(btnClose, "skip, h 50"); //$NON-NLS-1$
+//		}
+//		else 
+		{
 			btnPrintStoreCopy.setText(Messages.getString("TransactionCompletionDialog.0")); //$NON-NLS-1$
 			p.add(btnPrintStoreCopy, "skip, h 50"); //$NON-NLS-1$
 			p.add(btnClose, "skip, h 50"); //$NON-NLS-1$

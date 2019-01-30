@@ -448,7 +448,7 @@ public class PaymentView extends JPanel {
 			}
 		});
 
-		btnCreditCard = new PosButton("CREDIT CARD"); //$NON-NLS-1$
+		btnCreditCard = new PosButton("CARD"); //$NON-NLS-1$
 		actionButtonPanel.add(btnCreditCard, "grow,w " + width + "!"); //$NON-NLS-1$ //$NON-NLS-2$
 		btnCreditCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -464,7 +464,8 @@ public class PaymentView extends JPanel {
 		});
 
 		btnDebitCard = new PosButton("DEBIT CARD");
-		actionButtonPanel.add(btnDebitCard, "grow, w " + width + "!");
+		//hatran rem : not need
+	//	actionButtonPanel.add(btnDebitCard, "grow, w " + width + "!");
 		btnDebitCard.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -479,7 +480,8 @@ public class PaymentView extends JPanel {
 		});
 
 		btnGift = new PosButton(Messages.getString("PaymentView.35")); //$NON-NLS-1$
-		actionButtonPanel.add(btnGift, "grow,w " + width + "!"); //$NON-NLS-1$ //$NON-NLS-2$
+		//hatran rem : not need
+//		actionButtonPanel.add(btnGift, "grow,w " + width + "!"); //$NON-NLS-1$ //$NON-NLS-2$
 		btnGift.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
