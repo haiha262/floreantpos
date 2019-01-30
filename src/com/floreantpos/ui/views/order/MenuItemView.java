@@ -59,7 +59,7 @@ import com.floreantpos.util.CurrencyUtil;
  * @author MShahriar
  */
 public class MenuItemView extends SelectionView {
-	private static int BUTTON_SIZE = 120;
+	private static int BUTTON_SIZE = 100;
 	public final static String VIEW_NAME = "ITEM_VIEW"; //$NON-NLS-1$
 
 	private Vector<ItemSelectionListener> listenerList = new Vector<ItemSelectionListener>();
