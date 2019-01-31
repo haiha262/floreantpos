@@ -149,7 +149,7 @@ public class Application {
 	        customerDisplayWindow.setTitle(getTitle());
 	        customerDisplayWindow.setIconImage(applicationIcon.getImage());
 	        customerDisplayWindow.setupSizeAndLocation();
-	        customerDisplayWindow.setVisibleWelcomeHeader(true);
+//	        customerDisplayWindow.setVisibleWelcomeHeader(false);
 	        
 	        customerDisplayWindow.setVisible(true);
 	        //customerDisplayWindow.setAlwaysOnTop(true);
