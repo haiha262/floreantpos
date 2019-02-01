@@ -146,6 +146,9 @@ public class Application {
 	    //hatran add extend window  
 		if (TerminalConfig.isActiveCustomerDisplay()) { 
 	        customerDisplayWindow = new PosWindow();
+	        if (TerminalConfig.isFullscreenMode()) {
+	        	customerDisplayWindow.enterFullScreenMode();
+			}
 	        customerDisplayWindow.setTitle(getTitle());
 	        customerDisplayWindow.setIconImage(applicationIcon.getImage());
 	        customerDisplayWindow.setupSizeAndLocation();

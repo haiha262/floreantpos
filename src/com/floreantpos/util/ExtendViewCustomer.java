@@ -83,23 +83,17 @@ public class ExtendViewCustomer  extends com.floreantpos.swing.TransparentPanel 
 		JPanel jRight = new JPanel();
 		JPanel jTop = new JPanel();
 		
-		jTop.setLayout(new GridLayout(2,0));
+		
 		JPanel jBottom = new JPanel();
 
 		JLabel logoLabel = new JLabel(IconFactory.getIcon("/ui_icons/", "header-logo.png")); //$NON-NLS-1$ //$NON-NLS-2$
 		logoLabel.setBackground(Color.white);
-				
-		JPanel row1 = new JPanel();
-		JPanel row2 = new JPanel();
-		row1.add(logoLabel);
-		row1.setBackground(Color.WHITE);
+
+		jTop.add(logoLabel);//hatran head menu 
+		jTop.setBackground(Color.WHITE);
 		
-		row2.add(lblRestaurantName);
-		
-		jTop.add(row1);//hatran head menu 
-		jTop.add(row2);
 		add(jTop, "North");
-		jTop.setPreferredSize(new Dimension(1280, 200));
+		jTop.setPreferredSize(new Dimension(1280, 100));
 
 		add(jLeft, "West");
 		jLeft.setPreferredSize(new Dimension(100, 480));
@@ -164,7 +158,11 @@ public class ExtendViewCustomer  extends com.floreantpos.swing.TransparentPanel 
 		
 		if (isOrder)
 		{
-			contentPanel.add(lbOrder,"align 50% 50%");
+			if(!text.toLowerCase().contains("welcome"))
+			{
+				contentPanel.add(lbOrder,"align 50% 50%");
+			
+			}
 		}
 		else
 		{
@@ -183,40 +181,60 @@ public class ExtendViewCustomer  extends com.floreantpos.swing.TransparentPanel 
 	public void showTalbeTicket(TicketViewerTable ticketViewerTable, String totalPrice) //hatran : print out contain of ticket to extend screen.
 	{
 		int count = ticketViewerTable.getActualRowCount();
-		txtlistItem = new JTextArea();
-		txtlistItem.setOpaque(false);
-		for(int i=0;i<count;i++)
-        {
-			ITicketItem  item = ticketViewerTable.get(i);
-			String itemName = item.getNameDisplay();
-//			itemName =  String.format("%-40s", itemName);
+		if(count > 0)
+		{
+			String header= fixedLengthString("ITEM",-32) + fixedLengthString(" QTY",-10) +  fixedLengthString(" SUB",-10); 
+			JLabel lbHeader = new JLabel(header);
+			lbHeader.setFont(new Font("Monospaced", Font.BOLD, PosUIManager.getFontSize(22)));
+			
+			txtlistItem = new JTextArea();
+			txtlistItem.setOpaque(false);
+			
+			for(int i=0;i<count;i++)
+	        {
+				ITicketItem  item = ticketViewerTable.get(i);
+				String itemName = item.getNameDisplay();
+				String itemCount = item.getItemQuantityDisplay();
+				double itemPrice = item.getSubTotalAmountWithoutModifiersDisplay() == null ? 0 : item.getSubTotalAmountWithoutModifiersDisplay();
+				String line;
+				if(itemCount!="")
+				{
+					line = fixedLengthString(itemName,-40)+ fixedLengthString(itemCount,-10) +  fixedLengthString(""+NumberUtil.formatNumber(itemPrice, true),-10);
+				}
+				else
+				{
+					line = fixedLengthString("   "+ itemName,-40)+ fixedLengthString("-",-10) +  fixedLengthString(""+NumberUtil.formatNumber(itemPrice, true),-10);
+				}
+					
+	            txtlistItem.setText( txtlistItem.getText()+" \n "+line);
+	            txtlistItem.setFont(new Font("Monospaced", Font.PLAIN, PosUIManager.getFontSize(18)));
+	        }
+			
+			txtTotal = new JTextArea();
+			txtTotal.setOpaque(false);
 
-			String itemCount = item.getItemQuantityDisplay();
-//			double itemPrice = item.getSubTotalAmountDisplay() == null ? 0 : item.getSubTotalAmountDisplay();//hatran rem to modified : list sub items with its prices
-			double itemPrice = item.getSubTotalAmountWithoutModifiersDisplay() == null ? 0 : item.getSubTotalAmountWithoutModifiersDisplay();
-			String line = String.format("%s      %s \t %s",itemCount, fixedLengthString(itemName,-25), NumberUtil.formatNumber(itemPrice, true)); //$NON-NLS-1$
+			txtTotal.setText("---------------------------------------------------");
+			String total = fixedLengthString("TOTAL: ",-35) + fixedLengthString(CurrencyUtil.getCurrencySymbol() +" "+ totalPrice, -10); //$NON-NLS-1$
+			txtTotal.setText( txtTotal.getText()+" \n  "+total);
+			txtTotal.setFont(new Font("Monospaced", Font.BOLD, PosUIManager.getFontSize(22)));
+			centerPanel.removeAll();
+	
+			centerPanel.revalidate();
+			centerPanel.repaint();
+			JPanel jTop = new JPanel();
+			JPanel jCenter = new JPanel();
+			JPanel jBottom = new JPanel();
+			
+			jTop.add(lbHeader,BorderLayout.CENTER);
+			jTop.setPreferredSize(new Dimension(640,30));
 
-            txtlistItem.setText( txtlistItem.getText()+" \n "+line);
-            txtlistItem.setFont(new Font("Dialog", Font.BOLD, PosUIManager.getFontSize(18)));
-        }
-		
-		txtTotal = new JTextArea();
-		txtTotal.setOpaque(false);
-		txtTotal.setText("---------------------------------------------------------------------- ");
-		String total = "\n TOTAL: "; //$NON-NLS-1$
-		String line2 = String.format(" %s \t \t %20s", total, CurrencyUtil.getCurrencySymbol() +" "+ totalPrice); //$NON-NLS-1$
-		txtTotal.setText( txtTotal.getText()+" \n  "+line2);
-		txtTotal.setFont(new Font("Dialog", Font.BOLD, PosUIManager.getFontSize(22)));
-		 centerPanel.removeAll();
-
-		 centerPanel.revalidate();
-		 centerPanel.repaint();
-		JPanel jTop = new JPanel();
-		JPanel jBottom = new JPanel();
-		jTop.add(txtlistItem,BorderLayout.NORTH);
-		jBottom.add(txtTotal,BorderLayout.NORTH);
-		centerPanel.add(jTop,BorderLayout.NORTH);
-		centerPanel.add(jBottom,BorderLayout.SOUTH);
+			jCenter.add(txtlistItem,BorderLayout.SOUTH);
+			jBottom.add(txtTotal,BorderLayout.SOUTH);
+			jBottom.setPreferredSize(new Dimension(640,70));
+			centerPanel.add(jTop,BorderLayout.NORTH);
+			centerPanel.add(jCenter,BorderLayout.CENTER);
+			centerPanel.add(jBottom,BorderLayout.SOUTH);
+		}
 		
 	}
 }
