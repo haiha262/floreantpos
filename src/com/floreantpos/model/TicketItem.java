@@ -567,10 +567,8 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 						continue;
 					}
 
-					if (ticketItemModifier.isShouldSectionWisePrice()) {
-						subTotalAmount += ticketItemModifier.getSubTotalAmount();
-					}
-					else {
+					
+					
 						
 						/*	if modifier is not selected as section wise modifier
 						 *  then average price for modifier will be applied
@@ -579,8 +577,12 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 						if (!averagePricedModifierList.contains(ticketItemModifier.getModifierId())) {
 							subTotalAmount += ticketItemModifier.getSubTotalAmount();
 							averagePricedModifierList.add(ticketItemModifier.getModifierId());
+						}else {
+							//if (ticketItemModifier.isShouldSectionWisePrice()) 
+							{
+								subTotalAmount += ticketItemModifier.getSubTotalAmount();
+							}
 						}
-					}
 
 				}
 			}
