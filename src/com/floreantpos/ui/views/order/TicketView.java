@@ -762,7 +762,7 @@ public class TicketView extends JPanel {
 						btnEdit.setEnabled(!ticketItem.isPrintedToKitchen());
 					}
 					else if (ticketItem.isHasModifiers()) {
-						btnIncreaseAmount.setEnabled(false);
+						btnIncreaseAmount.setEnabled(false);//hatran : note on/off plus/minus items
 						btnDecreaseAmount.setEnabled(false);
 						btnEdit.setEnabled(true);
 					}
