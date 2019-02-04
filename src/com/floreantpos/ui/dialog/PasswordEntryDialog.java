@@ -375,21 +375,27 @@ public class PasswordEntryDialog extends OkCancelOptionDialog implements ActionL
 					return false;
 				}
 			}
+			//hatran rem: anyone can take order instead only one take order at that time
 			else if (viewName.equals(OrderView.VIEW_NAME)) {
-				if (!OrderView.getInstance().getCurrentTicket().getOwner().getUserId().equals(user.getUserId())) {
-					if (!user.hasPermission(UserPermission.CREATE_TICKET)
-							|| (!user.hasPermission(UserPermission.PERFORM_ADMINISTRATIVE_TASK) && !user.hasPermission(UserPermission.PERFORM_MANAGER_TASK))) {
-						statusLabel.setText("user has no permission to access this view");
-						return false;
-					}
-				}
+				OrderView.getInstance().getCurrentTicket().setOwner(user);
 			}
+//			else if (viewName.equals(OrderView.VIEW_NAME)) {
+//				if (!OrderView.getInstance().getCurrentTicket().getOwner().getUserId().equals(user.getUserId())) 
+//				{
+//					if (!user.hasPermission(UserPermission.CREATE_TICKET)
+//							|| (!user.hasPermission(UserPermission.PERFORM_ADMINISTRATIVE_TASK) && !user.hasPermission(UserPermission.PERFORM_MANAGER_TASK))) {
+//						statusLabel.setText("user has no permission to access this view");
+//						return false;
+//					}
+//				}
+//			}
 			else if (viewName.equals(KitchenDisplayView.VIEW_NAME)) {
 				if (!user.hasPermission(UserPermission.KITCHEN_DISPLAY)) {
 					statusLabel.setText("user has no permission to access this view");
 					return false;
 				}
 			}
+			Application.getPosWindow().updateView();
 		}
 		else {// to check login view access 
 			List<OrderType> orderTypes = Application.getInstance().getOrderTypes();
