@@ -25,6 +25,8 @@ package com.floreantpos.ui.views.order.modifier;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -44,6 +46,7 @@ import javax.swing.UIManager;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.ModifierGroup;
@@ -53,6 +56,7 @@ import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.model.dao.MultiplierDAO;
 import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
+import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.SelectionView;
@@ -226,8 +230,13 @@ public class ModifierView extends SelectionView {
 			TicketItemModifier ticketItemModifier = ticketItem.findTicketItemModifierFor(modifier);
 			if (ticketItemModifier != null) {
 				count++;
-				modifierButton.setText("<html><center>" + modifier.getDisplayName() + " <strong><span style='color:white;background-color:green;margin:0;"+ "'>&nbsp; " + ticketItemModifier.getItemCount() + "&nbsp; </span></strong><h4>"
-				+ (!showPrice ? "": CurrencyUtil.getCurrencySymbol()+ (ticketItemModifier.getItemCount() >= maxQuantity ? modifier.getExtraPrice() : modifier.getPrice()))+ "</h4></center></html>");
+				modifierButton.setText("<html><center>" 
+					+ modifier.getDisplayName() 
+					+ "<br/><strong><span style='color:white;background-color:green;margin:0;'>&nbsp;"
+					+ ticketItemModifier.getItemCount() 
+					+ "&nbsp;</span></strong><h4>"
+					+ (!showPrice ? "": CurrencyUtil.getCurrencySymbol()+ (ticketItemModifier.getItemCount() >= maxQuantity ? modifier.getExtraPrice() : modifier.getPrice()))
+					+ "</h4></center></html>");
 			}
 			else {
 				modifierButton.setText("<html><center>" + modifier.getDisplayName() + "<br><h4>"+ (!showPrice ? "" : CurrencyUtil.getCurrencySymbol() + (count >= maxQuantity ? modifier.getExtraPrice() : modifier.getPrice())) + "</h4></center></html>");
@@ -243,13 +252,16 @@ public class ModifierView extends SelectionView {
 	}
 
 	private class ModifierButton extends PosButton implements ActionListener {
+		
 		private MenuModifier menuModifier;
 
 		public ModifierButton(MenuModifier modifier) {
 			this.menuModifier = modifier;
 
 			setText("<html><center>" + modifier.getDisplayName() + "</center></html>"); //$NON-NLS-1$ //$NON-NLS-2$
-
+			setFont(new Font(getFont().getName(), getFont().getStyle(), TerminalConfig.getFontSizeModifierButton()));//hatran add modifier font size button
+			
+			
 			if (modifier.getButtonColor() != null) {
 				setBackground(new Color(modifier.getButtonColor()));
 			}
@@ -257,7 +269,7 @@ public class ModifierView extends SelectionView {
 			if (modifier.getTextColor() != null) {
 				setForeground(new Color(modifier.getTextColor()));
 			}
-
+			
 			setFocusable(true);
 			setFocusPainted(true);
 			addActionListener(this);

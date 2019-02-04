@@ -181,7 +181,7 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 			return;
 		}
 
-		Dimension itemButtonSize = getButtonSize();
+		//Dimension itemButtonSize = getButtonSize();
 
 		//buttonsPanel.setLayout(new MigLayout("alignx 50%, wrap " + horizontalButtonCount)); //$NON-NLS-1$
 
@@ -202,8 +202,10 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 				if (itemButton == null) {
 					continue;
 				}
+				int BUTTON_SIZE = TerminalConfig.getSizeModifierButton();//hatran set button size in MODIFIER screen 
+				itemButton.setPreferredSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
 
-				itemButton.setPreferredSize(itemButtonSize);
+//				itemButton.setPreferredSize(itemButtonSize);
 				buttonPanel.add(itemButton);
 			}
 		} catch (Exception e) {

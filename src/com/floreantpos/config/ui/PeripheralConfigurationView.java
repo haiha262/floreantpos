@@ -51,6 +51,8 @@ public class PeripheralConfigurationView extends ConfigurationView {
 
 	private JCheckBox chkCallerIdEnable;
 	private JComboBox cbCallerIds;
+	private JTextField tfmodifierButtonSize;
+	private JTextField tfmodifierFontSize;
 
 	public PeripheralConfigurationView() {
 		initComponents();
@@ -219,6 +221,20 @@ public class PeripheralConfigurationView extends ConfigurationView {
 			contentPanel.add(callerIdPanel, "grow,wrap"); //$NON-NLS-1$
 		}
 
+		
+		//hatran add modifier screen config
+		JPanel modifierCustomisePanel = new JPanel(new MigLayout());
+		modifierCustomisePanel.setBorder(BorderFactory.createTitledBorder("Modifier Screen"));
+		tfmodifierButtonSize = new JTextField(20);
+		tfmodifierFontSize = new JTextField(20);
+		
+		modifierCustomisePanel.add(new JLabel("Button Size")); //$NON-NLS-1$
+		modifierCustomisePanel.add(tfmodifierButtonSize, "wrap"); //$NON-NLS-1$
+		modifierCustomisePanel.add(new JLabel("Font Button Size")); //$NON-NLS-1$
+		modifierCustomisePanel.add(tfmodifierFontSize, "wrap"); //$NON-NLS-1$
+		contentPanel.add(modifierCustomisePanel, "grow,wrap"); //$NON-NLS-1$
+		//-----------------------------------
+		
 		JScrollPane scrollPane = new JScrollPane(contentPanel);
 		scrollPane.setBorder(null);
 		add(scrollPane);
@@ -249,6 +265,9 @@ public class PeripheralConfigurationView extends ConfigurationView {
 		TerminalConfig.setCallerIdDevice(cbCallerIds.getSelectedItem().toString());
 		TerminalConfig.setEnabledCallerIdDevice(chkCallerIdEnable.isSelected());
 
+		TerminalConfig.setSizeModifierButton(tfmodifierButtonSize.getText());
+		TerminalConfig.setFontSizeModifierButton(tfmodifierFontSize.getText());
+		
 		TerminalDAO terminalDAO = TerminalDAO.getInstance();
 		Terminal terminal = terminalDAO.get(TerminalConfig.getTerminalId());
 		if (terminal == null) {
@@ -261,6 +280,7 @@ public class PeripheralConfigurationView extends ConfigurationView {
 		terminal.setHasCashDrawer(chkHasCashDrawer.isSelected());
 		terminal.setOpeningBalance(tfDrawerInitialBalance.getDouble());
 
+		
 		terminalDAO.saveOrUpdate(terminal);
 		return true;
 	}
@@ -286,6 +306,9 @@ public class PeripheralConfigurationView extends ConfigurationView {
 		cbCallerIds.setSelectedItem(TerminalConfig.getCallerIdDevice());
 		chkCallerIdEnable.setSelected(TerminalConfig.isEanbledCallerIdDevice());
 
+		tfmodifierButtonSize.setText(""+TerminalConfig.getSizeModifierButton());
+		tfmodifierFontSize.setText(""+TerminalConfig.getFontSizeModifierButton());
+		
 		doEnableDisableDrawerPull();
 
 		setInitialized(true);

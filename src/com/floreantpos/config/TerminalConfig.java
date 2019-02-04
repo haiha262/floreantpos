@@ -100,6 +100,9 @@ public class TerminalConfig {
 
 	private static final String KDS_TICKETS_PER_PAGE = "kds.ticket.per_page";
 
+	private static final String SIZE_MODIFIER_BUTTON = "size_modifer_button";
+	private static final String FONT_SIZE_MODIFIER_BUTTON = "font_size_modifer_button";
+
 	private static PropertiesConfiguration config = AppConfig.getConfig();
 
 	public static int getTerminalId() {
@@ -549,5 +552,23 @@ public class TerminalConfig {
 
 	public static int getKDSTicketsPerPage() {
 		return config.getInt(KDS_TICKETS_PER_PAGE, 4);
+	}
+	
+	public static int getSizeModifierButton()
+	{
+		return config.getInt(SIZE_MODIFIER_BUTTON, 100);
+	}
+	public static void setSizeModifierButton(String value)
+	{
+		config.setProperty(SIZE_MODIFIER_BUTTON, value);
+	}
+	
+	public static int getFontSizeModifierButton()
+	{
+		return config.getInt(FONT_SIZE_MODIFIER_BUTTON, 16);
+	}
+	public static void setFontSizeModifierButton(String value)
+	{
+		config.setProperty(FONT_SIZE_MODIFIER_BUTTON, value);
 	}
 }
