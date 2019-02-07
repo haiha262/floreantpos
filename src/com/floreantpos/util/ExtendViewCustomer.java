@@ -10,6 +10,7 @@ import java.awt.GridLayout;
 import java.awt.List;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 import javax.swing.JPanel;
@@ -54,6 +55,10 @@ public class ExtendViewCustomer  extends com.floreantpos.swing.TransparentPanel 
 	private static ExtendViewCustomer instance;
 	private static JTextArea txtlistItem;
 	private static JTextArea txtTotal;
+	
+	final static int MAX_ORDERS = 10;    // maximum number of purchases
+	private LinkedList<String>  listReadyOrder;
+	private int curPosition;
 	private ExtendViewCustomer() {
 		setLayout(new BorderLayout(5, 5));
 
@@ -68,6 +73,8 @@ public class ExtendViewCustomer  extends com.floreantpos.swing.TransparentPanel 
 
 	}
 	private void initView() {
+		listReadyOrder = new LinkedList();
+		curPosition = 0;
 //		setOpaque(true);
 //		setBackground(Color.WHITE);
 		
@@ -125,7 +132,7 @@ public class ExtendViewCustomer  extends com.floreantpos.swing.TransparentPanel 
 		JPanel contentPanel = new JPanel();
 		contentPanel.setLayout(new MigLayout("", "[grow]", "[][]"));
 		
-		JLabel lbOrder = new JLabel("Order # ");
+		JLabel lbOrder = new JLabel("Ready to pick-up: Order # ");
 		lbOrder.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 		lbOrder.setFont(new Font("Serif", Font.PLAIN, 60));
 		
@@ -142,34 +149,45 @@ public class ExtendViewCustomer  extends com.floreantpos.swing.TransparentPanel 
 	}
 	public void showText(String text,boolean isOrder)
 	{
+		if (isOrder)
+		{
+			if (listReadyOrder.size()> MAX_ORDERS)
+			{
+				listReadyOrder.removeFirst();
+			}
+			listReadyOrder.add(text);
+			text = ""+ listReadyOrder;
+		}
 		centerPanel.removeAll();
 		JPanel contentPanel = new JPanel();
 		contentPanel.setLayout(new MigLayout("", "[grow]", "[][]"));
 		
-		JLabel lbOrder = new JLabel("Order # ");
+		JLabel lbOrder = new JLabel("Ready to pick-up: Order # ");
 		lbOrder.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-		lbOrder.setFont(new Font("Serif", Font.PLAIN, 60));
+		lbOrder.setFont(new Font("SansSerif", Font.BOLD, 60));
 		
 		JLabel lblText = new javax.swing.JLabel();
 		lblText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-		lblText.setText("<html>" + text.replaceAll("<","&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br/>") + "</html>");
-		int fontSize = Integer.parseInt(TerminalConfig.getCustomerDisplayFontSize());
-		lblText.setFont(new Font("Serif", Font.PLAIN, fontSize));
+		lblText.setText("<html>" + text.replaceAll("<","&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br/>").replace("[", "").replace("]", "") + "</html>");
+		
+		
 		
 		if (isOrder)
 		{
-			if(!text.toLowerCase().contains("welcome"))
-			{
-				contentPanel.add(lbOrder,"align 50% 50%");
 			
-			}
+			contentPanel.add(lbOrder,"align 50% 50%");
+			int fontSize = Integer.parseInt(TerminalConfig.getCustomerDisplayFontSize());
+			lblText.setFont(new Font("SansSerif", Font.BOLD, fontSize));
+			contentPanel.add(lblText, "align 50% 50%, newline");//hatran head menu
 		}
 		else
 		{
-			lblText.setFont(new Font("Serif", Font.PLAIN, 22));
+			lblText.setFont(new Font("SansSerif", Font.PLAIN, 100));
+			contentPanel.add(lblText, "align 50% 50%, newline");//hatran head menu
+			contentPanel.add(lblRestaurantName, "align 50% 50%, newline");//hatran head menu
 		}
 		
-		contentPanel.add(lblText, "align 50% 50%, newline");//hatran head menu 
+		 
 		centerPanel.add(contentPanel,BorderLayout.CENTER);//hatran head menu 
 	
 		

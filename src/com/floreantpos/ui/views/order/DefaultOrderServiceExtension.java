@@ -69,7 +69,7 @@ public class DefaultOrderServiceExtension extends OrderServiceExtension {
 		
 		if (TerminalConfig.isActiveCustomerDisplay()) {//hatran Customer display Welcome when create new ticket
 			DrawerUtil.setCustomerDisplayMessage(TerminalConfig.getCustomerDisplayPort(), "Welcome");
-			Application.getExtendCustomWindow().showText("Welcome",true);
+			Application.getExtendCustomWindow().showText("Welcome",false);
 			
 		}
 
