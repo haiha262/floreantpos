@@ -256,6 +256,12 @@ public class HeaderPanel extends JPanel {
 				return;
 			}
 
+			String viewName = RootView.getInstance().getCurrentViewName();
+			if(viewName.compareTo("KD")==0 && Application.getCurrentUser().getType().getName().compareTo("KDS")==0)
+			{
+				autoLogoffTimer.stop();
+				return;
+			}
 			if (!TerminalConfig.isAutoLogoffEnable()) {
 				return;
 			}
