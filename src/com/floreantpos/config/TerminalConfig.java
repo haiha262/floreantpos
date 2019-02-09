@@ -581,12 +581,12 @@ public class TerminalConfig {
 		config.setProperty("FONT_SIZE_CUS_FORM", value);
 	}
 
-	public static boolean isUsingTimeBtn() {
+	public static boolean isUsingTimeList() {
 		// TODO Auto-generated method stub
-		return config.getBoolean("USE_TIME_BUTTONS", true);
+		return config.getBoolean("use_time_list_in_phone_order", false);
 	}
 	
-	public static void setUsingTimeBtn(boolean use) { //use : TRUE Using TIME BUTTONS | FALSE : Using Timer List
-		config.setProperty("USE_TIME_BUTTONS", use);
+	public static void setUsingTimeList(boolean use) { //use : TRUE Using TIME BUTTONS | FALSE : Using Timer List
+		config.setProperty("use_time_list_in_phone_order", use);
 	}
 }

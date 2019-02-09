@@ -25,6 +25,7 @@ import java.awt.FlowLayout;
 import java.awt.FocusTraversalPolicy;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -66,6 +67,7 @@ import com.floreantpos.model.util.IllegalModelStateException;
 import com.floreantpos.model.util.ZipCodeUtil;
 import com.floreantpos.swing.FixedLengthDocument;
 import com.floreantpos.swing.FixedLengthTextField;
+import com.floreantpos.swing.POSButtonUI;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.QwertyKeyPad;
@@ -95,7 +97,7 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 
 	public boolean isKeypad;
 
-	private boolean useTimeList = TerminalConfig.isUsingTimeBtn();
+	private boolean useTimeList = TerminalConfig.isUsingTimeList();
 	private JComboBox<Date> timeList;
 
 	private String timePickUpNext;
@@ -271,9 +273,10 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 	
 	private JPanel addButtonsToPanel(String[] buttonText) {
 		btnGroup = new ButtonGroup();
-		int BUTTON_SIZE_WIDTH = 100;
-		int BUTTON_SIZE_HEIGHT = 80;
-		
+		int BUTTON_SIZE_WIDTH = 120;
+		int BUTTON_SIZE_HEIGHT = 60;
+		Insets margin = new Insets(1, 5, 1, 5);
+		POSButtonUI ui = new POSButtonUI();
 		JPanel panel = new JPanel(new GridLayout(0, buttonText.length, 2, 2));
 		for (int i = 0; i < buttonText.length; i++) {
 			String s = buttonText[i];
@@ -323,6 +326,8 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 			
 			button.setFont(font);
 			button.setFocusable(false);
+			button.setMargin(margin);
+			button.setUI(ui);
 			btnGroup.add(button);
 			panel.add(button);
 

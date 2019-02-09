@@ -74,7 +74,7 @@ public class Ticket extends BaseTicket {
 
 	private OrderType orderType;
 
-	private boolean useTimeList = TerminalConfig.isUsingTimeBtn();
+	private boolean useTimeList = TerminalConfig.isUsingTimeList();
 	/* [CONSTRUCTOR MARKER BEGIN] */
 	public Ticket () {
 		super();

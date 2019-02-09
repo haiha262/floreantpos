@@ -50,6 +50,7 @@ public class POSButtonUI extends PlasticButtonUI {
 				if (is3D(b)) {
 					Color color1 = c.getBackground();// UIManager.getColor("control");
 					Color color2 = color1.brighter();
+					Color color3 = color1.darker();
 					
 					int x = 0;
 					int y = 0;
@@ -57,6 +58,10 @@ public class POSButtonUI extends PlasticButtonUI {
 					int height = c.getHeight();
 					
 					GradientPaint gp = new GradientPaint(x, y, color2, width - 2, height - 2 , color1, true);
+					if(b.isSelected())
+					{
+						gp = new GradientPaint(x, y, color3, width - 2, height - 2 , color3, true);
+					}
 					Graphics2D g2 = (Graphics2D) g;
 					g2.setPaint(gp);
 					g2.fillRect(x, y, width, height);

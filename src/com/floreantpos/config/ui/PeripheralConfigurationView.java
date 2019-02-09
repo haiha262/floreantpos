@@ -246,7 +246,7 @@ public class PeripheralConfigurationView extends ConfigurationView {
 		customerFormPanel.add(new JLabel("Font Size")); //$NON-NLS-1$
 		customerFormPanel.add(tfcusFrmFontSize, "wrap"); //$NON-NLS-1$
 		
-		chkTimeBtnOrTimeList = new JCheckBox("Using time button or list timers"); //$NON-NLS-1$
+		chkTimeBtnOrTimeList = new JCheckBox("Using time list for phone order"); //$NON-NLS-1$
 		customerFormPanel.add(chkTimeBtnOrTimeList, "wrap"); //$NON-NLS-1$
 		contentPanel.add(customerFormPanel, "grow,wrap"); //$NON-NLS-1$
 		//-----------------------------------
@@ -285,7 +285,7 @@ public class PeripheralConfigurationView extends ConfigurationView {
 		TerminalConfig.setFontSizeModifierButton(tfmodifierFontSize.getText());
 
 		TerminalConfig.setFontSizeCustomerForm(tfcusFrmFontSize.getText());
-		TerminalConfig.setUsingTimeBtn(chkTimeBtnOrTimeList.isSelected());
+		TerminalConfig.setUsingTimeList(chkTimeBtnOrTimeList.isSelected());
 		
 		TerminalDAO terminalDAO = TerminalDAO.getInstance();
 		Terminal terminal = terminalDAO.get(TerminalConfig.getTerminalId());
@@ -328,7 +328,7 @@ public class PeripheralConfigurationView extends ConfigurationView {
 		tfmodifierButtonSize.setText(""+TerminalConfig.getSizeModifierButton());
 		tfmodifierFontSize.setText(""+TerminalConfig.getFontSizeModifierButton());
 		tfcusFrmFontSize.setText(""+TerminalConfig.getFontSizeCustomerForm());
-		chkTimeBtnOrTimeList.setSelected(TerminalConfig.isUsingTimeBtn());
+		chkTimeBtnOrTimeList.setSelected(TerminalConfig.isUsingTimeList());
 
 		doEnableDisableDrawerPull();
 
