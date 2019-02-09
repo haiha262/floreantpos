@@ -25,7 +25,10 @@ package com.floreantpos.ui.views.order;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -33,11 +36,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -79,6 +84,7 @@ import com.floreantpos.model.dao.ShopTableStatusDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.swing.OrderTypeLoginButton;
+import com.floreantpos.swing.POSButtonUI;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.TransparentPanel;
@@ -150,6 +156,7 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 	private JTextField tfGratuity;
 	private JTextField tfTotal;
 	private PaymentView paymentView;
+	private ButtonGroup btnGroup;
 
 	/** Creates new form OrderView */
 	private OrderView() {
@@ -442,30 +449,8 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 				doShowDeliveryDialog();
 			}
 		});
-//hatran add :auto add the list of orderType button
-		List<com.floreantpos.model.OrderType> orderTypes = Application.getInstance().getOrderTypes();
 
-		for (com.floreantpos.model.OrderType orderType : orderTypes) {
-			if (!orderType.isEnabled() || orderType.getName().compareTo("TAKE ORDER")==0) {
-				continue;
-			}
-			com.floreantpos.swing.PosButton btn = new PosButton(orderType.getName());
-			
-			btn.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					
-					String commandName = e.getActionCommand();
-					if (commandName.contains("PHONE ORDER"))
-						doAddEditCustomer();
-					doUpdateOrderType(commandName);
-					
-					
-				}
-			});
-			actionButtonPanel.add(btn); //$NON-NLS-1$
-
-		}
+		addGroupOrderTypeButtons(actionButtonPanel);
 		//actionButtonPanel.add(btnOrderType);
 		//actionButtonPanel.add(btnCustomer);
 		
@@ -486,6 +471,50 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 		btnDeliveryInfo.setVisible(false);
 	}
 
+	private void addGroupOrderTypeButtons(JPanel actionButtonPanel)
+	{
+		//hatran add :auto add the list of orderType button
+		List<com.floreantpos.model.OrderType> orderTypes = Application.getInstance().getOrderTypes();
+		 Insets margin = new Insets(1, 5, 1, 5);
+
+		 POSButtonUI ui = new POSButtonUI();
+//		JPanel panelBtn = new JPanel(new GridLayout(0, orderTypes.size(), 2, 2));
+		 btnGroup = new ButtonGroup();
+		int BUTTON_SIZE_WIDTH = 80;
+		int BUTTON_SIZE_HEIGHT = 50;
+		for (com.floreantpos.model.OrderType orderType : orderTypes) {
+			if (!orderType.isEnabled() || orderType.getName().compareTo("TAKE ORDER")==0) {
+				continue;
+			}
+			JToggleButton button = new JToggleButton(orderType.getName());
+//			com.floreantpos.swing.PosButton button = new PosButton(orderType.getName());
+			button.setPreferredSize(new Dimension(BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT));
+
+			button.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					
+					String commandName = e.getActionCommand();
+					if (commandName.contains("PHONE ORDER"))
+					{
+						commandName = doAddEditCustomer()?commandName:"TAKE ORDER";
+						
+					}
+					doUpdateOrderType(commandName);
+					
+				}
+			});
+			//actionButtonPanel.add(btn); //$NON-NLS-1$
+			button.setFocusable(false);
+
+			button.setFocusPainted(false);
+			button.setMargin(margin);
+			button.setUI(ui);
+			btnGroup.add(button);
+			actionButtonPanel.add(button);
+		}
+		//return panelBtn;
+	}
 	private JPanel createTicketSummeryPanel() {
 		JLabel lblSubtotal = new javax.swing.JLabel();
 		lblSubtotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -754,7 +783,7 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 			ticketView.addTicketItem(ticketItem);
 		}
 	}// GEN-LAST:event_doInsertMisc
-//hatran add doUpdateOrderType
+	//hatran add doUpdateOrderType
 	protected void doUpdateOrderType(String orderType) {
 		if (currentTicket != null) {
 //			OrderType orderType = currentTicket.getOrderType();
@@ -763,7 +792,7 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 			updateView();
 		}
 	}
-	protected void doAddEditCustomer() {
+	protected boolean doAddEditCustomer() {
 		
 		boolean isUseNewCustomer = true;
 		 if (isUseNewCustomer){ //hatran : add customer into model
@@ -781,29 +810,31 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 			Customer selectedCustomer = new Customer();
 			if (!dialog.isCanceled()) {
 				selectedCustomer = (Customer) form.getBean();
+				currentTicket.setCustomer(selectedCustomer); // hatran : set customer after choice customer
+			}
+			else
+			{
+				btnGroup.clearSelection();
+				return false;
 			}
 			
-			if (!dialog.isCanceled()) {
-				currentTicket.setCustomer(selectedCustomer); // hatran : set customer after choice customer
-				btnCustomer.setText("<html><body><center>PHONE<br>\"" + selectedCustomer.getName() + "\"</center></body></html>");
-
-			}
 		}
-		 else
-		 {
+		else
+		{
 			CustomerSelectorDialog dialog = CustomerSelectorFactory.createCustomerSelectorDialog(currentTicket.getOrderType());//hatran create customer dialog
 			dialog.setCreateNewTicket(false);
 			if (currentTicket != null) {
 				dialog.setTicket(currentTicket);
 			}
 			dialog.openUndecoratedFullScreen();
-	
+			
 			if (!dialog.isCanceled()) {
 				currentTicket.setCustomer(dialog.getSelectedCustomer()); 
 				btnCustomer.setText("<html><body><center>CUSTOMER<br>\"" + dialog.getSelectedCustomer().getName() + "\"</center></body></html>");
-	
+			
 			}
-		 }
+		}
+		return true;
 	}
 
 	protected void addDiscount() {
