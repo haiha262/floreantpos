@@ -253,6 +253,11 @@ public class KitchenTicket extends BaseKitchenTicket {
 					if (StringUtils.isNotEmpty(ticket.getProperty(Ticket.CUSTOMER_TIME_PICKUP))) {
 						kitchenTicket.setCustomerTimePickUp(ticket.getProperty(Ticket.CUSTOMER_TIME_PICKUP));
 					}
+					else if (StringUtils.isNotEmpty(ticket.getProperty(Ticket.CUSTOMER_TIME_PICKUP_NEXT))) {
+					
+						kitchenTicket.setCustomerTimePickUp(ticket.getProperty(Ticket.CUSTOMER_TIME_PICKUP_NEXT) + "'");
+
+					}
 					if (StringUtils.isNotEmpty(ticket.getProperty(Ticket.CUSTOMER_MOBILE))) {
 						kitchenTicket.setCustomerPhoneNumber(ticket.getProperty(Ticket.CUSTOMER_MOBILE));
 					}

@@ -1,6 +1,7 @@
 package com.floreantpos.config.ui;
 
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
@@ -53,6 +54,8 @@ public class PeripheralConfigurationView extends ConfigurationView {
 	private JComboBox cbCallerIds;
 	private JTextField tfmodifierButtonSize;
 	private JTextField tfmodifierFontSize;
+	private JTextField tfcusFrmFontSize;
+	private JCheckBox chkTimeBtnOrTimeList;
 
 	public PeripheralConfigurationView() {
 		initComponents();
@@ -223,7 +226,7 @@ public class PeripheralConfigurationView extends ConfigurationView {
 
 		
 		//hatran add modifier screen config
-		JPanel modifierCustomisePanel = new JPanel(new MigLayout());
+		JPanel modifierCustomisePanel = new JPanel(new GridLayout(2,2,5,5));
 		modifierCustomisePanel.setBorder(BorderFactory.createTitledBorder("Modifier Screen"));
 		tfmodifierButtonSize = new JTextField(20);
 		tfmodifierFontSize = new JTextField(20);
@@ -233,6 +236,19 @@ public class PeripheralConfigurationView extends ConfigurationView {
 		modifierCustomisePanel.add(new JLabel("Font Button Size")); //$NON-NLS-1$
 		modifierCustomisePanel.add(tfmodifierFontSize, "wrap"); //$NON-NLS-1$
 		contentPanel.add(modifierCustomisePanel, "grow,wrap"); //$NON-NLS-1$
+		//-----------------------------------
+		
+		//hatran add modifier screen config
+		JPanel customerFormPanel = new JPanel(new GridLayout(2,2,5,5));
+		customerFormPanel.setBorder(BorderFactory.createTitledBorder("Customer Form Screen"));
+		tfcusFrmFontSize = new JTextField(20);
+		
+		customerFormPanel.add(new JLabel("Font Size")); //$NON-NLS-1$
+		customerFormPanel.add(tfcusFrmFontSize, "wrap"); //$NON-NLS-1$
+		
+		chkTimeBtnOrTimeList = new JCheckBox("Using time button or list timers"); //$NON-NLS-1$
+		customerFormPanel.add(chkTimeBtnOrTimeList, "wrap"); //$NON-NLS-1$
+		contentPanel.add(customerFormPanel, "grow,wrap"); //$NON-NLS-1$
 		//-----------------------------------
 		
 		JScrollPane scrollPane = new JScrollPane(contentPanel);
@@ -267,6 +283,9 @@ public class PeripheralConfigurationView extends ConfigurationView {
 
 		TerminalConfig.setSizeModifierButton(tfmodifierButtonSize.getText());
 		TerminalConfig.setFontSizeModifierButton(tfmodifierFontSize.getText());
+
+		TerminalConfig.setFontSizeCustomerForm(tfcusFrmFontSize.getText());
+		TerminalConfig.setUsingTimeBtn(chkTimeBtnOrTimeList.isSelected());
 		
 		TerminalDAO terminalDAO = TerminalDAO.getInstance();
 		Terminal terminal = terminalDAO.get(TerminalConfig.getTerminalId());
@@ -308,7 +327,9 @@ public class PeripheralConfigurationView extends ConfigurationView {
 
 		tfmodifierButtonSize.setText(""+TerminalConfig.getSizeModifierButton());
 		tfmodifierFontSize.setText(""+TerminalConfig.getFontSizeModifierButton());
-		
+		tfcusFrmFontSize.setText(""+TerminalConfig.getFontSizeCustomerForm());
+		chkTimeBtnOrTimeList.setSelected(TerminalConfig.isUsingTimeBtn());
+
 		doEnableDisableDrawerPull();
 
 		setInitialized(true);

@@ -571,4 +571,22 @@ public class TerminalConfig {
 	{
 		config.setProperty(FONT_SIZE_MODIFIER_BUTTON, value);
 	}
+	
+	public static int getFontSizeCustomerForm()
+	{
+		return config.getInt("FONT_SIZE_CUS_FORM", 22);
+	}
+	public static void setFontSizeCustomerForm(String value)
+	{
+		config.setProperty("FONT_SIZE_CUS_FORM", value);
+	}
+
+	public static boolean isUsingTimeBtn() {
+		// TODO Auto-generated method stub
+		return config.getBoolean("USE_TIME_BUTTONS", true);
+	}
+	
+	public static void setUsingTimeBtn(boolean use) { //use : TRUE Using TIME BUTTONS | FALSE : Using Timer List
+		config.setProperty("USE_TIME_BUTTONS", use);
+	}
 }

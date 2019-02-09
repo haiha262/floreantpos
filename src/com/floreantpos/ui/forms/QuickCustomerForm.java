@@ -21,7 +21,11 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.FocusTraversalPolicy;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -34,6 +38,7 @@ import java.util.TimeZone;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComboBox;
@@ -44,6 +49,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JToggleButton;
+import javax.swing.text.JTextComponent;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -52,16 +59,20 @@ import org.hibernate.StaleObjectStateException;
 
 import com.floreantpos.Messages;
 import com.floreantpos.bo.ui.BOMessageDialog;
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.model.Customer;
 import com.floreantpos.model.dao.CustomerDAO;
 import com.floreantpos.model.util.IllegalModelStateException;
 import com.floreantpos.model.util.ZipCodeUtil;
 import com.floreantpos.swing.FixedLengthDocument;
 import com.floreantpos.swing.FixedLengthTextField;
+import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.QwertyKeyPad;
+import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.ui.dialog.DateTimePicker;
+import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.POSUtil;
 
@@ -78,10 +89,19 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 	private JTextField tfState;
 	private JTextField tfCellPhone;
 	private QwertyKeyPad qwertyKeyPad;
-	private JComboBox<Date> timeList;
+	private Font font;
+	private JToggleButton lastButton;
+	private String[] timeListButtons = { "10-20'", "20'-30'", "30'-40'", "ORTHER" }; 	
 
 	public boolean isKeypad;
 
+	private boolean useTimeList = TerminalConfig.isUsingTimeBtn();
+	private JComboBox<Date> timeList;
+
+	private String timePickUpNext;
+
+	private ButtonGroup btnGroup;
+	
 	public QuickCustomerForm() {
 		createCustomerForm();
 	}
@@ -113,20 +133,26 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 		JLabel lblState = new JLabel(Messages.getString("QuickCustomerForm.0")); //$NON-NLS-1$
 		tfState = new JTextField(30);
 
+
+		font = new Font(getFont().getName(), getFont().getStyle(), TerminalConfig.getFontSizeCustomerForm());
 		// Set-Add Name
-		JLabel lblName = new JLabel("Name"); //$NON-NLS-1$
+		JLabel lblName = new JLabel("Name:"); //$NON-NLS-1$
 
 		inputPanel.add(lblName, "cell 0 1,alignx right"); //$NON-NLS-1$
 		tfName = new FixedLengthTextField();
 		tfName.setLength(120);
-		inputPanel.add(tfName, "cell 1 1"); //$NON-NLS-1$
+		tfName.setFont(font);
+
+		inputPanel.add(tfName, "cell 1 1 3 1"); //$NON-NLS-1$
 
 		// Set-Add Phone
-		JLabel lblCellPhone = new JLabel(Messages.getString("CustomerForm.32")); //$NON-NLS-1$
-		inputPanel.add(lblCellPhone, "cell 0 3,alignx right"); //$NON-NLS-1$
+		JLabel lblCellPhone = new JLabel(Messages.getString("CustomerForm.32")+":"); //$NON-NLS-1$
+		inputPanel.add(lblCellPhone, "cell 0 3,alignx left"); //$NON-NLS-1$
 
 		tfCellPhone = new JTextField(30);
-		inputPanel.add(tfCellPhone, "cell 1 3"); //$NON-NLS-1$
+		tfCellPhone.setFont(font);
+
+		inputPanel.add(tfCellPhone, "cell 1 3 3 1"); //$NON-NLS-1$
 		// setPreferredSize(PosUIManager.getSize(800, 350));
 
 //		JLabel lblFirstName = new JLabel(Messages.getString("CustomerForm.3")); //$NON-NLS-1$
@@ -151,8 +177,8 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 //		inputPanel.add(lblState, "cell 0 6,right"); //$NON-NLS-1$
 //		inputPanel.add(tfState, "cell 1 6"); //$NON-NLS-1$
 
-		inputPanel.add(lblAddress, "cell 2 1 1 6,right"); //$NON-NLS-1$
-		inputPanel.add(scrlDescription, "grow, cell 3 1 1 6"); //$NON-NLS-1$
+//		inputPanel.add(lblAddress, "cell 2 1 1 6,right"); //$NON-NLS-1$
+//		inputPanel.add(scrlDescription, "grow, cell 3 1 1 6"); //$NON-NLS-1$
 
 		qwertyKeyPad = new QwertyKeyPad();
 
@@ -160,58 +186,58 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 
 		// hatran add Pickup Time
 		JPanel inputPanelPickupTime = new JPanel();
-		inputPanelPickupTime.setLayout(new MigLayout("insets 10 10 10 10", "[][][][]", "[][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		inputPanelPickupTime.setBorder(BorderFactory.createTitledBorder("Pick Up Time"));
 
-		// Set-Add Phone
-		
-		
-		
-		JLabel lblPickUpTime = new JLabel("Time: "); //$NON-NLS-1$
-		inputPanelPickupTime.add(lblPickUpTime, "cell 0 0,alignx right"); //$NON-NLS-1$
-
-		Calendar now = Calendar.getInstance();
-		now.setTimeZone(TimeZone.getTimeZone("Australia/Tasmania"));
-		now.set(Calendar.SECOND, 0);
-		now.set(Calendar.MILLISECOND, 0);
-		 int modulo = now.get(Calendar.MINUTE) % 5;
-         if(modulo > 0) {
-
-        	 now.add(Calendar.MINUTE, -modulo);
-         }
-		
-		Calendar end = Calendar.getInstance();
-		end.set(Calendar.HOUR_OF_DAY, 23);
-		end.set(Calendar.MINUTE, 59);
-		DefaultComboBoxModel<Date> model = new DefaultComboBoxModel<>();
-		do {
-			model.addElement(now.getTime());
-
-			now.add(Calendar.MINUTE, 5);
-		} while (now.getTime().before(end.getTime()));
-
-		timeList = new JComboBox<>(model);
-		timeList.setRenderer(new DateFormattedListCellRenderer(new SimpleDateFormat("HH:mm")));
-		
-		final Dimension size = getPreferredSize();
-		size.height = timeList.getHeight();
-		size.width = getPreferredSize().width/2;
-		timeList.setPreferredSize(size);
-		timeList.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JComboBox timeList = (JComboBox) e.getSource();
-				Date selectedItem = (Date) timeList.getSelectedItem();
-				POSMessageDialog.showMessage(""+TIME_FORMAT.format(selectedItem));
-			}
-		});
-		inputPanelPickupTime.add(timeList, "cell 1 0"); //$NON-NLS-1$
-		
-		//DateTimePicker timePicker = new DateTimePicker(1);
-		//inputPanelPickupTime.add(timePicker, "cell 4 0 "); //$NON-NLS-1$
-
-		
+		if(useTimeList )
+		{
+			inputPanelPickupTime.setLayout(new MigLayout("insets 10 10 10 10", "[][][][]", "[][]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	
+			JLabel lblPickUpTime = new JLabel("Time: "); //$NON-NLS-1$
+			inputPanelPickupTime.add(lblPickUpTime, "cell 0 0,alignx right"); //$NON-NLS-1$
+	
+			Calendar now = Calendar.getInstance();
+			now.setTimeZone(TimeZone.getTimeZone("Australia/Tasmania"));
+			now.set(Calendar.SECOND, 0);
+			now.set(Calendar.MILLISECOND, 0);
+			 int modulo = now.get(Calendar.MINUTE) % 5;
+	         if(modulo > 0) {
+	
+	        	 now.add(Calendar.MINUTE, -modulo);
+	         }
+			
+			Calendar end = Calendar.getInstance();
+			end.set(Calendar.HOUR_OF_DAY, 23);
+			end.set(Calendar.MINUTE, 59);
+			DefaultComboBoxModel<Date> model = new DefaultComboBoxModel<>();
+			do {
+				model.addElement(now.getTime());
+	
+				now.add(Calendar.MINUTE, 5);
+			} while (now.getTime().before(end.getTime()));
+	
+			timeList = new JComboBox<>(model);
+			timeList.setRenderer(new DateFormattedListCellRenderer(new SimpleDateFormat("HH:mm")));
+			
+			final Dimension size = getPreferredSize();
+			size.height = timeList.getHeight();
+			size.width = getPreferredSize().width/2;
+			timeList.setPreferredSize(size);
+			timeList.setFont(font);
+			timeList.addActionListener(new ActionListener() {
+	
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					JComboBox timeList = (JComboBox) e.getSource();
+					Date selectedItem = (Date) timeList.getSelectedItem();
+					POSMessageDialog.showMessage(""+TIME_FORMAT.format(selectedItem));
+				}
+			});
+			inputPanelPickupTime.add(timeList, "cell 1 0"); //$NON-NLS-1$
+		}
+		else
+		{
+			inputPanelPickupTime.add(addButtonsToPanel (timeListButtons));
+		}
 		add(inputPanelPickupTime, BorderLayout.CENTER);
 
 		if (isKeypad) {
@@ -242,7 +268,69 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 		enableCustomerFields(false);
 		callOrderController();
 	}
+	
+	private JPanel addButtonsToPanel(String[] buttonText) {
+		btnGroup = new ButtonGroup();
+		int BUTTON_SIZE_WIDTH = 100;
+		int BUTTON_SIZE_HEIGHT = 80;
+		
+		JPanel panel = new JPanel(new GridLayout(0, buttonText.length, 2, 2));
+		for (int i = 0; i < buttonText.length; i++) {
+			String s = buttonText[i];
+			JToggleButton button = new JToggleButton();
+			if(i==buttonText.length-1)
+				lastButton = button;
+			button.setText(s);
+//			button.setMinimumSize(size);
+			button.setPreferredSize(new Dimension(BUTTON_SIZE_WIDTH, BUTTON_SIZE_HEIGHT));
+			button.addActionListener( new ActionListener() {
 
+				@Override
+				public void actionPerformed(ActionEvent e) {
+
+					String s = e.getActionCommand();
+					JToggleButton thisBtn = (JToggleButton)e.getSource();
+					//POSMessageDialog.showMessage("Pick up next: " + s);
+					
+					timePickUpNext = s;
+					if(s.compareTo(timeListButtons[timeListButtons.length-1])==0)
+					{
+						 
+						int newValue = NumberSelectionDialog2.takeIntInput( "Enter Minutes");
+						if (newValue > 0) {
+							
+							 timePickUpNext=newValue+"";
+							 
+							 thisBtn.setText(newValue+"'");
+						}
+						else
+						{
+							
+							btnGroup.clearSelection();
+							timePickUpNext = "";
+						}
+					}
+					else
+					{
+						lastButton.setText("ORTHER");
+					}
+					timePickUpNext = timePickUpNext.replace("'", "");
+					
+					
+
+				}
+			});
+			
+			button.setFont(font);
+			button.setFocusable(false);
+			btnGroup.add(button);
+			panel.add(button);
+
+		}
+		
+		return panel;
+	}
+	
 	// hatran //add
 	public class DateFormattedListCellRenderer extends DefaultListCellRenderer {
 
@@ -365,26 +453,38 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 
 	@Override
 	protected boolean updateModel() throws IllegalModelStateException {
-		String mobile = tfCellPhone.getText();
 		String name = tfName.getText();
 		String fullName[] = name.split(" ");
 		String fname = fullName[0];
 		String lastName = name.substring(fname.length(), name.length());
 		
-		Date selectedItem = (Date) timeList.getSelectedItem();
-
 		//hatran rem: set the customer can empty
-//		if (StringUtils.isEmpty(mobile) && StringUtils.isEmpty(name)) {
+//		if (StringUtils.isEmpty(tfCellPhone.getText()) && StringUtils.isEmpty(name)) {
 //			POSMessageDialog.showError(null, Messages.getString("QuickCustomerForm.1")); //$NON-NLS-1$
 //			return false;
 //		}
-		//hatran check current time > set time	
-		if(Calendar.getInstance().getTime().after(selectedItem))
-		{		
-			POSMessageDialog.showError(null, Messages.getString("QuickCustomerForm.2")); //$NON-NLS-1$
-			return false;
-		}
+		Date selectedItem = null ;
 		
+		if(useTimeList)
+		{
+			selectedItem = (Date) timeList.getSelectedItem();
+			
+			
+			//hatran check current time > set time	
+			if(Calendar.getInstance().getTime().after(selectedItem))
+			{		
+				POSMessageDialog.showError(null, Messages.getString("QuickCustomerForm.2")); //$NON-NLS-1$
+				return false;
+			}
+		}
+		else
+		{
+			if (timePickUpNext == "")
+			{
+				POSMessageDialog.showError(null, Messages.getString("QuickCustomerForm.2")); //$NON-NLS-1$
+				return false;
+			}
+		}
 		
 		Customer customer = (Customer) getBean();
 
@@ -402,7 +502,14 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 		// TODO:
 		customer.setZipCode(tfZip.getText());
 		customer.setMobileNo(tfCellPhone.getText());
-		customer.setTimePickUp(selectedItem); 
+		if(useTimeList)
+		{
+			customer.setTimePickUp(selectedItem);
+		}
+		else
+		{
+			customer.setTimePickUpNext(timePickUpNext);
+		}
 		return true;
 	}
 

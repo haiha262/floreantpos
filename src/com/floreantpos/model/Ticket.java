@@ -36,6 +36,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.Messages;
 import com.floreantpos.actions.NewBarTabAction;
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseTicket;
 import com.floreantpos.model.dao.CustomerDAO;
@@ -73,6 +74,7 @@ public class Ticket extends BaseTicket {
 
 	private OrderType orderType;
 
+	private boolean useTimeList = TerminalConfig.isUsingTimeBtn();
 	/* [CONSTRUCTOR MARKER BEGIN] */
 	public Ticket () {
 		super();
@@ -105,6 +107,8 @@ public class Ticket extends BaseTicket {
 	public static final String CUSTOMER_ZIP_CODE = "CUSTOMER_ZIP_CODE"; //$NON-NLS-1$
 	//TODO: //hatran add customer time pickup
 	public static final String CUSTOMER_TIME_PICKUP = "CUSTOMER_TIME_PICKUP";
+	public static final String CUSTOMER_TIME_PICKUP_NEXT = "CUSTOMER_TIME_PICKUP_NEXT";
+
 	public static final String TICKET_NUMBER  = "TICKET_NUMBER";
 	
 	public static final String MANAGER_INSTRUCTION = "MANAGER_INSTRUCTION"; //$NON-NLS-1$
@@ -757,7 +761,15 @@ public class Ticket extends BaseTicket {
 			addProperty(Ticket.CUSTOMER_MOBILE, customer.getMobileNo());
 			addProperty(Ticket.CUSTOMER_ZIP_CODE, customer.getZipCode());
 			SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("MMM d, HH:mm"); //hatran add format time for pick up
-			addProperty(Ticket.CUSTOMER_TIME_PICKUP, TIME_FORMAT.format(customer.getTimePickUp()));
+			if(useTimeList)
+			{
+				addProperty(Ticket.CUSTOMER_TIME_PICKUP, TIME_FORMAT.format(customer.getTimePickUp()));
+			}
+			else
+			{
+				addProperty(Ticket.CUSTOMER_TIME_PICKUP_NEXT, customer.getTimePickUpNext());
+
+			}
 		}
 		if (customer != null) {
 			setCustomerId(customer.getAutoId());
@@ -770,6 +782,7 @@ public class Ticket extends BaseTicket {
 		removeProperty(CUSTOMER_MOBILE);
 		removeProperty(CUSTOMER_ZIP_CODE);
 		removeProperty(CUSTOMER_TIME_PICKUP);//hatran add remove Property(CUSTOMER_TIME_PICKUP )
+		removeProperty(CUSTOMER_TIME_PICKUP_NEXT);//hatran add remove Property(CUSTOMER_TIME_PICKUP_NEXT )
 	}
 
 	public String getSortOrder() {
