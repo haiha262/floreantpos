@@ -472,10 +472,11 @@ public class KitchenTicketView extends JPanel {
 					session.saveOrUpdate(parentTicket);
 					session.saveOrUpdate(kitchenTicketItem);
 					
-					//hatran : TODO : notify ORDER on customer screen
-					if (TerminalConfig.isActiveCustomerDisplay()) { //hatran Customer display cleanup when reset new ticket
-						Application.getExtendCustomWindow().showText(""+ parentTicket.getticketNumber(),true);
-					}
+					
+				}
+				//hatran : TODO : notify ORDER on customer screen
+				if (TerminalConfig.isActiveCustomerDisplay()) { //hatran Customer display cleanup when reset new ticket
+					Application.getExtendCustomWindow().showText(""+ parentTicket.getticketNumber(),true);
 				}
 				tx.commit();
 
