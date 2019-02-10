@@ -151,8 +151,7 @@ public class KitchenTicketView extends JPanel {
 	}
 
 	private void createTable(KitchenTicket ticket) {
-		//hatran TODO: relist the Kitchen display
-		List<KitchenTicketItem> list ;
+
 		tableModel = new KitchenTicketTableModel(ticket.getTicketItems());
 		table = new JTable(tableModel);
 		table.setRowSelectionAllowed(false);
@@ -192,6 +191,8 @@ public class KitchenTicketView extends JPanel {
 
 		AbstractAction action = new AbstractAction() {
 
+			private boolean useConfirmWindow = false;
+
 			@Override
 			public void actionPerformed(ActionEvent e) {//hatran : action bump of each item in list
 				int row = Integer.parseInt(e.getActionCommand());
@@ -202,9 +203,17 @@ public class KitchenTicketView extends JPanel {
 					return;
 				}
 				
-				statusSelector.setTicketItem(ticketItem);
-				statusSelector.setLocationRelativeTo(KitchenTicketView.this);
-				statusSelector.setVisible(true);
+				
+				if (useConfirmWindow )
+				{
+					statusSelector.setTicketItem(ticketItem);
+					statusSelector.setLocationRelativeTo(KitchenTicketView.this);
+					statusSelector.setVisible(true);
+				}
+				else
+				{
+					itemRowProgress( ticketItem, e);
+				}
 				table.repaint();
 			}
 		};
@@ -234,6 +243,62 @@ public class KitchenTicketView extends JPanel {
 		add(scrollPane);
 	}
 
+	
+	private void itemRowProgress(KitchenTicketItem ticketItem, ActionEvent e){//hatran action when press BUMP in KitchenTicketStatusSelector without popup window
+		try {
+			KitchenTicketStatus status = KitchenTicketStatus.DONE;
+			if (ticketItem.getStatus().equalsIgnoreCase(KitchenTicketStatus.DONE.name())) {
+				status = KitchenTicketStatus.WAITING;
+			}
+			else
+			{
+				status = KitchenTicketStatus.DONE;
+			}
+			ticketItem.setStatus(status.name());
+
+			int itemCount = ticketItem.getQuantity();
+			// have to save data because the items table update after 10s
+			
+			Ticket ticket = TicketDAO.getInstance().load(kitchenTicket.getTicketId());
+
+			for (TicketItem item : ticket.getTicketItems()) {
+				if (ticketItem.getMenuItemCode() != null && ticketItem.getMenuItemCode().equals(item.getItemCode())) {
+					if (item.getStatus() != null && item.getStatus().equals(Ticket.STATUS_READY)) {
+						continue;
+					}
+					if (itemCount == 0) {
+						break;
+					}
+					if (status.equals(KitchenTicketStatus.DONE)) {
+						item.setStatus(Ticket.STATUS_READY);
+					}
+					else {
+						item.setStatus(Ticket.STATUS_VOID);
+					}
+					itemCount -= item.getItemCount();
+				}
+			}
+			Transaction tx = null;
+			Session session = null;
+
+			try {
+				session = KitchenTicketItemDAO.getInstance().createNewSession();
+				tx = session.beginTransaction();
+				session.saveOrUpdate(ticket);
+				session.saveOrUpdate(ticketItem);
+				tx.commit();
+
+			} catch (Exception ex) {
+				tx.rollback();
+			} finally {
+				session.close();
+			}
+			
+			//dispose();
+		} catch (Exception e2) {
+			POSMessageDialog.showError(this, e2.getMessage(), e2);
+		}
+	}
 	private void updateHeaderView() {
 		headerPanel.setBackground(timerWatch.backColor);
 		ticketInfo.setForeground(timerWatch.textColor);
