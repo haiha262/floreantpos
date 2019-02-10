@@ -93,7 +93,7 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 	private QwertyKeyPad qwertyKeyPad;
 	private Font font;
 	private JToggleButton lastButton;
-	private String[] timeListButtons = { "10-20'", "20'-30'", "30'-40'", "ORTHER" }; 	
+	private String[] timeListButtons = { "10-20'", "20'-30'", "30'-40'", "OTHER" }; 	
 
 	public boolean isKeypad;
 
@@ -315,7 +315,7 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 					}
 					else
 					{
-						lastButton.setText("ORTHER");
+						lastButton.setText("OTHER");
 					}
 					timePickUpNext = timePickUpNext.replace("'", "");
 					
@@ -473,8 +473,6 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 		if(useTimeList)
 		{
 			selectedItem = (Date) timeList.getSelectedItem();
-			
-			
 			//hatran check current time > set time	
 			if(Calendar.getInstance().getTime().after(selectedItem))
 			{		

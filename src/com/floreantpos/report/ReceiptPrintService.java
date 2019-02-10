@@ -908,9 +908,13 @@ public class ReceiptPrintService {
 				if (StringUtils.isNotEmpty(ticket.getCustomerName())) {//hatran add customer in Kitchen Ticket
 					map.put("customer", Messages.getString("ReceiptPrintService.0") + ticket.getCustomerName()); //$NON-NLS-1$ //$NON-NLS-2$
 				}
+				if (StringUtils.isNotEmpty(ticket.getCustomerPhoneNumber())) {
+					map.put("customerPhoneNo", Messages.getString("ReceiptPrintService.CustomerPhoneNumber") + ticket.getCustomerPhoneNumber()); //$NON-NLS-1$ //$NON-NLS-2$
+				}
 				if (StringUtils.isNotEmpty(ticket.getCustomerTimePickUp())) {
 					map.put("customerTimePickUp",  "Time pick up: "+ ticket.getCustomerTimePickUp()); //$NON-NLS-1$ //$NON-NLS-2$
 				}
+				
 		}
 		map.put(SERVER_NAME, POSConstants.RECEIPT_REPORT_SERVER_LABEL + ticket.getServerName());
 		map.put(REPORT_DATE, Messages.getString("ReceiptPrintService.119") + reportDateFormat.format(new Date())); //$NON-NLS-1$
