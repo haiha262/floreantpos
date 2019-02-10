@@ -589,4 +589,13 @@ public class TerminalConfig {
 	public static void setUsingTimeList(boolean use) { //use : TRUE Using TIME BUTTONS | FALSE : Using Timer List
 		config.setProperty("use_time_list_in_phone_order", use);
 	}
+	
+	public static int getNumberOrderShow() {
+		// TODO Auto-generated method stub
+		return config.getInt("Number_Order_Show_on_Customer_display", 6);
+	}
+	
+	public static void setNumberOrderShow(String numberOrder) { //use : TRUE Using TIME BUTTONS | FALSE : Using Timer List
+		config.setProperty("Number_Order_Show_on_Customer_display", numberOrder);
+	}
 }

@@ -56,6 +56,7 @@ public class PeripheralConfigurationView extends ConfigurationView {
 	private JTextField tfmodifierFontSize;
 	private JTextField tfcusFrmFontSize;
 	private JCheckBox chkTimeBtnOrTimeList;
+	private JTextField tfNumberOrderShow;
 
 	public PeripheralConfigurationView() {
 		initComponents();
@@ -132,6 +133,7 @@ public class PeripheralConfigurationView extends ConfigurationView {
 		tfCustomerDisplayMessage = new FixedLengthTextField(50);
 
 		tfCustomerDisplayFontSize = new JTextField(20);
+		tfNumberOrderShow = new JTextField(20);
 		
 		JButton btnTest = new JButton(Messages.getString("PeripheralConfigurationView.7")); //$NON-NLS-1$
 		btnTest.addActionListener(new ActionListener() {
@@ -165,6 +167,8 @@ public class PeripheralConfigurationView extends ConfigurationView {
 		customerDisplayPanel.add(tfCustomerDisplayMessage);
 		customerDisplayPanel.add(new JLabel(Messages.getString("PeripheralConfigurationView.8")), "newline");
 		customerDisplayPanel.add(tfCustomerDisplayFontSize);
+		customerDisplayPanel.add(new JLabel("Number Order show on"), "newline");
+		customerDisplayPanel.add(tfNumberOrderShow);
 		customerDisplayPanel.add(btnTest);
 		customerDisplayPanel.add(btnRestoreCustomerDefault);
 
@@ -273,6 +277,7 @@ public class PeripheralConfigurationView extends ConfigurationView {
 		TerminalConfig.setCustomerDisplayPort(tfCustomerDisplayPort.getText());
 		TerminalConfig.setCustomerDisplayMessage(tfCustomerDisplayMessage.getText());
 		TerminalConfig.setCustomerDisplayFontSize(tfCustomerDisplayFontSize.getText());
+		TerminalConfig.setNumberOrderShow(tfNumberOrderShow.getText());
 
 		TerminalConfig.setScaleDisplay(cbScaleActive.isSelected());
 		TerminalConfig.setScalePort(tfScalePort.getText());
@@ -317,6 +322,7 @@ public class PeripheralConfigurationView extends ConfigurationView {
 		tfCustomerDisplayPort.setText(TerminalConfig.getCustomerDisplayPort());
 		tfCustomerDisplayMessage.setText(TerminalConfig.getCustomerDisplayMessage());
 		tfCustomerDisplayFontSize.setText(TerminalConfig.getCustomerDisplayFontSize());
+		tfNumberOrderShow.setText(TerminalConfig.getNumberOrderShow()+"");
 
 		cbScaleActive.setSelected(TerminalConfig.isActiveScaleDisplay());
 		tfScalePort.setText(TerminalConfig.getScalePort());

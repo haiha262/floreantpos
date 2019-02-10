@@ -56,7 +56,7 @@ public class ExtendViewCustomer  extends com.floreantpos.swing.TransparentPanel 
 	private static JTextArea txtlistItem;
 	private static JTextArea txtTotal;
 	
-	final static int MAX_ORDERS = 10;    // maximum number of purchases
+	final static int MAX_ORDERS = TerminalConfig.getNumberOrderShow();    // maximum number of purchases
 	private LinkedList<String>  listReadyOrder;
 	private int curPosition;
 	private ExtendViewCustomer() {
@@ -103,10 +103,10 @@ public class ExtendViewCustomer  extends com.floreantpos.swing.TransparentPanel 
 		jTop.setPreferredSize(new Dimension(1280, 100));
 
 		add(jLeft, "West");
-		jLeft.setPreferredSize(new Dimension(100, 480));
+		jLeft.setPreferredSize(new Dimension(100, 20));
 
 		add(jRight, "East");
-		jRight.setPreferredSize(new Dimension(100, 480));
+		jRight.setPreferredSize(new Dimension(100, 20));
 
 
 		add(jBottom, "South");
@@ -151,7 +151,7 @@ public class ExtendViewCustomer  extends com.floreantpos.swing.TransparentPanel 
 	{
 		if (isOrder)
 		{
-			if (listReadyOrder.size()> MAX_ORDERS)
+			if (listReadyOrder.size()>= MAX_ORDERS)
 			{
 				listReadyOrder.removeFirst();
 			}
