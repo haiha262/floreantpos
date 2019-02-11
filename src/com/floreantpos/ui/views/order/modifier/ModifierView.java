@@ -279,8 +279,9 @@ public class ModifierView extends SelectionView {
 			for (ModifierSelectionListener listener : ModifierView.this.listenerList) {
 				listener.modifierSelected(menuModifier, selectedMultiplier);
 			}
-			defaultMultiplierButton.setSelected(true);
-			selectedMultiplier = defaultMultiplierButton.getMultiplier();
+			//hatran set: remove auto set default button after choosing modified items
+//			defaultMultiplierButton.setSelected(true);
+//			selectedMultiplier = defaultMultiplierButton.getMultiplier();
 		}
 	}
 
