@@ -304,6 +304,7 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 		btnCancel.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 
+				clearOrderButtonsStatus();
 				if (ticketView.isCancelable()) {
 					ticketView.doCancelOrder();
 					return;
@@ -792,6 +793,10 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 			updateView();
 		}
 	}
+	private void clearOrderButtonsStatus()
+	{
+		btnGroup.clearSelection();
+	}
 	protected boolean doAddEditCustomer() {
 		
 		boolean isUseNewCustomer = true;
@@ -814,7 +819,7 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 			}
 			else
 			{
-				btnGroup.clearSelection();
+				clearOrderButtonsStatus();
 				return false;
 			}
 			
@@ -1139,6 +1144,7 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 	}
 
 	public void resetView() {
+		clearOrderButtonsStatus();
 	}
 
 	@Override
