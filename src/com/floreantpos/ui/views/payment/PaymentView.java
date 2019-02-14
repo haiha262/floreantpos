@@ -493,7 +493,8 @@ public class PaymentView extends JPanel {
 		});
 
 		btnOther = new PosButton("OTHER"); //$NON-NLS-1$
-		actionButtonPanel.add(btnOther, "grow,w " + width + "!"); //$NON-NLS-1$ //$NON-NLS-2$
+		//hatran rem : not need
+//		actionButtonPanel.add(btnOther, "grow,w " + width + "!"); //$NON-NLS-1$ //$NON-NLS-2$
 		btnOther.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
