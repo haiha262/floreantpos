@@ -59,7 +59,7 @@ public class OrderFilterPanel extends JXCollapsiblePane {
 		this.ticketList = ticketList;
 		this.ticketLists = (TicketListView) ticketList;
 
-		setCollapsed(true);
+		setCollapsed(false);//hatran set default order filters show
 		getContentPane().setLayout(new MigLayout("fill", "fill, grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		createPaymentStatusFilterPanel();

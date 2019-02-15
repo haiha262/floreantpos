@@ -181,14 +181,13 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		rightPanel.setBorder(new CompoundBorder(titledBorder2, new EmptyBorder(2, 2, 6, 2)));
 
 		orderPanel = new JPanel(new MigLayout("ins 2 2 0 2, fill, hidemode 3, flowy", "fill, grow", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-
+		//hatran rem: disable list ORDER BUTTONS in the activities view
+/*		
 		rendererOrderPanel();
-
 		rightPanel.add(orderPanel);
 		rightPanel.setMinimumSize(PosUIManager.getSize(120, 0));
-
 		centerPanel.add(rightPanel, java.awt.BorderLayout.EAST);
-
+*/
 		add(centerPanel, java.awt.BorderLayout.CENTER);
 	}
 
@@ -270,8 +269,8 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 		JPanel firstRowButtonPanel = new JPanel(new GridLayout(1, 0, 5, 5));
 		final JXCollapsiblePane secondRowButtonPanel = new JXCollapsiblePane();
 		secondRowButtonPanel.setAnimated(false);
-		secondRowButtonPanel.setCollapsed(true);
-		secondRowButtonPanel.setVisible(false);
+		secondRowButtonPanel.setCollapsed(false);
+		secondRowButtonPanel.setVisible(true); //hatran set: secondRowButtonPanel Reopen | Void
 		secondRowButtonPanel.getContentPane().setLayout(new GridLayout(1, 0, 5, 5));
 
 		if (Application.getInstance().getTerminal().isHasCashDrawer()) {
