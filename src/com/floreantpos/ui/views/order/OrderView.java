@@ -1062,13 +1062,14 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 	private void setVisibleButtonForOrderView() {
 		btnDone.setVisible(true);
 		btnCancel.setVisible(true);
-		btnDiscount.setVisible(true);
-		btnGuestNo.setVisible(true);
+		btnSend.setVisible(true);
 		btnHold.setVisible(true);
 		btnMisc.setVisible(true);
-		btnSeatNo.setVisible(true);
-		btnSend.setVisible(true);
-		btnTableNumber.setVisible(true);
+		
+		btnDiscount.setVisible(true);
+		btnGuestNo.setVisible(false);
+		btnSeatNo.setVisible(false);
+		btnTableNumber.setVisible(false);
 	}
 
 	private void showRetailView() {
