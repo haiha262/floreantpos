@@ -88,7 +88,7 @@ public class TicketView extends JPanel {
 	private com.floreantpos.swing.PosButton btnDecreaseAmount;
 	private com.floreantpos.swing.PosButton btnDelete = new PosButton();
 	private com.floreantpos.swing.PosButton btnIncreaseAmount = new PosButton();
-	private com.floreantpos.swing.PosButton btnEdit = new PosButton("..."); //$NON-NLS-1$ //$NON-NLS-2$
+	private com.floreantpos.swing.PosButton btnEdit = new PosButton(); //$NON-NLS-1$ //$NON-NLS-2$
 	private com.floreantpos.swing.PosButton btnScrollDown;
 	private com.floreantpos.swing.PosButton btnScrollUp = new PosButton();
 	private com.floreantpos.swing.TransparentPanel ticketItemActionPanel;
@@ -361,7 +361,7 @@ public class TicketView extends JPanel {
 				doDeleteSelection();
 			}
 		});
-
+		btnEdit.setIcon(IconFactory.getIcon("/ui_icons/", "modify.png", size)); //$NON-NLS-1$ //$NON-NLS-2$
 		btnEdit.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				doEditSelection();
