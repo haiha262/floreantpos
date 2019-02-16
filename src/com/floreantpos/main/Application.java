@@ -361,38 +361,47 @@ public class Application {
 	}
 
 	private void initTerminal() {
+		Terminal terminal;
 		String terminalKey = TerminalUtil.getSystemUID();
-		Terminal terminal = TerminalDAO.getInstance().getByTerminalKey(terminalKey);
-		if (terminal != null) {
-			TerminalConfig.setTerminalId(terminal.getId());
-			this.terminal = terminal;
-			return;
-		}
 		int terminalId = TerminalConfig.getTerminalId();
 
 		if (terminalId == -1) {
 			Random random = new Random();
 			terminalId = random.nextInt(10000) + 1;
-		}
+		
 
-		try {
-			terminal = TerminalDAO.getInstance().get(new Integer(terminalId));
-			if (terminal == null) {
-				terminal = new Terminal();
+			try {
+				terminal = TerminalDAO.getInstance().get(new Integer(terminalId));
+				if (terminal == null) {
+					terminal = new Terminal();
+					terminal.setId(terminalId);
+					terminal.setTerminalKey(terminalKey);
+					terminal.setName(String.valueOf("Terminal " + terminalId)); //$NON-NLS-1$
+					TerminalDAO.getInstance().saveOrUpdate(terminal);
+				}
+				else if (StringUtils.isEmpty(terminal.getTerminalKey())) {
+					terminal.setTerminalKey(terminalKey);
+					TerminalDAO.getInstance().saveOrUpdate(terminal);
+				}
+			} catch (Exception e) {
+				throw new DatabaseConnectionException();
+			}
+	
+			TerminalConfig.setTerminalId(terminalId);
+		}
+		else
+		{
+			
+			terminal = TerminalDAO.getInstance().getByTerminalKey(terminalKey);
+			if (terminal != null) {
 				terminal.setId(terminalId);
 				terminal.setTerminalKey(terminalKey);
 				terminal.setName(String.valueOf("Terminal " + terminalId)); //$NON-NLS-1$
 				TerminalDAO.getInstance().saveOrUpdate(terminal);
+				
+				TerminalConfig.setTerminalId(terminalId);
 			}
-			else if (StringUtils.isEmpty(terminal.getTerminalKey())) {
-				terminal.setTerminalKey(terminalKey);
-				TerminalDAO.getInstance().saveOrUpdate(terminal);
-			}
-		} catch (Exception e) {
-			throw new DatabaseConnectionException();
 		}
-
-		TerminalConfig.setTerminalId(terminalId);
 		this.terminal = terminal;
 	}
 
