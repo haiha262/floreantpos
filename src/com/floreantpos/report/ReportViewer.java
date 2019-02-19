@@ -58,6 +58,7 @@ import com.floreantpos.ui.util.UiUtil;
  */
 public class ReportViewer extends JPanel {
 	private JButton btnRefresh;
+	private JButton btnTodayReport;
 	private JComboBox cbReportType;
 	private JComboBox cbTerminal;
 	private JXDatePicker dpEndDate;
@@ -74,6 +75,7 @@ public class ReportViewer extends JPanel {
 	private TransparentPanel reportPanel;
 
 	private Report report;
+	
 
 	public ReportViewer() {
 		initComponents();
@@ -136,6 +138,13 @@ public class ReportViewer extends JPanel {
 				doRefreshReport(evt);
 			}
 		});
+		btnTodayReport = new JButton();
+		btnTodayReport.setText(com.floreantpos.POSConstants.TODAYS_REPORT);
+		btnTodayReport.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				doTodayReport(evt);
+			}
+		});
 
 		reportConstraintPanel.add(lblReportType);
 		reportConstraintPanel.add(cbReportType, "gap 0px 20px");
@@ -149,6 +158,7 @@ public class ReportViewer extends JPanel {
 		reportConstraintPanel.add(chkBoxFree, "wrap");
 		reportConstraintPanel.add(new JLabel(""));
 		reportConstraintPanel.add(btnRefresh);
+		reportConstraintPanel.add(btnTodayReport);
 		
 		reportSearchOptionPanel.add(reportConstraintPanel, BorderLayout.NORTH);
 		reportSearchOptionPanel.add(new JSeparator(), BorderLayout.CENTER);
@@ -159,11 +169,19 @@ public class ReportViewer extends JPanel {
 		add(reportPanel, BorderLayout.CENTER);
 
 	}
-
+	private void doTodayReport(java.awt.event.ActionEvent evt) {
+		Date fromDate = new Date();
+		Date toDate = fromDate;
+		doReport(fromDate,toDate);
+	}
+	
 	private void doRefreshReport(java.awt.event.ActionEvent evt) {
 		Date fromDate = dpStartDate.getDate();
 		Date toDate = dpEndDate.getDate();
-
+		doReport(fromDate,toDate);
+	}
+	
+	private void doReport(Date fromDate,Date toDate){
 		if (fromDate.after(toDate)) {
 			POSMessageDialog.showError(com.floreantpos.util.POSUtil.getFocusedWindow(), com.floreantpos.POSConstants.FROM_DATE_CANNOT_BE_GREATER_THAN_TO_DATE_);
 			return;
