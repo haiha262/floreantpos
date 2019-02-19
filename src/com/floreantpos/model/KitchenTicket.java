@@ -196,7 +196,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 
 		Ticket clonedTicket = (Ticket) SerializationUtils.clone(ticket);
 		clonedTicket.setGlobalId(GlobalIdGenerator.generateGlobalId());
-		clonedTicket.consolidateTicketItems();
+		//clonedTicket.consolidateTicketItems();
 		List<TicketItem> ticketItems = clonedTicket.getTicketItems();
 		if (ticketItems == null) {
 			return kitchenTickets;
