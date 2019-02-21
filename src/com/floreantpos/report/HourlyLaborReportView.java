@@ -19,6 +19,7 @@ package com.floreantpos.report;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -79,6 +80,7 @@ import com.intellij.uiDesigner.core.Spacer;
  */
 public class HourlyLaborReportView extends TransparentPanel {
 	private JButton btnGo;
+	private JButton btnToday;
 	private JComboBox cbTerminal;
 	private JXDatePicker fromDatePicker;
 	private JXDatePicker toDatePicker;
@@ -110,12 +112,24 @@ public class HourlyLaborReportView extends TransparentPanel {
 				viewReport();
 			}
 		});
+		btnToday.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				viewTodayReport();
+			}
+		});
 	}
 
+	private void viewTodayReport() {
+		Date fromDate =  new Date();
+		Date toDate = fromDate;
+		viewReport(fromDate,toDate);
+	}
 	private void viewReport() {
 		Date fromDate = fromDatePicker.getDate();
 		Date toDate = toDatePicker.getDate();
-
+		viewReport(fromDate,toDate);
+	}
+	private void viewReport(Date fromDate,Date toDate) {
 		if (fromDate.after(toDate)) {
 			POSMessageDialog.showError(com.floreantpos.util.POSUtil.getFocusedWindow(), com.floreantpos.POSConstants.FROM_DATE_CANNOT_BE_GREATER_THAN_TO_DATE_);
 			return;
@@ -362,10 +376,18 @@ public class HourlyLaborReportView extends TransparentPanel {
 		cbTerminal = new JComboBox();
 		panel1.add(cbTerminal, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
 				GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(147, 22), null, 0, false));
+		JPanel listbtnPanel = new JPanel(new GridLayout(1,2)); 
 		btnGo = new JButton();
 		btnGo.setText(com.floreantpos.POSConstants.GO);
-		panel1.add(btnGo, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_EAST, GridConstraints.FILL_NONE, 1, GridConstraints.SIZEPOLICY_FIXED, null,
+		listbtnPanel.add(btnGo, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_EAST, GridConstraints.FILL_NONE, 1, GridConstraints.SIZEPOLICY_FIXED, null,
 				new Dimension(147, 23), null, 0, false));
+		btnToday = new JButton();
+		btnToday.setText("Today");
+		listbtnPanel.add(btnToday, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, 1, GridConstraints.SIZEPOLICY_FIXED, null,
+				new Dimension(147, 23), null, 0, false));
+		panel1.add(listbtnPanel, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, 1, GridConstraints.SIZEPOLICY_FIXED, null,
+				new Dimension(294, 23), null, 0, false));
+		
 		final JLabel label4 = new JLabel();
 		label4.setText(com.floreantpos.POSConstants.USER_TYPE + ":"); //$NON-NLS-1$
 		panel1.add(label4, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED,
