@@ -28,6 +28,7 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.ActionHistory;
 import com.floreantpos.model.CashTransaction;
@@ -292,7 +293,8 @@ public class ReportService {
 			session = dao.getSession();
 			//hatran modified commission
 			User currentuser = Application.getCurrentUser();
-			double sub = 0.85;
+//			double sub = 0.85;
+			double sub = TerminalConfig.getRate();
 			if(currentuser.getId()==9090)  
 				sub = 1;
 			

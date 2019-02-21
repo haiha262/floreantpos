@@ -598,4 +598,12 @@ public class TerminalConfig {
 	public static void setNumberOrderShow(String numberOrder) { //use : TRUE Using TIME BUTTONS | FALSE : Using Timer List
 		config.setProperty("Number_Order_Show_on_Customer_display", numberOrder);
 	}
+	public static double getRate() {
+		// TODO Auto-generated method stub
+		return config.getDouble("Rate", 1.0);
+	}
+	public static void setRate(double rate) {
+		// TODO Auto-generated method stub
+		 config.setProperty("Rate", rate);
+	}
 }

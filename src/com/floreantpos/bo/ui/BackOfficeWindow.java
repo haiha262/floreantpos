@@ -70,6 +70,7 @@ import com.floreantpos.bo.actions.PizzaCrustExplorerAction;
 import com.floreantpos.bo.actions.PizzaExplorerAction;
 import com.floreantpos.bo.actions.PizzaItemExplorerAction;
 import com.floreantpos.bo.actions.PizzaModifierExplorerAction;
+import com.floreantpos.bo.actions.RateSelectionAction;
 import com.floreantpos.bo.actions.SalesAnalysisReportAction;
 import com.floreantpos.bo.actions.SalesBalanceReportAction;
 import com.floreantpos.bo.actions.SalesDetailReportAction;
@@ -303,6 +304,7 @@ public class BackOfficeWindow extends javax.swing.JFrame {
 		adminMenu.add(new DataExportAction());
 		adminMenu.add(new DataImportAction());
 		adminMenu.add(new LanguageSelectionAction());
+		adminMenu.add(new RateSelectionAction());
 		menuBar.add(adminMenu);
 	}
 
