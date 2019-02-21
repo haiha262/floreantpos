@@ -17,6 +17,7 @@
  */
 package com.floreantpos.report.service;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
@@ -293,15 +294,22 @@ public class ReportService {
 			session = dao.getSession();
 			//hatran modified commission
 			User currentuser = Application.getCurrentUser();
-//			double sub = 0.85;
-			double sub = TerminalConfig.getRate();
+//			double rate = 0.85;
+			double rate = TerminalConfig.getRate();
 			if(currentuser.getId()==9090)  
-				sub = 1;
-			
+				rate = 1;
+		   
+		    
+		    double grossSale= rate * calculateGrossSales(session, fromDate, toDate, user, true);
+		    if(rate != 1)
+		    {
+		    DecimalFormat formatter = new DecimalFormat("##.0");
+		    grossSale = Double.parseDouble(formatter.format(grossSale));
+		    }
 			//gross taxable sales
-			report.setGrossTaxableSalesAmount(sub * calculateGrossSales(session, fromDate, toDate, user, true));
+			report.setGrossTaxableSalesAmount(grossSale);
 			//gross non-taxable sales
-			report.setGrossNonTaxableSalesAmount(sub * calculateGrossSales(session, fromDate, toDate, user, false));
+			report.setGrossNonTaxableSalesAmount(grossSale);
 			//discount
 			report.setDiscountAmount(calculateDiscount(session, fromDate, toDate, user));
 			//tax
