@@ -7,8 +7,6 @@ import javax.swing.Icon;
 import javax.swing.JDialog;
 
 import com.floreantpos.config.TerminalConfig;
-import com.floreantpos.main.Application;
-import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.POSUtil;
@@ -29,7 +27,6 @@ public class RateSelectionAction extends AbstractAction {
 	public void actionPerformed(ActionEvent e) {
 		double currentRate = TerminalConfig.getRate();
 
-		
 		NumberSelectionDialog2 dialog = new NumberSelectionDialog2();
 		dialog.setTitle("Modify Rate");
 		dialog.setFloatingPoint(true);
