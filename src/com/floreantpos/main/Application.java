@@ -391,15 +391,20 @@ public class Application {
 		}
 		else
 		{
+			try {
+				terminal = TerminalDAO.getInstance().getByTerminalKey(terminalKey);
+				if (terminal == null) {
+					terminal = new Terminal();
+				}
 			
-			terminal = TerminalDAO.getInstance().getByTerminalKey(terminalKey);
-			if (terminal != null) {
 				terminal.setId(terminalId);
 				terminal.setTerminalKey(terminalKey);
 				terminal.setName(String.valueOf("Terminal " + terminalId)); //$NON-NLS-1$
 				TerminalDAO.getInstance().saveOrUpdate(terminal);
 				
 				TerminalConfig.setTerminalId(terminalId);
+			} catch (Exception e) {
+				throw new DatabaseConnectionException();
 			}
 		}
 		this.terminal = terminal;
