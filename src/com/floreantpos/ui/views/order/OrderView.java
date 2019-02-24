@@ -158,6 +158,7 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 	private PaymentView paymentView;
 	private ButtonGroup btnGroup;
 
+	private List<com.floreantpos.model.OrderType> orderTypes = Application.getInstance().getOrderTypes();
 	/** Creates new form OrderView */
 	private OrderView() {
 		initComponents();
@@ -451,7 +452,7 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 			}
 		});
 
-		addGroupOrderTypeButtons(actionButtonPanel);
+		addGroupOrderTypeButtons(actionButtonPanel);//hatran : add list order buttons
 		//actionButtonPanel.add(btnOrderType);
 		//actionButtonPanel.add(btnCustomer);
 		
@@ -496,13 +497,14 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 				public void actionPerformed(ActionEvent e) {
 					
 					String commandName = e.getActionCommand();
-					if (commandName.contains("PHONE ORDER"))
+					if (commandName.contains("PHONE ORDER") || commandName.contains("UBER"))
 					{
 						commandName = doAddEditCustomer()?commandName:"TAKE ORDER";
-						
 					}
-					doUpdateOrderType(commandName);
 					
+					doUpdateOrderType(commandName);
+					//hatran TODO: refresh menu items and categories here
+					categoryView.updateView();
 				}
 			});
 			//actionButtonPanel.add(btn); //$NON-NLS-1$
@@ -785,14 +787,21 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 		}
 	}// GEN-LAST:event_doInsertMisc
 	//hatran add doUpdateOrderType
-	protected void doUpdateOrderType(String orderType) {
-		if (currentTicket != null) {
-//			OrderType orderType = currentTicket.getOrderType();
-			currentTicket.setOrderType(orderType);
-			//TicketDAO.getInstance().saveOrUpdate(currentTicket);
-			updateView();
+	protected void doUpdateOrderType(String strOrderType) {
+		for (com.floreantpos.model.OrderType orderType : orderTypes) {
+			if(orderType.getName().compareTo(strOrderType)==0)
+			{
+				if (currentTicket != null) {
+//					OrderType orderType = currentTicket.getOrderType();
+					currentTicket.setOrderType(orderType);
+					//TicketDAO.getInstance().saveOrUpdate(currentTicket);
+					updateView();
+					break;
+				}
+			}
 		}
 	}
+
 	private void clearOrderButtonsStatus()
 	{
 		btnGroup.clearSelection();

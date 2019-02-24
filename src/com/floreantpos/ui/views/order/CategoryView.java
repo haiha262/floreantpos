@@ -63,6 +63,7 @@ public class CategoryView extends SelectionView implements ActionListener {
 	private ButtonGroup categoryButtonGroup;
 	private Map<String, CategoryButton> buttonMap = new HashMap<String, CategoryButton>();
 	private MenuCategory selectedCategory;
+	private String currentOrderType;
 
 	public static final String VIEW_NAME = "CATEGORY_VIEW"; //$NON-NLS-1$
 
@@ -86,6 +87,7 @@ public class CategoryView extends SelectionView implements ActionListener {
 			return;
 
 		OrderType orderType = OrderView.getInstance().getCurrentTicket().getOrderType();
+		currentOrderType = orderType.getName();
 		MenuGroupDAO menuGroupDAO = MenuGroupDAO.getInstance();
 		if (maintenanceMode) {
 			categories.add(new MenuCategory(null, ""));
@@ -228,7 +230,23 @@ public class CategoryView extends SelectionView implements ActionListener {
 		}
 		buttonMap.clear();
 	}
-
+	public void updateView()//hatran add: update view after change orderType
+	{
+		OrderType orderType = OrderView.getInstance().getCurrentTicket().getOrderType();
+		if (orderType.getName().compareTo(currentOrderType)!=0 )
+		{
+			initialize();
+			
+		}
+		renderItems();
+		if (!isInitialized()) {
+			CategoryButton categoryButton = (CategoryButton) getFirstItemButton();
+			if (categoryButton != null) {
+				categoryButton.setSelected(true);
+				fireCategorySelected(categoryButton.foodCategory);
+			}
+		}
+	}
 	@Override
 	public void componentResized(ComponentEvent e) {
 		int totalItem = getFitableButtonCount();
