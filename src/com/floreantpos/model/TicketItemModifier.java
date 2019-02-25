@@ -19,6 +19,7 @@ package com.floreantpos.model;
 
 import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseTicketItemModifier;
+import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.util.NumberUtil;
 
 public class TicketItemModifier extends BaseTicketItemModifier implements ITicketItem {
@@ -137,7 +138,17 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 		setSubTotalAmount(total);
 		return total;
 	}
-
+	
+	@Override
+	public java.lang.Double getUnitPrice () {
+		 //hatran add : set value 0.0 when current ticket is UBER
+		String currentOrderType = OrderView.getInstance().getCurrentTicket().getOrderType().getName();
+		if (currentOrderType.contains("UBER"))
+		{
+			return Double.valueOf(0);
+		}
+		return unitPrice == null ? Double.valueOf(0) : unitPrice;
+	}
 	@Override
 	public String getMultiplierName() {
 		return multiplierName == null ? "" : multiplierName;
