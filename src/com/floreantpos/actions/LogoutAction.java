@@ -25,6 +25,7 @@ import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.main.PosWindow;
+import com.floreantpos.ui.views.order.OrderView;
 
 public class LogoutAction extends ViewChangeAction {
 
@@ -51,6 +52,7 @@ public class LogoutAction extends ViewChangeAction {
 			}
 		}
 		Application.getInstance().doLogout();
+		OrderView.getInstance().setCurrentOrderType("");//hatran set current order Type = "" when exit order view
 	}
 
 }

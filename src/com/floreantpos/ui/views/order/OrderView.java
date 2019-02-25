@@ -32,11 +32,14 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -157,7 +160,7 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 	private JTextField tfTotal;
 	private PaymentView paymentView;
 	private ButtonGroup btnGroup;
-
+	private String currentOrderType = "";
 	private List<com.floreantpos.model.OrderType> orderTypes = Application.getInstance().getOrderTypes();
 	/** Creates new form OrderView */
 	private OrderView() {
@@ -304,8 +307,8 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 
 		btnCancel.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-
-				clearOrderButtonsStatus();
+				setCurrentOrderType(currentTicket.getOrderType().getName());
+				//clearOrderButtonsStatus();
 				if (ticketView.isCancelable()) {
 					ticketView.doCancelOrder();
 					return;
@@ -451,7 +454,7 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 				doShowDeliveryDialog();
 			}
 		});
-
+		currentOrderType = "";
 		addGroupOrderTypeButtons(actionButtonPanel);//hatran : add list order buttons
 		//actionButtonPanel.add(btnOrderType);
 		//actionButtonPanel.add(btnCustomer);
@@ -499,12 +502,30 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 					String commandName = e.getActionCommand();
 					if (commandName.contains("PHONE ORDER") || commandName.contains("UBER"))
 					{
-						commandName = doAddEditCustomer()?commandName:"TAKE ORDER";
+						commandName = doAddEditCustomer()?commandName:currentOrderType;
 					}
+					if(!currentOrderType.contains(commandName))
+					{
+						boolean isUpdate = false;
+						if((!currentOrderType.contains("UBER") && commandName.contains("UBER")) 
+							|| ( currentOrderType.contains("UBER") && !commandName.contains("UBER")))
+						{
+							ticketView.doCancelOrder();	
+							isUpdate = true;
+							
+						}
+						currentOrderType = commandName;
+						doUpdateOrderType(commandName);
+						
+						//hatran TODO: refresh menu items and categories here
+						if(isUpdate)
+						{
+							categoryView.updateView();
+						}
+					}
+					updateOrderButtonsStatus();
 					
-					doUpdateOrderType(commandName);
-					//hatran TODO: refresh menu items and categories here
-					categoryView.updateView();
+					
 				}
 			});
 			//actionButtonPanel.add(btn); //$NON-NLS-1$
@@ -792,7 +813,6 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 			if(orderType.getName().compareTo(strOrderType)==0)
 			{
 				if (currentTicket != null) {
-//					OrderType orderType = currentTicket.getOrderType();
 					currentTicket.setOrderType(orderType);
 					//TicketDAO.getInstance().saveOrUpdate(currentTicket);
 					updateView();
@@ -802,9 +822,18 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 		}
 	}
 
-	private void clearOrderButtonsStatus()
+	private void updateOrderButtonsStatus()
 	{
 		btnGroup.clearSelection();
+		
+		for (Enumeration<AbstractButton> buttons = btnGroup.getElements(); buttons.hasMoreElements();) {
+            AbstractButton button = buttons.nextElement();
+            if (button.getText().compareTo(currentOrderType)==0) {
+            	button.setSelected(true);
+            	doUpdateOrderType(currentOrderType);
+            }
+        }
+		
 	}
 	protected boolean doAddEditCustomer() {
 		
@@ -828,7 +857,6 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 			}
 			else
 			{
-				clearOrderButtonsStatus();
 				return false;
 			}
 			
@@ -1124,7 +1152,7 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 			paymentView.setTicket(newTicket);
 		}
 		updateView();
-		resetView();
+		updateOrderButtonsStatus();
 	}
 
 	public void updateView() {
@@ -1151,10 +1179,6 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 			instance = new OrderView();
 		}
 		return instance;
-	}
-
-	public void resetView() {
-		clearOrderButtonsStatus();
 	}
 
 	@Override
@@ -1245,5 +1269,9 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 	public void refresh() {
 		Ticket ticket = TicketDAO.getInstance().loadFullTicket(currentTicket.getId());
 		setCurrentTicket(ticket);
+	}
+	public void setCurrentOrderType(String type)
+	{
+		this.currentOrderType = type;
 	}
 }
