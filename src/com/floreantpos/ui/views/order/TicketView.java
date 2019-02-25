@@ -382,7 +382,10 @@ public class TicketView extends JPanel {
 		sendTicketToKitchen();
 		closeView(false);
 	}// GEN-LAST:event_doFinishOrder
-
+	
+	public void setTicketNumber() {
+		OrderController.setTicketNumber(ticket); //hatran set Next Ticket Number
+	}
 	public synchronized void sendTicketToKitchen() {// GEN-FIRST:event_doFinishOrder
 		saveTicketIfNeeded();
 		if (ticket.getOrderType().isShouldPrintToKitchen()) {
@@ -393,6 +396,7 @@ public class TicketView extends JPanel {
 				setAllowToLogOut(false);
 			}
 		}
+		
 		OrderController.saveOrder(ticket);
 	}
 
@@ -400,6 +404,9 @@ public class TicketView extends JPanel {
 		updateModel();
 
 		TicketDAO ticketDAO = TicketDAO.getInstance();
+		
+		//hatran 
+		setTicketNumber(); //hatran set Next Ticket Number
 		OrderController.saveOrder(ticket);
 		ticketDAO.refresh(ticket);
 
@@ -461,7 +468,8 @@ public class TicketView extends JPanel {
 				return;
 			}
 			updateModel();
-
+			//hatran TODO: TOTAL process
+			setTicketNumber(); //hatran set Next Ticket Number
 			OrderController.saveOrder(ticket); // hatran save order action
 
 			firePayOrderSelected();

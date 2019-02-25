@@ -328,7 +328,7 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-
+					ticketView.setTicketNumber(); //hatran set Next Ticket Number
 					ticketView.sendTicketToKitchen();
 					ticketView.updateView();
 					POSMessageDialog.showMessage("Items sent to kitchen");

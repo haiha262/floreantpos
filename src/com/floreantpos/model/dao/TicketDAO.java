@@ -29,6 +29,7 @@ import java.util.TimeZone;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
@@ -484,6 +485,8 @@ public class TicketDAO extends BaseTicketDAO {
 	}
 	//hatran add findTicketByID
 	public List<Ticket> findTicketByID(Integer ticketId) {
+		
+		
 		Session session = null;
 		Criteria criteria = null;
 
@@ -492,6 +495,30 @@ public class TicketDAO extends BaseTicketDAO {
 			criteria = session.createCriteria(getReferenceClass());
 			criteria.add(Restrictions.eq(Ticket.PROP_ID, ticketId));
 
+			List ticketList = criteria.list();
+			return ticketList;
+
+		} finally {
+			closeSession(session);
+		}
+	}
+	public List<Ticket> findLastTicket()
+	{
+		
+		Session session = null;
+		Criteria criteria = null;
+
+		try {
+			session = createNewSession();
+//			String hql = "SELECT * FROM TICKET ORDER BY CREATE_DATE DESC  FETCH FIRST 1 ROWS ONLY";
+//			Query query = session.createQuery(hql);
+//			List<Ticket> results = query.list();
+			
+			criteria = session.createCriteria(getReferenceClass());
+//			criteria.add(Restrictions.eq(Ticket.PROP_PAID, true));
+			criteria.addOrder(Order.desc(Ticket.PROP_CREATE_DATE));
+			criteria.setFirstResult(0);
+			criteria.setMaxResults(2);
 			List ticketList = criteria.list();
 			return ticketList;
 

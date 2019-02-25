@@ -18,8 +18,10 @@
 package com.floreantpos.ui.views.order;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -232,6 +234,42 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		}
 	}
 
+	private static boolean isSameDay(Date date1, Date date2) {
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.setTime(date1);
+        Calendar calendar2 = Calendar.getInstance();
+        calendar2.setTime(date2);
+        boolean sameYear = calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR);
+        boolean sameMonth = calendar1.get(Calendar.MONTH) == calendar2.get(Calendar.MONTH);
+        boolean sameDay = calendar1.get(Calendar.DAY_OF_MONTH) == calendar2.get(Calendar.DAY_OF_MONTH);
+        return (sameDay && sameMonth && sameYear);
+    }
+	
+	
+	public static void setTicketNumber(Ticket ticket)
+	{
+		//hatran TODO: set ticket NUMBER here ?
+		
+		int ticketNo = 1;
+	//		List<Ticket> tickets = TicketDAO.getInstance().findTicketByID(ticketId-1);
+		Ticket lastTicket = TicketDAO.getInstance().findLastTicket().get(0);
+		int ticketNumber;
+		if (lastTicket != null)
+		{ 
+			ticketNumber = lastTicket.getticketNumber();
+			java.util.Date activeDate  = lastTicket.getActiveDate();
+			
+			Calendar now = Calendar.getInstance();
+			now.setTimeZone(TimeZone.getTimeZone("Australia/Tasmania"));
+				    
+			if (isSameDay(now.getTime(),activeDate ))
+			{
+				ticketNo = ++ticketNumber;
+			}
+		}
+			
+		ticket.setticketNumber(ticketNo);
+	}
 	// VERIFIED
 	public synchronized static void saveOrder(Ticket ticket) {
 		if (ticket == null)
@@ -240,6 +278,7 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		boolean newTicket = ticket.getId() == null;
 
 		TicketDAO ticketDAO = new TicketDAO();
+
 		ticketDAO.saveOrUpdate(ticket);
 
 		// save the action

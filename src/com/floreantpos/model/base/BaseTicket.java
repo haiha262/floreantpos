@@ -551,7 +551,7 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	 * Return the value associated with the column: NUMBER_OF_GUESTS
 	 */
 	public java.lang.Integer getticketNumber () {
-									return ticketNumber == null ? Integer.valueOf(1) : ticketNumber;
+									return ticketNumber == null ? Integer.valueOf(-1) : ticketNumber;
 					}
 
 	/**
