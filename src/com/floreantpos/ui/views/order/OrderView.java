@@ -500,10 +500,7 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 				public void actionPerformed(ActionEvent e) {
 					
 					String commandName = e.getActionCommand();
-					if (commandName.contains("PHONE ORDER") || commandName.contains("UBER"))
-					{
-						commandName = doAddEditCustomer()?commandName:currentOrderType;
-					}
+					
 					if(!currentOrderType.contains(commandName))
 					{
 						boolean isUpdate = false;
@@ -524,7 +521,10 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 						}
 					}
 					updateOrderButtonsStatus();
-					
+					if (commandName.contains("PHONE ORDER") || commandName.contains("UBER"))
+					{
+						commandName = doAddEditCustomer()?commandName:currentOrderType;
+					}
 					
 				}
 			});

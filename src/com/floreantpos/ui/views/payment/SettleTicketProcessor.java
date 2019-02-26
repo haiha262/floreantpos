@@ -296,8 +296,10 @@ public class SettleTicketProcessor implements CardInputListener {
 					ReceiptPrintService.printToKitchen(ticket);
 				}
 			}
-
-			ReceiptPrintService.printTransaction(transaction);
+			if(!ticket.getOrderType().getName().contains("UBER"))//hatran set not print ticket when UBER
+			{
+				ReceiptPrintService.printTransaction(transaction);
+			}
 
 			if (transaction instanceof CashTransaction) {
 				DrawerUtil.kickDrawer();
