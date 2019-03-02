@@ -89,7 +89,7 @@ public class SettleTicketProcessor implements CardInputListener {
 
 		OrderController.saveOrder(ticket);
 
-		if (ticket.getDueAmount() == 0 && ticket.getOrderType().isCloseOnPaid()) {
+		if (ticket.getDueAmount() == 0 && ticket.getOrderType().isCloseOnPaid() && !ticket.getOrderType().getName().contains("UBER") ) {
 			ticket.setClosed(true);
 			doInformListenerPaymentDone();
 			return;
