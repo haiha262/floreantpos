@@ -502,14 +502,16 @@ public class TicketDAO extends BaseTicketDAO {
 			closeSession(session);
 		}
 	}
-	public List<Ticket> findLastTicket()
+	public List<Ticket> findLastTicket(Session session)
 	{
-		
-		Session session = null;
 		Criteria criteria = null;
-
+		boolean createNewSession = false;
 		try {
-			session = createNewSession();
+			if(session == null)
+			{
+				session = createNewSession();
+				createNewSession = true;
+			}
 //			String hql = "SELECT * FROM TICKET ORDER BY CREATE_DATE DESC  FETCH FIRST 1 ROWS ONLY";
 //			Query query = session.createQuery(hql);
 //			List<Ticket> results = query.list();
@@ -522,8 +524,15 @@ public class TicketDAO extends BaseTicketDAO {
 			List ticketList = criteria.list();
 			return ticketList;
 
-		} finally {
-			closeSession(session);
+		} catch (Exception e) {
+			LogFactory.getLog(TicketDAO.class).error(e);
+			throw new RuntimeException(e);
+		}finally {
+			if(createNewSession)
+			{
+				closeSession(session);
+				createNewSession = false;
+			}
 		}
 	}
 	

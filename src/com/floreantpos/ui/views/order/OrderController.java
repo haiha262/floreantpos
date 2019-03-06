@@ -246,13 +246,13 @@ public class OrderController implements OrderListener, CategorySelectionListener
     }
 	
 	
-	public static void setTicketNumber(Ticket ticket)
+	public static void setTicketNumber(Ticket ticket,Session session)
 	{
 		//hatran TODO: set ticket NUMBER here ?
 		
 		int ticketNo = 1;
 	//		List<Ticket> tickets = TicketDAO.getInstance().findTicketByID(ticketId-1);
-		Ticket lastTicket = TicketDAO.getInstance().findLastTicket().get(0);
+		Ticket lastTicket = TicketDAO.getInstance().findLastTicket(session).get(0);
 		int ticketNumber;
 		if (lastTicket != null)
 		{ 

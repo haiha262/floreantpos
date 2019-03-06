@@ -42,6 +42,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.hibernate.Session;
 import org.hibernate.StaleStateException;
 import net.miginfocom.swing.MigLayout;
 
@@ -384,7 +385,9 @@ public class TicketView extends JPanel {
 	}// GEN-LAST:event_doFinishOrder
 	
 	public void setTicketNumber() {
-		OrderController.setTicketNumber(ticket); //hatran set Next Ticket Number
+		Session session = null;
+
+		OrderController.setTicketNumber(ticket, session); //hatran set Next Ticket Number
 	}
 	public synchronized void sendTicketToKitchen() {// GEN-FIRST:event_doFinishOrder
 		saveTicketIfNeeded();

@@ -59,6 +59,7 @@ import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.ui.views.order.OrderController;
 import com.floreantpos.ui.views.order.TicketForSplitView;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.POSUtil;
@@ -413,6 +414,8 @@ public class SplitTicketDialog extends POSDialog {
 		splitTicket.addProperty(Ticket.SPLIT, "true"); //$NON-NLS-1$
 		splitTicket.addProperty(Ticket.SPLIT_NUMBER, String.valueOf(view.getViewNumber()));
 		splitTicket.addProperty(Ticket.ORIGINAL_SPLIT_TICKET_ID, String.valueOf(originalTicket.getId()));
+		//hatran TODO : add ticket number for split ticket
+		OrderController.setTicketNumber(splitTicket, session);
 		TicketDAO.getInstance().saveOrUpdate(splitTicket, session);
 	}
 
