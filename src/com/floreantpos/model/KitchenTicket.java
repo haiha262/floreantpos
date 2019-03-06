@@ -51,10 +51,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 
 	/*[CONSTRUCTOR MARKER END]*/
 
-	private String customerName;
-	private Printer printer;
-	private String customerTimePickUp;
-	private String customerPhoneNumber;
+	protected Printer printer;
 
 	public OrderType getType() {
 		String type = getTicketType();
@@ -426,29 +423,6 @@ public class KitchenTicket extends BaseKitchenTicket {
 		WAITING, VOID, DONE;
 	}
 
-	public String getCustomerName() {
-		return customerName;
-	}
-
-	public void setCustomerName(String customerName) {
-		this.customerName = customerName;
-	}
 	
-	private void setCustomerPhoneNumber(String customerPhoneNumber) {
-		this.customerPhoneNumber = customerPhoneNumber;
-		
-	}
-	
-	public String getCustomerPhoneNumber() {
-		return customerPhoneNumber;
-	}
-	
-	public String getCustomerTimePickUp() {
-		return customerTimePickUp;
-	}
-
-	public void setCustomerTimePickUp(String customerTimePickUp) {
-		this.customerTimePickUp = customerTimePickUp;
-	}
 	
 }

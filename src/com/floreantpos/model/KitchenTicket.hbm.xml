@@ -17,8 +17,11 @@
 		<property column="STATUS" name="status" type="string" length="30" />
 		<property column="SERVER_NAME" name="serverName" type="string" length="30" />
 		<property name="ticketNumber" column="TICKET_NUMBER"  type="java.lang.Integer" />
-		
 		<property name="ticketType" column="TICKET_TYPE" length="20" type="string" />
+		
+		<property name="customerName" column="CUSTOMER_NAME" length="20" type="string" />
+		<property name="customerTimePickUp" column="CUSTOMER_TIME_PICKUP" length="20" type="string" />
+		<property name="customerPhoneNumber" column="CUSTOMER_PHONE_NUMBER" length="20" type="string" />
 		
 		<bag name="tableNumbers" table="KIT_TICKET_TABLE_NUM" lazy="false" cascade="all">
 			<key column="kit_ticket_id" />

@@ -254,7 +254,7 @@ public class OrderController implements OrderListener, CategorySelectionListener
 	//		List<Ticket> tickets = TicketDAO.getInstance().findTicketByID(ticketId-1);
 		Ticket lastTicket = TicketDAO.getInstance().findLastTicket(session).get(0);
 		int ticketNumber;
-		if (lastTicket != null)
+		if (lastTicket != null && lastTicket != ticket)
 		{ 
 			ticketNumber = lastTicket.getticketNumber();
 			java.util.Date activeDate  = lastTicket.getActiveDate();

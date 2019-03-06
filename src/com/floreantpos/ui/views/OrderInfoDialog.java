@@ -50,6 +50,7 @@ public class OrderInfoDialog extends POSDialog {
 	private PosButton btnReOrder;
 	private PosButton btnTransferUser;
 	private PosButton btnPrint;
+	private PosButton btnPrintToKitchen;
 	private PosButton btnPrintDriverCopy;
 
 	public OrderInfoDialog(OrderInfoView view) {
@@ -119,11 +120,20 @@ public class OrderInfoDialog extends POSDialog {
 		btnPrint = new PosButton();
 		btnPrint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				doPrint();
+				doPrint(ReceiptPrintService.CUSTOMER_COPY);
 			}
 		});
 		btnPrint.setText(Messages.getString("OrderInfoDialog.1")); //$NON-NLS-1$
 		panel.add(btnPrint);
+
+		btnPrintToKitchen = new PosButton();
+		btnPrintToKitchen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				doPrint(ReceiptPrintService.KITCHEN_COPY);
+			}
+		});
+		btnPrintToKitchen.setText(Messages.getString("OrderInfoDialog.5")); //$NON-NLS-1$
+		panel.add(btnPrintToKitchen);
 
 		btnPrintDriverCopy = new PosButton();
 		btnPrintDriverCopy.addActionListener(new ActionListener() {
@@ -160,9 +170,10 @@ public class OrderInfoDialog extends POSDialog {
 		btnPrint.setText("Print (Customer Copy)");
 	}
 
-	protected void doPrint() {
+	protected void doPrint(String copyType) {
 		try {
-			view.printCopy(ReceiptPrintService.CUSTOMER_COPY);
+//			view.printCopy(ReceiptPrintService.CUSTOMER_COPY);
+			view.printCopy(copyType);
 		} catch (Exception e) {
 			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage());
 		}

@@ -2,6 +2,8 @@ package com.floreantpos.model.base;
 
 import java.io.Serializable;
 
+import com.floreantpos.model.Printer;
+
 
 /**
  * This is an object that contains data related to the KITCHEN_TICKET table.
@@ -25,6 +27,9 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 	public static String PROP_SEQUENCE_NUMBER = "sequenceNumber"; //$NON-NLS-1$
 	public static String PROP_CREATE_DATE = "createDate"; //$NON-NLS-1$
 	public static String PROP_TICKET_ID = "ticketId"; //$NON-NLS-1$
+	public static String PROP_CUSTOMER_NAME = "customerName"; //$NON-NLS-1$
+	public static String PROP_CUSTOMER_TIME_PICKUP = "customerTimePickUp"; //$NON-NLS-1$
+	public static String PROP_CUSTOMER_PHONE_NUMBER = "customerPhoneNumber"; //$NON-NLS-1$
 
 
 	// constructors
@@ -59,6 +64,9 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 		protected java.lang.String serverName;
 		protected java.lang.String ticketType;
 
+		protected String customerName;
+		protected String customerTimePickUp;
+		protected String customerPhoneNumber;
 	// many to one
 	private com.floreantpos.model.PrinterGroup printerGroup;
 
@@ -329,5 +337,29 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 		return super.toString();
 	}
 
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+	
+	public void setCustomerPhoneNumber(String customerPhoneNumber) {
+		this.customerPhoneNumber = customerPhoneNumber;
+		
+	}
+	
+	public String getCustomerPhoneNumber() {
+		return customerPhoneNumber;
+	}
+	
+	public String getCustomerTimePickUp() {
+		return customerTimePickUp;
+	}
+
+	public void setCustomerTimePickUp(String customerTimePickUp) {
+		this.customerTimePickUp = customerTimePickUp;
+	}
 
 }
