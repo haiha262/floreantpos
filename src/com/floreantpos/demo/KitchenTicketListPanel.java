@@ -2,11 +2,13 @@ package com.floreantpos.demo;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.util.Date;
 
 import javax.swing.AbstractButton;
 import javax.swing.JPanel;
@@ -14,14 +16,24 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.POSConstants;
+import com.floreantpos.PosLog;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.KitchenTicket;
+import com.floreantpos.model.KitchenTicketItem;
 import com.floreantpos.model.OrderType;
+import com.floreantpos.model.Ticket;
+import com.floreantpos.model.TicketItem;
+import com.floreantpos.model.KitchenTicket.KitchenTicketStatus;
 import com.floreantpos.model.dao.KitchenTicketDAO;
+import com.floreantpos.model.dao.KitchenTicketItemDAO;
+import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.swing.PaginatedListModel;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosUIManager;
@@ -149,7 +161,7 @@ public class KitchenTicketListPanel extends JPanel implements ComponentListener 
 		int totalItem = horizontalPanelCount * verticalPanelCount;
 		return totalItem;
 	}
-
+//hatran TODO: add BUMP ALL in here?
 	protected void renderItems() {
 		try {
 			reset();
@@ -254,5 +266,86 @@ public class KitchenTicketListPanel extends JPanel implements ComponentListener 
 
 	@Override
 	public void componentHidden(ComponentEvent e) {
+	}
+
+	public void BumpAllTickets() {
+		// TODO Auto-generated method stub
+		try {
+			reset();
+
+			if (this.dataModel == null || dataModel.getSize() == 0) {
+				return;
+			}
+			for (int i = 0; i < dataModel.getSize(); i++)  
+			{
+				KitchenTicket kitchenTicket = (KitchenTicket)dataModel.getElementAt(i);
+				closeTicket(kitchenTicket,KitchenTicketStatus.DONE);
+			}
+			revalidate();
+			repaint();
+		} catch (Exception e) {
+			POSMessageDialog.showError(this, e.getMessage(), e);
+		}
+		
+	}
+	private void closeTicket(KitchenTicket kitchenTicket,KitchenTicketStatus status) {
+		try {
+			
+
+			kitchenTicket.setStatus(status.name());
+			kitchenTicket.setClosingDate(new Date());
+
+			Ticket parentTicket = TicketDAO.getInstance().load(kitchenTicket.getTicketId());
+
+			Transaction tx = null;
+			Session session = null;
+
+			try {
+				session = KitchenTicketItemDAO.getInstance().createNewSession();
+				tx = session.beginTransaction();
+				for (KitchenTicketItem kitchenTicketItem : kitchenTicket.getTicketItems()) {
+					kitchenTicketItem.setStatus(status.name());
+//Question: Do we actually need status in original ticket item?
+					int itemCount = kitchenTicketItem.getQuantity();
+
+					for (TicketItem item : parentTicket.getTicketItems()) {
+						if (kitchenTicketItem.getMenuItemCode() != null && kitchenTicketItem.getMenuItemCode().equals(item.getItemCode())) {
+							if (item.getStatus() != null && item.getStatus().equals(Ticket.STATUS_READY)) {
+								continue;
+							}
+							if (itemCount == 0) {
+								break;
+							}
+							if (status.equals(KitchenTicketStatus.DONE)) {
+								item.setStatus(Ticket.STATUS_READY);
+							}
+							else {
+								item.setStatus(Ticket.STATUS_VOID);
+							}
+							itemCount -= item.getItemCount();
+						}
+					}
+					session.saveOrUpdate(parentTicket);
+					session.saveOrUpdate(kitchenTicketItem);
+					
+					
+				}
+				//hatran : TODO : notify ORDER on customer screen
+				if (TerminalConfig.isActiveCustomerDisplay()) { //hatran Customer display cleanup when reset new ticket
+					Application.getExtendCustomWindow().showText(""+ parentTicket.getticketNumber(),true);
+				}
+				tx.commit();
+
+			} catch (Exception ex) {
+				PosLog.error(getClass(), ex);
+				tx.rollback();
+			} finally {
+				session.close();
+			}
+
+			KitchenTicketDAO.getInstance().saveOrUpdate(kitchenTicket);
+		} catch (Exception e) {
+			POSMessageDialog.showError(this, e.getMessage(), e);
+		}
 	}
 }

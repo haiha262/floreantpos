@@ -69,6 +69,7 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 	private PosButton btnLogout;
 
 	private PosButton btnBack;
+	private PosButton btnBumpAll;
 
 	public KitchenDisplayView(boolean showHeader) {
 		setLayout(new BorderLayout(5, 5));
@@ -105,7 +106,14 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 				RootView.getInstance().showDefaultView();
 			}
 		});
+		btnBumpAll = new PosButton(Messages.getString("KitchenDisplayView.10"));
+		btnBumpAll.addActionListener(new ActionListener() {
 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ticketPanel.BumpAllTickets();
+			}
+		});
 		JLabel label = new JLabel(Messages.getString("KitchenDisplayView.5")); //$NON-NLS-1$
 		label.setFont(font);
 
@@ -164,6 +172,8 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 				updateTicketView();
 			}
 		});
+		
+		topPanel.add(btnBumpAll, "w " + size.width*2 + "!, h " + size.height + "!"); 
 		topPanel.add(btnOption, "w " + size.width + "!, h " + size.height + "!"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		topPanel.add(btnBack, "w " + size.width + "!, h " + size.height + "!"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		btnLogout = new PosButton(new LogoutAction(true, false)); //$NON-NLS-1$
