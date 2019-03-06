@@ -73,7 +73,6 @@ import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.QwertyKeyPad;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.BeanEditor;
-import com.floreantpos.ui.dialog.DateTimePicker;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.POSUtil;
