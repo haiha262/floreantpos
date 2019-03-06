@@ -331,7 +331,7 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 					ticketView.setTicketNumber(); //hatran set Next Ticket Number
 					ticketView.sendTicketToKitchen();
 					ticketView.updateView();
-					POSMessageDialog.showMessage("Items sent to kitchen");
+					//POSMessageDialog.showMessage("Items sent to kitchen");
 				} catch (StaleStateException x) {
 					POSMessageDialog.showMessageDialogWithReloadButton(POSUtil.getFocusedWindow(), getInstance());
 				} catch (PosException x) {
