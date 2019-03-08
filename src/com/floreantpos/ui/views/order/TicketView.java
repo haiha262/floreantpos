@@ -385,11 +385,11 @@ public class TicketView extends JPanel {
 	}// GEN-LAST:event_doFinishOrder
 	
 	public void setTicketNumber() {
-		Session session = null;
 
-		OrderController.setTicketNumber(ticket, session); //hatran set Next Ticket Number
+		OrderController.setTicketNumber(ticket); //hatran set Next Ticket Number
 	}
 	public synchronized void sendTicketToKitchen() {// GEN-FIRST:event_doFinishOrder
+		setTicketNumber(); //hatran set Next Ticket Number
 		saveTicketIfNeeded();
 		if (ticket.getOrderType().isShouldPrintToKitchen()) {
 			if (ticket.needsKitchenPrint()) {

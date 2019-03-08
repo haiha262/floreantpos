@@ -300,16 +300,7 @@ public class ReceiptPrintService {
 			}
 			else
 			{
-				List<Printer> getKitchenPrinters = Application.getPrinters().getKitchenPrinters();
-				Printer printer = getKitchenPrinters.get(0);
-				String deviceName = printer.getDeviceName();
-				List<KitchenTicket> kichenTickets = KitchenTicketDAO.getInstance().findByParentId(ticket.getId());
-				JasperPrint jasperPrint = createKitchenPrint(printer.getVirtualPrinter().getName(), kichenTickets.get(0), deviceName);
-	
-				jasperPrint.setName("FP_KitchenReceipt_" + ticket.getId()); //$NON-NLS-1$ //$NON-NLS-2$ 
-				jasperPrint.setProperty(PROP_PRINTER_NAME, deviceName);
-	
-				printQuitely(jasperPrint);
+				printToKitchen(ticket);
 			}
 		} catch (Exception e) {
 			logger.error(com.floreantpos.POSConstants.PRINT_ERROR, e);

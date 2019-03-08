@@ -44,8 +44,9 @@
 		<property column="CUSTOMER_PICKEUP" name="customerWillPickup" type="java.lang.Boolean" />
 		<property column="DELIVERY_EXTRA_INFO" name="extraDeliveryInfo" type="string" />
 
-		<property name="ticketType" column="TICKET_TYPE" length="20" type="string" />
-		<property name="ticketNumber" column="TICKET_NUMBER"  type="java.lang.Integer" />
+		<property column="TICKET_TYPE" name="ticketType" length="20" type="string" />
+		<property column="TICKET_NUMBER" name="ticketNumber" type="java.lang.Integer" />
+		<property column="IS_SET_TICKET_NUMBER" name="ticketNumberStatus" type="java.lang.Boolean" />
 
 		<map name="properties" cascade="all" lazy="false" table="TICKET_PROPERTIES">
 			<key column="id" />

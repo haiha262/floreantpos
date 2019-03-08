@@ -110,6 +110,7 @@ public class Ticket extends BaseTicket {
 	public static final String CUSTOMER_TIME_PICKUP_NEXT = "CUSTOMER_TIME_PICKUP_NEXT";
 
 	public static final String TICKET_NUMBER  = "TICKET_NUMBER";
+	public static final String IS_SET_TICKET_NUMBER  = "IS_SET_TICKET_NUMBER";
 	
 	public static final String MANAGER_INSTRUCTION = "MANAGER_INSTRUCTION"; //$NON-NLS-1$
 	public static final String PHONE_EXTENSION = "PHONE_EXTENSION";

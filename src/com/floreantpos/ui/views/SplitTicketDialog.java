@@ -415,7 +415,10 @@ public class SplitTicketDialog extends POSDialog {
 		splitTicket.addProperty(Ticket.SPLIT_NUMBER, String.valueOf(view.getViewNumber()));
 		splitTicket.addProperty(Ticket.ORIGINAL_SPLIT_TICKET_ID, String.valueOf(originalTicket.getId()));
 		//hatran TODO : add ticket number for split ticket
-		OrderController.setTicketNumber(splitTicket, session);
+		if(splitTicket != originalTicket)
+		{
+			OrderController.setTicketNumber(splitTicket);
+		}
 		TicketDAO.getInstance().saveOrUpdate(splitTicket, session);
 	}
 

@@ -218,9 +218,9 @@ public class KitchenTicket extends BaseKitchenTicket {
 		}
 
 		for (TicketItem ticketItem : ticketItems) {
-			if (ticketItem.isPrintedToKitchen() || !ticketItem.isShouldPrintToKitchen()) {
-				continue;
-			}
+//			if (ticketItem.isPrintedToKitchen() || !ticketItem.isShouldPrintToKitchen()) {
+//				continue;
+//			}
 
 			List<Printer> printers = ticketItem.getPrinters(ticket.getOrderType());
 			if (printers == null) {

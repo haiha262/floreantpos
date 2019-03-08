@@ -117,6 +117,7 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 		protected java.lang.String extraDeliveryInfo;
 		protected java.lang.String ticketType;
 		protected java.lang.Integer ticketNumber;
+		protected java.lang.Boolean ticketNumberStatus;
 
 
 	// many to one
@@ -562,6 +563,20 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 		this.ticketNumber = ticketNumber;
 	}
 
+	/**
+	 * Set the value related to the column: Is_Set_Ticket_Number
+	 * @param ticketNumberStatus the status value
+	 */
+	public void setTicketNumberStatus (java.lang.Boolean status) {
+		this.ticketNumberStatus = status;
+	}
+	/**
+	 * Get the value related to the column: Is_Set_Ticket_Number
+	 * @param ticketNumberStatus the Is_Set_Ticket_Number value
+	 */
+	public boolean getTicketNumberStatus () {
+		return this.ticketNumberStatus == null ? Boolean.FALSE : ticketNumberStatus;
+	}
 	/**
 	 * Return the value associated with the column: STATUS
 	 */

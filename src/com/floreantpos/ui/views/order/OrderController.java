@@ -246,29 +246,42 @@ public class OrderController implements OrderListener, CategorySelectionListener
     }
 	
 	
-	public static void setTicketNumber(Ticket ticket,Session session)
+	public synchronized static void setTicketNumber(Ticket ticket)
 	{
 		//hatran TODO: set ticket NUMBER here ?
 		
 		int ticketNo = 1;
-	//		List<Ticket> tickets = TicketDAO.getInstance().findTicketByID(ticketId-1);
-		Ticket lastTicket = TicketDAO.getInstance().findLastTicket(session).get(0);
-		int ticketNumber;
-		if (lastTicket != null && lastTicket != ticket)
-		{ 
-			ticketNumber = lastTicket.getticketNumber();
-			java.util.Date activeDate  = lastTicket.getActiveDate();
-			
-			Calendar now = Calendar.getInstance();
-			now.setTimeZone(TimeZone.getTimeZone("Australia/Tasmania"));
-				    
-			if (isSameDay(now.getTime(),activeDate ))
-			{
-				ticketNo = ++ticketNumber;
+		List<Ticket> tickets = TicketDAO.getInstance().findLastTicket();
+		if(tickets.size()>0)
+		{
+			Ticket lastTicket = TicketDAO.getInstance().findLastTicket().get(0);
+			int ticketNumber;
+			if (lastTicket != null && !lastTicket.getId().equals(ticket.getId()) )
+			{ 
+				ticketNumber = lastTicket.getticketNumber();
+				java.util.Date activeDate  = lastTicket.getActiveDate();
+				
+				Calendar now = Calendar.getInstance();
+				now.setTimeZone(TimeZone.getTimeZone("Australia/Tasmania"));
+					    
+				if (isSameDay(now.getTime(),activeDate ))
+				{
+					ticketNo = ++ticketNumber;
+				}
+				if(!ticket.getTicketNumberStatus())
+				{
+					ticket.setticketNumber(ticketNo);
+					ticket.setTicketNumberStatus(true);
+				}
 			}
 		}
-			
-		ticket.setticketNumber(ticketNo);
+		else//data empty ticket
+		{
+			ticket.setticketNumber(ticketNo);
+			ticket.setTicketNumberStatus(true);
+		}
+		
+		
 	}
 	// VERIFIED
 	public synchronized static void saveOrder(Ticket ticket) {
