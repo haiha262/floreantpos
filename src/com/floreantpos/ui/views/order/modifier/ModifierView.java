@@ -98,14 +98,17 @@ public class ModifierView extends SelectionView {
 		ButtonGroup group = new ButtonGroup();
 		if (multiplierList != null) {
 			for (Multiplier multiplier : multiplierList) {
-				MultiplierButton btnMultiplier = new MultiplierButton(multiplier);
-				if (multiplier.isDefaultMultiplier()) {
-					selectedMultiplier = multiplier;
-					defaultMultiplierButton = btnMultiplier;
-					btnMultiplier.setSelected(true);
+				if(!multiplier.getName().contains("Sub"))//hatran add: due to lazy to edit again in database | redo all menu
+				{
+					MultiplierButton btnMultiplier = new MultiplierButton(multiplier);
+					if (multiplier.isDefaultMultiplier()) {
+						selectedMultiplier = multiplier;
+						defaultMultiplierButton = btnMultiplier;
+						btnMultiplier.setSelected(true);
+					}
+					multiplierPanel.add(btnMultiplier, "grow");
+					group.add(btnMultiplier);
 				}
-				multiplierPanel.add(btnMultiplier, "grow");
-				group.add(btnMultiplier);
 			}
 		}
 		actionButtonPanel.add(multiplierPanel, "span");
