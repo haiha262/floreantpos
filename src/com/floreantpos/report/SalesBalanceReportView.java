@@ -46,6 +46,8 @@ import org.apache.log4j.Logger;
 import org.jdesktop.swingx.JXDatePicker;
 
 import com.floreantpos.POSConstants;
+import com.floreantpos.config.TerminalConfig;
+import com.floreantpos.main.Application;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.SalesSummaryDAO;
 import com.floreantpos.model.dao.UserDAO;
@@ -66,10 +68,13 @@ public class SalesBalanceReportView extends JPanel {
 	private JButton btnToday;
 	private JButton btnGo = new JButton(com.floreantpos.POSConstants.GO);
 	private JPanel reportContainer;
+	private String jasper_report_file;
+	private String reportFor;
 
 	public SalesBalanceReportView() { //hatran : TODO : 
 		super(new BorderLayout());
-
+		jasper_report_file = "sales_summary_balance_report";
+		reportFor = "Admin";
 		JPanel topPanel = new JPanel(new MigLayout());
 
 		btnToday = new JButton(POSConstants.TODAYS_REPORT.toUpperCase());
@@ -104,6 +109,37 @@ public class SalesBalanceReportView extends JPanel {
 		topPanel.add(cbUserType);
 		topPanel.add(btnGo, "width 60!"); //$NON-NLS-1$
 		topPanel.add(btnToday);
+		
+		String[] reportStrings = { "Admin","Super Admin" };
+
+		//Create the combo box, select item at index 4.
+		//Indices start at 0, so 4 specifies the pig.
+		JComboBox reportList = new JComboBox(reportStrings);
+		reportList.setSelectedIndex(0);
+		reportList.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox cb = (JComboBox)e.getSource();
+		        String reportForUser = (String)cb.getSelectedItem();
+		        if(reportForUser.contains("Super Admin"))
+		        {
+		        	reportFor = "Super Admin";
+		        	jasper_report_file = "sales_summary_balance_report_full";
+		        }
+		        else
+		        {
+		        	reportFor = "Admin";
+		        	jasper_report_file = "sales_summary_balance_report";
+		        }
+			}
+		});
+		User currentuser = Application.getCurrentUser();
+		if(currentuser.getId()==9090)  
+		{
+			topPanel.add(new JLabel("Report for" + ":")); //$NON-NLS-1$
+			topPanel.add(reportList);
+		}
+		
 		add(topPanel, BorderLayout.NORTH);
 
 		JPanel centerPanel = new JPanel(new BorderLayout());
@@ -146,7 +182,7 @@ public class SalesBalanceReportView extends JPanel {
 		}
 
 		ReportService reportService = new ReportService();
-		SalesBalanceReport report = reportService.getSalesBalanceReport(fromDate, toDate, user);
+		SalesBalanceReport report = reportService.getSalesBalanceReport(fromDate, toDate, user, reportFor);
 
 		HashMap map = new HashMap();
 		ReportUtil.populateRestaurantProperties(map);
@@ -198,7 +234,8 @@ public class SalesBalanceReportView extends JPanel {
 		map.put("VOIDAmount", NumberUtil.formatNumber(summary.getVoidAmount())); //$NON-NLS-1$
 		
 		
-		JasperReport jasperReport = ReportUtil.getReport("sales_summary_balance_report"); //$NON-NLS-1$
+//		JasperReport jasperReport = ReportUtil.getReport("sales_summary_balance_report"); //$NON-NLS-1$
+		JasperReport jasperReport = ReportUtil.getReport(jasper_report_file); //$NON-NLS-1$
 //		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JREmptyDataSource());
 		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map,  new JRTableModelDataSource(new ShiftwiseDataTableModel(summary.getSalesTableDataList())));
 		JRViewer viewer = new JRViewer(jasperPrint);

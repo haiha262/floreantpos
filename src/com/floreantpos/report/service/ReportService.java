@@ -281,7 +281,7 @@ public class ReportService {
 		}
 	}
 
-	public SalesBalanceReport getSalesBalanceReport(Date fromDate, Date toDate, User user) {
+	public SalesBalanceReport getSalesBalanceReport(Date fromDate, Date toDate, User user, String reportFor) {
 		GenericDAO dao = new GenericDAO();
 		SalesBalanceReport report = new SalesBalanceReport();
 		Session session = null;
@@ -293,10 +293,10 @@ public class ReportService {
 
 			session = dao.getSession();
 			//hatran modified commission
-			User currentuser = Application.getCurrentUser();
+			//
 //			double rate = 0.85;
 			double rate = TerminalConfig.getRate();
-			if(currentuser.getId()==9090)  
+			if(reportFor.compareTo("Super Admin")==0)  
 				rate = 1;
 		   
 		    
