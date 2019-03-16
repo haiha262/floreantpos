@@ -358,9 +358,8 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 	// =========end
 	public void callOrderController() {
 		Vector<Component> order = new Vector<Component>();
-
-		order.add(tfCellPhone);
 		order.add(tfName);
+		order.add(tfCellPhone);
 		// order.add(tfFirstName);
 		// order.add(tfLastName);
 		// hatran rem
@@ -368,7 +367,7 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 //		order.add(tfCity);
 //		order.add(tfState);
 //		
-		order.add(tfAddress);
+		//order.add(tfAddress);
 
 		newPolicy = new MyOwnFocusTraversalPolicy(order);
 
