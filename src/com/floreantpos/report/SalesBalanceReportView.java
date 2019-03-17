@@ -107,8 +107,7 @@ public class SalesBalanceReportView extends JPanel {
 		topPanel.add(toDatePicker);
 		topPanel.add(new JLabel(POSConstants.USER + ":")); //$NON-NLS-1$
 		topPanel.add(cbUserType);
-		topPanel.add(btnGo, "width 60!"); //$NON-NLS-1$
-		topPanel.add(btnToday);
+		
 		
 		String[] reportStrings = { "Admin","Super Admin" };
 
@@ -139,6 +138,9 @@ public class SalesBalanceReportView extends JPanel {
 			topPanel.add(new JLabel("Report for" + ":")); //$NON-NLS-1$
 			topPanel.add(reportList);
 		}
+		
+		topPanel.add(btnGo, "width 60!"); //$NON-NLS-1$
+		topPanel.add(btnToday);
 		
 		add(topPanel, BorderLayout.NORTH);
 
