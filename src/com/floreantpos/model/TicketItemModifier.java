@@ -142,10 +142,14 @@ public class TicketItemModifier extends BaseTicketItemModifier implements ITicke
 	@Override
 	public java.lang.Double getUnitPrice () {
 		 //hatran add : set value 0.0 when current ticket is UBER
-		String currentOrderType = OrderView.getInstance().getCurrentTicket().getOrderType().getName();
-		if (currentOrderType.contains("UBER"))
+		Ticket currentTicket = OrderView.getInstance().getCurrentTicket();
+		if(currentTicket != null)
 		{
-			return Double.valueOf(0);
+			String currentOrderType = currentTicket.getOrderType().getName();
+			if (currentOrderType.contains("UBER"))
+			{
+				return Double.valueOf(0);
+			}
 		}
 		return unitPrice == null ? Double.valueOf(0) : unitPrice;
 	}

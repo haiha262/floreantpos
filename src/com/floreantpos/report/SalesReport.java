@@ -116,7 +116,7 @@ public class SalesReport extends Report {
 
 			String key = null;
 			for (TicketItem ticketItem : ticketItems) {
-				if (ticketItem.getUnitPrice() == 0 && !isIncludedFreeItems()) {
+				if (ticketItem.getUnitPrice() == 0 && !isIncludedFreeItems() && !ticket.getOrderType().getName().contains("UBER")) { //hatran add: fix does not count item price 0.0 when ordering by UBER
 					continue;
 				}
 				if (ticketItem.getItemId() == null) {
