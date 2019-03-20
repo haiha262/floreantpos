@@ -17,7 +17,9 @@
  */
 package com.floreantpos.report;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -35,17 +37,27 @@ import net.sf.jasperreports.view.JRViewer;
 import org.jdesktop.swingx.calendar.DateUtils;
 
 import com.floreantpos.Messages;
+import com.floreantpos.model.Shift;
+import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
+import com.floreantpos.model.User;
+import com.floreantpos.model.UserType;
+import com.floreantpos.model.dao.AttendenceHistoryDAO;
+import com.floreantpos.model.dao.ShiftDAO;
 import com.floreantpos.model.dao.TicketDAO;
+import com.floreantpos.report.HourlyLaborReportView.LaborReportData;
 import com.floreantpos.report.service.ReportService;
+import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.CurrencyUtil;
 
 public class SalesReport extends Report {
 	private SalesReportModel itemReportModel;
 	private SalesReportModel modifierReportModel;
 
+	private ArrayList<LaborReportData> rows;
+	private ArrayList<LaborReportData> shiftReportRows;
 	public SalesReport() {
 		super();
 	}
@@ -53,7 +65,7 @@ public class SalesReport extends Report {
 	@Override
 	public void refresh() throws Exception {
 		createModels();
-
+		viewReport();
 		JasperReport itemReport = ReportUtil.getReport("sales_sub_report"); //$NON-NLS-1$
 		JasperReport modifierReport = ReportUtil.getReport("sales_sub_report"); //$NON-NLS-1$
 
@@ -80,7 +92,18 @@ public class SalesReport extends Report {
 		map.put("itemReport", itemReport); //$NON-NLS-1$
 		map.put("modifierReport", modifierReport); //$NON-NLS-1$
 
-		JasperReport masterReport = ReportUtil.getReport("sales_report"); //$NON-NLS-1$
+		//hatran add full report
+		JasperReport hourlyReport = ReportUtil.getReport("hourly_labor_subreport"); //$NON-NLS-1$
+		JasperReport shiftReport = ReportUtil.getReport("hourly_labor_shift_subreport"); //$NON-NLS-1$
+
+		map.put("hourlyReport", hourlyReport); //$NON-NLS-1$
+		map.put("hourlyReportDatasource", new JRTableModelDataSource(new HourlyLaborReportModel(rows))); //$NON-NLS-1$
+		map.put("shiftReport", shiftReport); //$NON-NLS-1$
+		map.put("shiftReportDatasource", new JRTableModelDataSource(new HourlyLaborReportModel(shiftReportRows))); //$NON-NLS-1$
+
+		
+		
+		JasperReport masterReport = ReportUtil.getReport("sales_report_full"); //$NON-NLS-1$
 
 		JasperPrint print = JasperFillManager.fillReport(masterReport, map, new JREmptyDataSource());
 		viewer = new JRViewer(print);
@@ -225,5 +248,163 @@ public class SalesReport extends Report {
 		modifierReportModel.calculateTaxTotal();
 		modifierReportModel.calculateGrandTotal();
 		modifierReportModel.calculateTotal();
+	}
+	
+	private void viewReport() {
+		Date fromDate = DateUtils.startOfDay(getStartDate());
+		Date toDate = DateUtils.endOfDay(getEndDate());
+		
+		if (fromDate.after(toDate)) {
+			POSMessageDialog.showError(com.floreantpos.util.POSUtil.getFocusedWindow(), com.floreantpos.POSConstants.FROM_DATE_CANNOT_BE_GREATER_THAN_TO_DATE_);
+			return;
+		}
+
+		UserType userType = null;
+
+		Terminal terminal = null;
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.clear();
+
+		Calendar calendar2 = Calendar.getInstance();
+		calendar2.setTime(fromDate);
+
+		calendar.set(Calendar.YEAR, calendar2.get(Calendar.YEAR));
+		calendar.set(Calendar.MONTH, calendar2.get(Calendar.MONTH));
+		calendar.set(Calendar.DATE, calendar2.get(Calendar.DATE));
+		calendar.set(Calendar.HOUR, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		fromDate = calendar.getTime();
+
+		calendar.clear();
+		calendar2.setTime(toDate);
+		calendar.set(Calendar.YEAR, calendar2.get(Calendar.YEAR));
+		calendar.set(Calendar.MONTH, calendar2.get(Calendar.MONTH));
+		calendar.set(Calendar.DATE, calendar2.get(Calendar.DATE));
+		calendar.set(Calendar.HOUR, 23);
+		calendar.set(Calendar.MINUTE, 59);
+		calendar.set(Calendar.SECOND, 59);
+		toDate = calendar.getTime();
+
+		TicketDAO ticketDAO = TicketDAO.getInstance();
+		AttendenceHistoryDAO attendenceHistoryDAO = new AttendenceHistoryDAO();
+		rows = new ArrayList<LaborReportData>();
+
+		DecimalFormat formatter = new DecimalFormat("00"); //$NON-NLS-1$
+
+		int grandTotalChecks = 0;
+		int grandTotalGuests = 0;
+		double grandTotalSales = 0;
+		double grandTotalMHr = 0;
+		double grandTotalLabor = 0;
+		double grandTotalSalesPerMHr = 0;
+		double grandTotalGuestsPerMHr = 0;
+		double grandTotalCheckPerMHr = 0;
+		double grandTotalLaborCost = 0;
+
+		for (int i = 0; i < 24; i++) {
+			List<Ticket> tickets = ticketDAO.findTicketsForLaborHour(fromDate, toDate, i, userType, terminal);
+			List<User> users = attendenceHistoryDAO.findNumberOfClockedInUserAtHour(fromDate, toDate, i, userType, terminal);
+
+			int manHour = users.size();
+			int totalChecks = 0;
+			int totalGuests = 0;
+			double totalSales = 0;
+			double labor = 0;
+			double salesPerMHr = 0;
+			double guestsPerMHr = 0;
+			double checksPerMHr = 0;
+			//double laborCost = 0;
+
+			for (Ticket ticket : tickets) {
+				++totalChecks;
+				totalGuests += ticket.getNumberOfGuests();
+				totalSales += ticket.getTotalAmount();
+			}
+
+			for (User user : users) {
+				labor += (user.getCostPerHour() == null ? 0 : user.getCostPerHour());
+			}
+			if (manHour > 0) {
+				labor = labor / manHour;
+				salesPerMHr = totalSales / manHour;
+				guestsPerMHr = (double) totalGuests / manHour;
+				checksPerMHr = totalChecks / manHour;
+				//laborCost =
+			}
+
+			LaborReportData reportData = new LaborReportData();
+			reportData.setPeriod(formatter.format(i) + ":00 - " + formatter.format(i) + ":59"); //$NON-NLS-1$ //$NON-NLS-2$
+			reportData.setManHour(manHour);
+			reportData.setNoOfChecks(totalChecks);
+			reportData.setSales(totalSales);
+			reportData.setNoOfGuests(totalGuests);
+			reportData.setLabor(labor);
+			reportData.setSalesPerMHr(salesPerMHr);
+			reportData.setGuestsPerMHr(guestsPerMHr);
+			reportData.setCheckPerMHr(checksPerMHr);
+
+			rows.add(reportData);
+
+			grandTotalChecks += totalChecks;
+			grandTotalGuests += totalGuests;
+			grandTotalSales += totalSales;
+			grandTotalMHr += manHour;
+			grandTotalLabor += labor;
+			grandTotalSalesPerMHr += salesPerMHr;
+			grandTotalCheckPerMHr += checksPerMHr;
+			grandTotalGuestsPerMHr += guestsPerMHr;
+			//grandTotalLaborCost +=
+
+		}
+
+		shiftReportRows = new ArrayList<LaborReportData>();
+		ShiftDAO shiftDAO = new ShiftDAO();
+		List<Shift> shifts = shiftDAO.findAll();
+		for (Shift shift : shifts) {
+			List<Ticket> tickets = ticketDAO.findTicketsForShift(fromDate, toDate, shift, userType, terminal);
+			List<User> users = attendenceHistoryDAO.findNumberOfClockedInUserAtShift(fromDate, toDate, shift, userType, terminal);
+
+			int manHour = users.size();
+			int totalChecks = 0;
+			int totalGuests = 0;
+			double totalSales = 0;
+			double labor = 0;
+			double salesPerMHr = 0;
+			double guestsPerMHr = 0;
+			double checksPerMHr = 0;
+			//double laborCost = 0;
+
+			for (Ticket ticket : tickets) {
+				++totalChecks;
+				totalGuests += ticket.getNumberOfGuests();
+				totalSales += ticket.getTotalAmount();
+			}
+
+			for (User user : users) {
+				labor += (user.getCostPerHour() == null ? 0 : user.getCostPerHour());
+			}
+			if (manHour > 0) {
+				labor = labor / manHour;
+				salesPerMHr = totalSales / manHour;
+				guestsPerMHr = (double) totalGuests / manHour;
+				checksPerMHr = totalChecks / manHour;
+				//laborCost =
+			}
+
+			LaborReportData reportData = new LaborReportData();
+			reportData.setPeriod(shift.getName());
+			reportData.setManHour(manHour);
+			reportData.setNoOfChecks(totalChecks);
+			reportData.setSales(totalSales);
+			reportData.setNoOfGuests(totalGuests);
+			reportData.setLabor(labor);
+			reportData.setSalesPerMHr(salesPerMHr);
+			reportData.setGuestsPerMHr(guestsPerMHr);
+			reportData.setCheckPerMHr(checksPerMHr);
+
+			shiftReportRows.add(reportData);
+		}
 	}
 }
