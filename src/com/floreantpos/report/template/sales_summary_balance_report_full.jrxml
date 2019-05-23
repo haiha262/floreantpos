@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="391"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -55,10 +55,12 @@
 	<parameter name="grossAfterDiscount" class="java.lang.String"/>
 	<parameter name="VOIDAmount" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="VOIDChecks" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="OPENAmount" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="OPENChecks" class="java.lang.String" isForPrompting="false"/>
 	<field name="profitCenter" class="java.lang.String"/>
 	<field name="Check" class="java.lang.String"/>
 	<title>
-		<band height="418">
+		<band height="431">
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement key="" x="0" y="0" width="198" height="18"/>
 				<box>
@@ -547,14 +549,14 @@
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<textField>
-				<reportElement key="" x="58" y="338" width="41" height="15"/>
+				<reportElement key="" x="58" y="338" width="27" height="15"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{VOIDChecks}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement key="" x="105" y="338" width="47" height="15"/>
+				<reportElement key="" x="98" y="338" width="54" height="15"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
@@ -575,19 +577,19 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{VOIDAmount}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="105" y="378" width="92" height="16"/>
+				<reportElement x="105" y="393" width="92" height="16"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{cashReceipts}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement key="" x="16" y="379" width="37" height="15"/>
+				<reportElement key="" x="16" y="394" width="37" height="15"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
 				<text><![CDATA[CASH]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="" x="1" y="363" width="98" height="15"/>
+				<reportElement key="" x="1" y="378" width="98" height="15"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -600,7 +602,7 @@
 				<text><![CDATA[Payment method]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="" x="106" y="363" width="91" height="15"/>
+				<reportElement key="" x="106" y="378" width="91" height="15"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -613,26 +615,68 @@
 				<text><![CDATA[Amount]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1" y="379" width="15" height="15"/>
+				<reportElement x="1" y="394" width="15" height="15"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[*]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="" x="16" y="395" width="37" height="15"/>
+				<reportElement key="" x="16" y="410" width="37" height="15"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
 				<text><![CDATA[CARD]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1" y="395" width="15" height="15"/>
+				<reportElement x="1" y="410" width="15" height="15"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[*]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="106" y="395" width="90" height="16"/>
+				<reportElement x="106" y="410" width="90" height="16"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{creditCardReceipts}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="" x="54" y="353" width="5" height="15"/>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="" x="153" y="353" width="5" height="15"/>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement key="" x="158" y="353" width="41" height="15"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{OPENAmount}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="" x="98" y="353" width="55" height="15"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[OPEN Amt]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="" x="17" y="353" width="37" height="15"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[# OPEN]]></text>
+			</staticText>
+			<textField>
+				<reportElement key="" x="59" y="353" width="26" height="15"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{OPENChecks}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

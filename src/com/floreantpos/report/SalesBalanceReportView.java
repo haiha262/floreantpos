@@ -234,6 +234,8 @@ public class SalesBalanceReportView extends JPanel {
 		SalesStatistics summary = dao.findKeyStatistics(fromDate, toDate, null, null);
 		map.put("VOIDChecks", String.valueOf(summary.getVoidChecks())); //$NON-NLS-1$
 		map.put("VOIDAmount", NumberUtil.formatNumber(summary.getVoidAmount())); //$NON-NLS-1$
+		map.put("OPENChecks", String.valueOf(summary.getOpenChecks())); //$NON-NLS-1$
+		map.put("OPENAmount", NumberUtil.formatNumber(summary.getOpenAmount())); //$NON-NLS-1$
 		
 		
 //		JasperReport jasperReport = ReportUtil.getReport("sales_summary_balance_report"); //$NON-NLS-1$

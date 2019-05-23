@@ -560,6 +560,7 @@ public class ReportService {
 		criteria.add(Restrictions.le(Ticket.PROP_CREATE_DATE, toDate));
 		criteria.add(Restrictions.eq(Ticket.PROP_VOIDED, Boolean.FALSE));
 		criteria.add(Restrictions.eq(Ticket.PROP_REFUNDED, Boolean.FALSE));
+		criteria.add(Restrictions.eq(Ticket.PROP_CLOSED, Boolean.TRUE));
 
 		if (user != null) {
 			criteria.add(Restrictions.eq(Ticket.PROP_OWNER, user));
