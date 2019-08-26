@@ -37,7 +37,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="86">
+		<band height="99">
 			<line>
 				<reportElement x="-10" y="47" width="216" height="1"/>
 				<graphicElement>
@@ -71,6 +71,11 @@
 					<pen lineStyle="Dashed"/>
 				</graphicElement>
 			</line>
+			<textField>
+				<reportElement x="0" y="86" width="196" height="13" isRemoveLineWhenBlank="true"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{tableNo}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<columnHeader>
@@ -148,7 +153,7 @@
 	<pageFooter>
 		<band height="32" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField" x="41" y="8" width="69" height="12"/>
+				<reportElement key="textField" x="0" y="8" width="69" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -160,13 +165,6 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{serverName}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="0" y="8" width="41" height="12"/>
-				<textElement verticalAlignment="Bottom">
-					<font size="8" isBold="false" isItalic="true" isUnderline="true"/>
-				</textElement>
-				<text><![CDATA[Taken by:]]></text>
-			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField" x="110" y="8" width="86" height="12"/>
 				<box>

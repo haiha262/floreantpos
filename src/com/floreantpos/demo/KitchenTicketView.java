@@ -80,6 +80,7 @@ public class KitchenTicketView extends JPanel {
 	private JLabel ticketInfo;
 	private JLabel tableInfo;
 	private JLabel serverInfo;
+	public String filters;
 
 	public KitchenTicketView(KitchenTicket ticket) {
 		this.kitchenTicket = ticket;
@@ -151,7 +152,7 @@ public class KitchenTicketView extends JPanel {
 	}
 
 	private void createTable(KitchenTicket ticket) {
-
+		
 		tableModel = new KitchenTicketTableModel(ticket.getTicketItems());
 		table = new JTable(tableModel);
 		table.setRowSelectionAllowed(false);
@@ -164,25 +165,32 @@ public class KitchenTicketView extends JPanel {
 				Component rendererComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
 				KitchenTicketItem ticketItem = tableModel.getRowData(row);
-
-				if (ticketItem != null && ticketItem.getStatus() != null) {//hatran : set item background in kitchen display 
-					if (ticketItem.getStatus().equalsIgnoreCase(KitchenTicketStatus.DONE.name())) {
-						rendererComponent.setBackground(Color.green);
+				
+				
+						if (ticketItem != null && ticketItem.getStatus() != null) {//hatran : set item background in kitchen display 
+							if (ticketItem.getStatus().equalsIgnoreCase(KitchenTicketStatus.DONE.name())) {
+								rendererComponent.setBackground(Color.green);
+							}
+							else if (ticketItem.getStatus().equalsIgnoreCase(KitchenTicketStatus.VOID.name())) {
+								rendererComponent.setBackground(new Color(128, 0, 128));
+							}
+							
+							else {
+								rendererComponent.setBackground(Color.white);
+							}
+							filters = "COFFEE";
+							if(ticketItem.getMenuItemGroupName().compareTo(filters) == 0) 
+							{
+								rendererComponent.setBackground(Color.ORANGE);
+							}
+						}
+					
+					if (column == 1) {
+						if (ticketItem.getQuantity() <= 0) {
+							return new JLabel();
+						}
 					}
-					else if (ticketItem.getStatus().equalsIgnoreCase(KitchenTicketStatus.VOID.name())) {
-						rendererComponent.setBackground(new Color(128, 0, 128));
-					}
-					else {
-						rendererComponent.setBackground(Color.white);
-					}
-				}
-
-				if (column == 1) {
-					if (ticketItem.getQuantity() <= 0) {
-						return new JLabel();
-					}
-				}
-
+				
 				updateHeaderView();
 				return rendererComponent;
 			}

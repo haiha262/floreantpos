@@ -98,7 +98,8 @@ public class ModifierView extends SelectionView {
 		ButtonGroup group = new ButtonGroup();
 		if (multiplierList != null) {
 			for (Multiplier multiplier : multiplierList) {
-				if(!multiplier.getName().contains("Sub"))//hatran add: due to lazy to edit again in database | redo all menu
+				// if(!multiplier.getName().contains("Sub"))//hatran add: due to lazy to edit
+				// again in database | redo all menu
 				{
 					MultiplierButton btnMultiplier = new MultiplierButton(multiplier);
 					if (multiplier.isDefaultMultiplier()) {
@@ -122,7 +123,7 @@ public class ModifierView extends SelectionView {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				for (ModifierSelectionListener listener : ModifierView.this.listenerList) {
-					listener.finishModifierSelection();//modifierGroupSelectionDone(modifierGroup);
+					listener.finishModifierSelection();// modifierGroupSelectionDone(modifierGroup);
 				}
 			}
 		});
@@ -153,16 +154,16 @@ public class ModifierView extends SelectionView {
 			Set<MenuModifier> modifiers = modifierGroup.getModifiers();
 			for (MenuModifier modifier : modifiers) {
 				modifier.setMenuItemModifierGroup(modifierGroup.getMenuItemModifierGroup());
-				//				if (isAddOnMode()) {
-				//					if (modifier.getExtraPrice() > 0) {
-				//						itemList.add(modifier);
-				//					}
-				//				}
-				//				else {
-				//					if (modifier.getPrice() == 0) {
-				//						itemList.add(modifier);
-				//					}
-				//				}
+				// if (isAddOnMode()) {
+				// if (modifier.getExtraPrice() > 0) {
+				// itemList.add(modifier);
+				// }
+				// }
+				// else {
+				// if (modifier.getPrice() == 0) {
+				// itemList.add(modifier);
+				// }
+				// }
 				itemList.add(modifier);
 			}
 			Collections.sort(itemList, new Comparator<MenuModifier>() {
@@ -229,42 +230,50 @@ public class ModifierView extends SelectionView {
 			ModifierButton modifierButton = (ModifierButton) component;
 			MenuModifier modifier = modifierButton.menuModifier;
 
-			//TicketItemModifierGroup ticketItemModifierGroup = ticketItem.findTicketItemModifierGroup(modifier, false);
+			// TicketItemModifierGroup ticketItemModifierGroup =
+			// ticketItem.findTicketItemModifierGroup(modifier, false);
 			TicketItemModifier ticketItemModifier = ticketItem.findTicketItemModifierFor(modifier);
 			if (ticketItemModifier != null) {
 				count++;
-				modifierButton.setText("<html><center>" 
-					+ modifier.getDisplayName() 
-					+ "<br/><strong><span style='color:white;background-color:green;margin:0;'>&nbsp;"
-					+ ticketItemModifier.getItemCount() 
-					+ "&nbsp;</span></strong><h4>"
-					+ (!showPrice ? "": CurrencyUtil.getCurrencySymbol()+ (ticketItemModifier.getItemCount() >= maxQuantity ? modifier.getExtraPrice() : modifier.getPrice()))
-					+ "</h4></center></html>");
-			}
-			else {
-				modifierButton.setText("<html><center>" + modifier.getDisplayName() + "<br><h4>"+ (!showPrice ? "" : CurrencyUtil.getCurrencySymbol() + (count >= maxQuantity ? modifier.getExtraPrice() : modifier.getPrice())) + "</h4></center></html>");
+				modifierButton.setText("<html><center>" + modifier.getDisplayName()
+						+ "<br/><strong><span style='color:white;background-color:green;margin:0;'>&nbsp;"
+						+ ticketItemModifier.getItemCount() + "&nbsp;</span></strong><h4>"
+						+ (!showPrice ? ""
+								: CurrencyUtil.getCurrencySymbol()
+										+ (ticketItemModifier.getItemCount() >= maxQuantity ? modifier.getExtraPrice()
+												: modifier.getPrice()))
+						+ "</h4></center></html>");
+			} else {
+				modifierButton.setText("<html><center>" + modifier.getDisplayName() + "<br><h4>"
+						+ (!showPrice ? ""
+								: CurrencyUtil.getCurrencySymbol()
+										+ (count >= maxQuantity ? modifier.getExtraPrice() : modifier.getPrice()))
+						+ "</h4></center></html>");
 			}
 		}
 
 		if (ModifierSelectionDialog.isRequiredModifiersAdded(ticketItem, modifierGroup.getMenuItemModifierGroup())) {
 			btnDone.setBackground(Color.green);
-		}
-		else {
+		} else {
 			btnDone.setBackground(UIManager.getColor("Control"));
 		}
 	}
 
 	private class ModifierButton extends PosButton implements ActionListener {
-		
+
 		private MenuModifier menuModifier;
 
 		public ModifierButton(MenuModifier modifier) {
 			this.menuModifier = modifier;
 
 			setText("<html><center>" + modifier.getDisplayName() + "</center></html>"); //$NON-NLS-1$ //$NON-NLS-2$
-			setFont(new Font(getFont().getName(), getFont().getStyle(), TerminalConfig.getFontSizeModifierButton()));//hatran add modifier font size button
-			
-			
+			setFont(new Font(getFont().getName(), getFont().getStyle(), TerminalConfig.getFontSizeModifierButton()));// hatran
+																														// add
+																														// modifier
+																														// font
+																														// size
+																														// button
+
 			if (modifier.getButtonColor() != null) {
 				setBackground(new Color(modifier.getButtonColor()));
 			}
@@ -272,7 +281,7 @@ public class ModifierView extends SelectionView {
 			if (modifier.getTextColor() != null) {
 				setForeground(new Color(modifier.getTextColor()));
 			}
-			
+
 			setFocusable(true);
 			setFocusPainted(true);
 			addActionListener(this);
@@ -282,7 +291,7 @@ public class ModifierView extends SelectionView {
 			for (ModifierSelectionListener listener : ModifierView.this.listenerList) {
 				listener.modifierSelected(menuModifier, selectedMultiplier);
 			}
-			//hatran set: remove auto set default button after choosing modified items
+			// hatran set: remove auto set default button after choosing modified items
 //			defaultMultiplierButton.setSelected(true);
 //			selectedMultiplier = defaultMultiplierButton.getMultiplier();
 		}

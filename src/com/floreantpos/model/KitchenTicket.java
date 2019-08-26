@@ -267,40 +267,42 @@ public class KitchenTicket extends BaseKitchenTicket {
 
 					itemMap.put(printer, kitchenTicket);
 				}
-
-				KitchenTicketItem item = new KitchenTicketItem();
-				item.setTicketItemId(ticketItem.getId());
-				item.setMenuItemCode(ticketItem.getItemCode());
-				item.setMenuItemName(ticketItem.getNameDisplay());
-				if (ticketItem.getMenuItem() == null) {
-					item.setMenuItemGroupName("MISC."); //$NON-NLS-1$
-					item.setMenuItemGroupId(1001);
-					item.setSortOrder(10001);
+				boolean printed = ticketItem.isPrintedToKitchen();
+				if(!printed)
+				{
+					KitchenTicketItem item = new KitchenTicketItem();
+					item.setTicketItemId(ticketItem.getId());
+					item.setMenuItemCode(ticketItem.getItemCode());
+					item.setMenuItemName(ticketItem.getNameDisplay());
+					if (ticketItem.getMenuItem() == null) {
+						item.setMenuItemGroupName("MISC."); //$NON-NLS-1$
+						item.setMenuItemGroupId(1001);
+						item.setSortOrder(10001);
+					}
+					else {
+						item.setMenuItemGroupName(ticketItem.getGroupName());
+						item.setMenuItemGroupId(ticketItem.getMenuItem().getParent().getId());
+						item.setSortOrder(ticketItem.getMenuItem().getParent().getSortOrder());
+					}
+	
+					item.setFractionalUnit(ticketItem.isFractionalUnit());
+					item.setUnitName(ticketItem.getItemUnitName());
+	
+					if (ticketItem.isFractionalUnit()) {
+						item.setFractionalQuantity(ticketItem.getItemQuantity());
+					}
+					else {
+						item.setQuantity(ticketItem.getItemCount());
+					}
+					item.setStatus(KitchenTicketStatus.WAITING.name());
+	
+					kitchenTicket.addToticketItems(item);
+	
+					ticketItem.setPrintedToKitchen(true);
+	
+					includeModifiers(ticketItem, kitchenTicket);
+					includeCookintInstructions(ticketItem, kitchenTicket);
 				}
-				else {
-					item.setMenuItemGroupName(ticketItem.getGroupName());
-					item.setMenuItemGroupId(ticketItem.getMenuItem().getParent().getId());
-					item.setSortOrder(ticketItem.getMenuItem().getParent().getSortOrder());
-				}
-
-				item.setFractionalUnit(ticketItem.isFractionalUnit());
-				item.setUnitName(ticketItem.getItemUnitName());
-
-				if (ticketItem.isFractionalUnit()) {
-					item.setFractionalQuantity(ticketItem.getItemQuantity());
-				}
-				else {
-					item.setQuantity(ticketItem.getItemCount());
-				}
-				item.setStatus(KitchenTicketStatus.WAITING.name());
-
-				kitchenTicket.addToticketItems(item);
-
-				ticketItem.setPrintedToKitchen(true);
-
-				includeModifiers(ticketItem, kitchenTicket);
-				includeCookintInstructions(ticketItem, kitchenTicket);
-
 			}
 
 		}
