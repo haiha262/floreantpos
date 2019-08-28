@@ -422,7 +422,7 @@ public class SettleTicketProcessor implements CardInputListener {
 	}
 
 	public void doAfterSettleTask(PosTransaction transaction, final double dueAmount, boolean printTicket) throws HeadlessException {
-		printTicket(ticket, transaction);
+		//printTicket(ticket, transaction); //hatran dont print payment when paying 
 		showTransactionCompleteMsg(dueAmount, transaction.getTenderAmount(), ticket, transaction);
 		if (ticket.getDueAmount() > 0.0) {
 			int option = JOptionPane.showConfirmDialog(Application.getPosWindow(), POSConstants.CONFIRM_PARTIAL_PAYMENT, POSConstants.MDS_POS,

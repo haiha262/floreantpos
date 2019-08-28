@@ -255,7 +255,8 @@ public class ReceiptPrintService {
 				if (StringUtils.isEmpty(receiptPrinter)) {
 					return;
 				}
-				TicketPrintProperties printProperties = new TicketPrintProperties("*** ORDER " + ticket.getId() + " ***", false, true, true); //$NON-NLS-1$ //$NON-NLS-2$
+				//TicketPrintProperties printProperties = new TicketPrintProperties("*** ORDER " + ticket.getId() + " ***", false, true, true); //$NON-NLS-1$ //$NON-NLS-2$
+				TicketPrintProperties printProperties = new TicketPrintProperties(Messages.getString("ReceiptPrintService.3"), true, true, true); //$NON-NLS-1$
 				printProperties.setPrintCookingInstructions(false);
 				HashMap map = populateTicketProperties(ticket, printProperties, null);
 				map.put("copyType", copyType); //$NON-NLS-1$
@@ -337,7 +338,7 @@ public class ReceiptPrintService {
 		}
 	}
 
-	public static void printTransaction(PosTransaction transaction) {
+	public static void printTransaction(PosTransaction transaction) {// print the receipt
 		try {
 			Ticket ticket = transaction.getTicket();
 			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
@@ -1012,7 +1013,7 @@ public class ReceiptPrintService {
 				jasperPrint.setName("FP_KitchenReceipt_" + ticket.getId() + "_" + kitchenTicket.getSequenceNumber()); //$NON-NLS-1$ //$NON-NLS-2$ 
 				jasperPrint.setProperty(PROP_PRINTER_NAME, deviceName);
 
-				printQuitely(jasperPrint);
+				printQuitely(jasperPrint);//print kitchen receipt
 
 				session.saveOrUpdate(kitchenTicket);
 			}
