@@ -380,7 +380,9 @@ public class TicketView extends JPanel {
 	}
 
 	public synchronized void doFinishOrder() {// GEN-FIRST:event_doFinishOrder
-		sendTicketToKitchen();
+		//sendTicketToKitchen();
+		setTicketNumber(); //hatran set Next Ticket Number
+		saveTicketIfNeeded();
 		closeView(false);
 	}// GEN-LAST:event_doFinishOrder
 	
@@ -400,7 +402,7 @@ public class TicketView extends JPanel {
 			}
 		}
 		
-		OrderController.saveOrder(ticket);
+		//OrderController.saveOrder(ticket);
 	}
 
 	public synchronized void doHoldOrder() {// GEN-FIRST:event_doFinishOrder
