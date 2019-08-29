@@ -218,9 +218,9 @@ public class KitchenTicket extends BaseKitchenTicket {
 		}
 
 		for (TicketItem ticketItem : ticketItems) {
-//			if (ticketItem.isPrintedToKitchen() || !ticketItem.isShouldPrintToKitchen()) {
-//				continue;
-//			}
+			if (ticketItem.isPrintedToKitchen() || !ticketItem.isShouldPrintToKitchen()) {
+				continue;
+			}
 
 			List<Printer> printers = ticketItem.getPrinters(ticket.getOrderType());
 			if (printers == null) {
@@ -235,7 +235,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 					kitchenTicket.setTicketId(ticket.getId());
 					kitchenTicket.setCreateDate(new Date());
 					kitchenTicket.setTicketType(ticket.getTicketType());
-
+					
 					if (ticket.getTableNumbers() != null) {
 						kitchenTicket.setTableNumbers(new ArrayList<Integer>(ticket.getTableNumbers()));
 					}
@@ -267,13 +267,12 @@ public class KitchenTicket extends BaseKitchenTicket {
 
 					itemMap.put(printer, kitchenTicket);
 				}
-				boolean printed = ticketItem.isPrintedToKitchen();
-				if(!printed)
-				{
 					KitchenTicketItem item = new KitchenTicketItem();
 					item.setTicketItemId(ticketItem.getId());
 					item.setMenuItemCode(ticketItem.getItemCode());
 					item.setMenuItemName(ticketItem.getNameDisplay());
+					item.setCategoryName(ticketItem.getCategoryName());
+					ticketItem.isBeverage();
 					if (ticketItem.getMenuItem() == null) {
 						item.setMenuItemGroupName("MISC."); //$NON-NLS-1$
 						item.setMenuItemGroupId(1001);
@@ -299,10 +298,10 @@ public class KitchenTicket extends BaseKitchenTicket {
 					kitchenTicket.addToticketItems(item);
 	
 					ticketItem.setPrintedToKitchen(true);
-	
-					includeModifiers(ticketItem, kitchenTicket);
-					includeCookintInstructions(ticketItem, kitchenTicket);
-				}
+					//hatran : add category into ticket item
+					includeModifiers(ticketItem, kitchenTicket,ticketItem.getCategoryName());
+					includeCookintInstructions(ticketItem, kitchenTicket,ticketItem.getCategoryName());
+
 			}
 
 		}
@@ -326,7 +325,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 	}
 
 
-	private static void includeCookintInstructions(TicketItem ticketItem, KitchenTicket kitchenTicket) {
+	private static void includeCookintInstructions(TicketItem ticketItem, KitchenTicket kitchenTicket,  java.lang.String categoryName ) {
 		List<TicketItemCookingInstruction> cookingInstructions = ticketItem.getCookingInstructions();
 		if (cookingInstructions != null) {
 			for (TicketItemCookingInstruction ticketItemCookingInstruction : cookingInstructions) {
@@ -343,13 +342,14 @@ public class KitchenTicket extends BaseKitchenTicket {
 					item.setMenuItemGroupId(ticketItem.getMenuItem().getParent().getId());
 					item.setSortOrder(ticketItem.getMenuItem().getParent().getSortOrder());
 				}
+				item.setCategoryName(categoryName);
 				kitchenTicket.addToticketItems(item);
 				ticketItemCookingInstruction.setPrintedToKitchen(true);
 			}
 		}
 	}
 
-	private static void includeModifiers(TicketItem ticketItem, KitchenTicket kitchenTicket) {
+	private static void includeModifiers(TicketItem ticketItem, KitchenTicket kitchenTicket,  java.lang.String categoryName ) {
 		List<TicketItemModifier> ticketItemModifiers = ticketItem.getTicketItemModifiers();
 		if (ticketItemModifiers != null) {
 			for (TicketItemModifier itemModifier : ticketItemModifiers) {
@@ -368,6 +368,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 				item.setTicketItemModifierId(itemModifier.getId());
 				String nameDisplay = (itemModifier.isInfoOnly() ? "" : "  --") + itemModifier.getNameDisplay();
 				item.setMenuItemName(nameDisplay);
+				item.setCategoryName(categoryName);
 				if (ticketItem.getMenuItem() == null) {
 					item.setMenuItemGroupName("MISC."); //$NON-NLS-1$
 					item.setMenuItemGroupId(1001);
