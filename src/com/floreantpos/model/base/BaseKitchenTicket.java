@@ -1,8 +1,14 @@
 package com.floreantpos.model.base;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.floreantpos.model.KitchenTicket;
+import com.floreantpos.model.KitchenTicketItem;
 import com.floreantpos.model.Printer;
+import com.floreantpos.model.TicketItem;
+import com.floreantpos.model.KitchenTicket.KitchenTicketStatus;
 
 
 /**
@@ -30,7 +36,6 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 	public static String PROP_CUSTOMER_NAME = "customerName"; //$NON-NLS-1$
 	public static String PROP_CUSTOMER_TIME_PICKUP = "customerTimePickUp"; //$NON-NLS-1$
 	public static String PROP_CUSTOMER_PHONE_NUMBER = "customerPhoneNumber"; //$NON-NLS-1$
-
 
 	// constructors
 	public BaseKitchenTicket () {
@@ -67,6 +72,8 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 		protected String customerName;
 		protected String customerTimePickUp;
 		protected String customerPhoneNumber;
+		
+
 	// many to one
 	private com.floreantpos.model.PrinterGroup printerGroup;
 
@@ -290,6 +297,21 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 			}
 
 	/**
+	 * Return the value associated with the column: ticketItems
+	 */
+	public java.util.List<com.floreantpos.model.KitchenTicketItem> getTicketItems (String category) {
+		
+		List<KitchenTicketItem> kitchenTickets =  new ArrayList<KitchenTicketItem>();
+		for (KitchenTicketItem ticketItem : ticketItems) {
+			if(ticketItem.getCategoryName().contains(category))
+			{
+				kitchenTickets.add(ticketItem);
+			}
+		}
+		return kitchenTickets;
+	}
+
+	/**
 	 * Set the value related to the column: ticketItems
 	 * @param ticketItems the ticketItems value
 	 */
@@ -361,5 +383,7 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 	public void setCustomerTimePickUp(String customerTimePickUp) {
 		this.customerTimePickUp = customerTimePickUp;
 	}
+	
+	
 
 }

@@ -20,6 +20,8 @@
 		<property column="UNIT_NAME" length="20" name="unitName" type="java.lang.String" />
 		<property column="SORT_ORDER" name="sortOrder" type="java.lang.Integer" />
 		<property column="VOIDED" name="voided" type="java.lang.Boolean" />
+		<property column="CATEGORY_NAME" length="120" name="categoryName" type="string" />
+		
 		<!-- a ticket is marked as closed it is either paid or voided -->
 
 		<property column="STATUS" name="status" type="string" length="30" />

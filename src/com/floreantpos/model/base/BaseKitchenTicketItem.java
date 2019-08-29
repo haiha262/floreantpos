@@ -30,6 +30,7 @@ public abstract class BaseKitchenTicketItem  implements Comparable, Serializable
 	public static String PROP_VOIDED = "voided";
 	public static String PROP_MENU_ITEM_NAME = "menuItemName";
 	public static String PROP_MENU_ITEM_CODE = "menuItemCode";
+	public static String PROP_CATEGORY_NAME = "categoryName"; //$NON-NLS-1$
 
 
 	// constructors
@@ -69,7 +70,7 @@ public abstract class BaseKitchenTicketItem  implements Comparable, Serializable
 		protected java.lang.Integer sortOrder;
 		protected java.lang.Boolean voided;
 		protected java.lang.String status;
-
+		protected java.lang.String categoryName;
 
 
 	/**
@@ -330,7 +331,20 @@ public abstract class BaseKitchenTicketItem  implements Comparable, Serializable
 		this.status = status;
 	}
 
+	/**
+	 * Return the value associated with the column: CATEGORY_NAME
+	 */
+	public java.lang.String getCategoryName () {
+					return categoryName;
+			}
 
+	/**
+	 * Set the value related to the column: CATEGORY_NAME
+	 * @param categoryName the CATEGORY_NAME value
+	 */
+	public void setCategoryName (java.lang.String categoryName) {
+		this.categoryName = categoryName;
+	}
 
 
 
