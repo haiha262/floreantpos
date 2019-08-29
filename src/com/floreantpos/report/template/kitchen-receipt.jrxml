@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="KitchenReceipt" pageWidth="216" pageHeight="200" whenNoDataType="BlankPage" columnWidth="196" leftMargin="10" rightMargin="10" topMargin="14" bottomMargin="14" isFloatColumnFooter="true" isIgnorePagination="true">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="KitchenReceipt" pageWidth="216" pageHeight="240" whenNoDataType="BlankPage" columnWidth="196" leftMargin="10" rightMargin="10" topMargin="14" bottomMargin="14" isFloatColumnFooter="true" isIgnorePagination="true">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
@@ -37,7 +37,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="99">
+		<band height="117">
 			<line>
 				<reportElement x="-10" y="47" width="216" height="1"/>
 				<graphicElement>
@@ -71,9 +71,11 @@
 					<pen lineStyle="Dashed"/>
 				</graphicElement>
 			</line>
-			<textField>
-				<reportElement x="0" y="86" width="196" height="13" isRemoveLineWhenBlank="true"/>
-				<textElement textAlignment="Center"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="86" width="196" height="18" isRemoveLineWhenBlank="true"/>
+				<textElement textAlignment="Center">
+					<font size="13" isBold="true"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{tableNo}]]></textFieldExpression>
 			</textField>
 		</band>
