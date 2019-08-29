@@ -52,7 +52,9 @@ public class KitchenTicketDataSource extends AbstractReportDataSource {
 				});
 			}
 		}
-		setRows(ticket.getTicketItems());
+		
+		//hatran TODO : filter FOOD in here
+		setRows(ticket.getTicketItems("FOOD"));
 	}
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
