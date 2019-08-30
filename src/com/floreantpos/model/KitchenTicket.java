@@ -17,6 +17,10 @@
  */
 package com.floreantpos.model;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -426,6 +430,25 @@ public class KitchenTicket extends BaseKitchenTicket {
 		WAITING, VOID, DONE;
 	}
 
+		public KitchenTicket clone(KitchenTicket source) {
+			try {
+				// Write the object out to a byte array
+				ByteArrayOutputStream bos = new ByteArrayOutputStream();
+				ObjectOutputStream out = new ObjectOutputStream(bos);
+				out.writeObject(source);
+				out.flush();
+				out.close();
+
+				// Make an input stream from the byte array and read
+				// a copy of the object back in.
+				ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(bos.toByteArray()));
+				return (KitchenTicket) in.readObject();
+			} catch (Exception cnfe) {
+				//log here
+				return null;
+			}
+		}
+		
 	
 	
 }

@@ -28,10 +28,12 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.model.KitchenTicket;
+import com.floreantpos.model.KitchenTicketItem;
 import com.floreantpos.model.KitchenTicket.KitchenTicketStatus;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PrinterGroup;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.model.TicketItem;
 import com.floreantpos.swing.PaginatedListModel;
 import com.floreantpos.swing.PaginatedTableModel;
 
@@ -156,7 +158,7 @@ public class KitchenTicketDAO extends BaseKitchenTicketDAO {
 		return 0;
 	}
 
-	public void loadKitchenTickets(String selectedKDSPrinter, OrderType orderType, PaginatedListModel listModel) {
+	public void loadKitchenTickets(String selectedKDSPrinter, OrderType orderType, PaginatedListModel listModel, String viewMode) {
 		Session session = null;
 		Criteria criteria = null;
 		try {
@@ -187,9 +189,44 @@ public class KitchenTicketDAO extends BaseKitchenTicketDAO {
 			if (tickets == null) {
 				tickets = new ArrayList<>();
 			}
-			listModel.setData(tickets);
+			if(viewMode.toLowerCase().contains("all"))
+			{
+				listModel.setData(tickets);
+				
+			}
+			else
+			{
+				//hatran TODO: filter DRINK here
+				List<KitchenTicket> filtertickets = filterTickets(tickets);
+				listModel.setData(filtertickets);
+
+			}
+			
 		} finally {
 			closeSession(session);
 		}
+	}
+	private List<KitchenTicket> filterTickets(List<KitchenTicket> tickets)
+	{
+		List<KitchenTicket> newTickets = new ArrayList<KitchenTicket>();
+		for (Iterator iterator = tickets.iterator(); iterator.hasNext();) {
+			KitchenTicket kitchenTicket = (KitchenTicket) iterator.next();
+			KitchenTicket cloneKitchenTicket = kitchenTicket.clone(kitchenTicket);
+
+			//remove old items
+			List<KitchenTicketItem> ticketItems = cloneKitchenTicket.getTicketItems();
+			cloneKitchenTicket.setTicketItems(new ArrayList<KitchenTicketItem>());
+			
+			for (KitchenTicketItem ticketItem : ticketItems) {
+				if(!ticketItem.getCategoryName().contains("FOOD"))
+				{
+					cloneKitchenTicket.addToticketItems(ticketItem);
+				}
+			}
+			newTickets.add(cloneKitchenTicket);
+		
+		}
+			
+		return newTickets;
 	}
 }

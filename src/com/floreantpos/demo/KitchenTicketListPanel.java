@@ -55,8 +55,10 @@ public class KitchenTicketListPanel extends JPanel implements ComponentListener 
 	private String kdsPrinter;
 	private int horizontalPanelCount = 4;
 	private OrderType orderType;
+	private String viewMode;
 
 	public KitchenTicketListPanel() {
+		viewMode="All";
 		this.selectionButtonsPanel = new JPanel(new MigLayout("fillx")) { //$NON-NLS-1$
 			@Override
 			public void remove(Component comp) {
@@ -91,14 +93,19 @@ public class KitchenTicketListPanel extends JPanel implements ComponentListener 
 	public void checkNewKitchenTicket(KitchenTicket ticket) {
 	}
 
+	public void updateViewMode(String viewMode)
+	{
+		this.viewMode= viewMode;
+	}
 	public void updateKDSView(String selectedPrinter, OrderType orderType) {
+		
 		this.kdsPrinter = selectedPrinter;
 		this.orderType = orderType;
 		reset();
 		try {
 			dataModel.setPageSize(TerminalConfig.getKDSTicketsPerPage());
 			dataModel.setNumRows(KitchenTicketDAO.getInstance().getRowCount(selectedPrinter, orderType));
-			KitchenTicketDAO.getInstance().loadKitchenTickets(selectedPrinter, orderType, dataModel);
+			KitchenTicketDAO.getInstance().loadKitchenTickets(selectedPrinter, orderType, dataModel, viewMode);
 			setDataModel(dataModel);
 		} catch (Exception e) {
 			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage(), e);

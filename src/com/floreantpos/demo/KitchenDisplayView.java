@@ -58,7 +58,8 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 	private static KitchenDisplayView instance;
 	private JComboBox<String> cbPrinters = new JComboBox<String>();
 	private JComboBox<OrderType> cbTicketTypes = new JComboBox<OrderType>();
-
+	String[] viewMode = { "All", "Drink" };
+	private JComboBox<String> cbViewMode = new JComboBox(viewMode);
 	private HeaderPanel headerPanel;
 	private JPanel filterPanel;
 	private JLabel lblFilter;
@@ -127,6 +128,9 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 		filterPanel.add(label2);
 		filterPanel.add(cbTicketTypes);
 
+		filterPanel.add( new JLabel("View mode"));
+		filterPanel.add(cbViewMode);
+		
 		btnFilter = new PosButton(Messages.getString("KitchenDisplayView.2")); //$NON-NLS-1$
 		btnFilter.addActionListener(new ActionListener() {
 
@@ -160,6 +164,8 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 		cbTicketTypes.setSelectedItem(null);
 		cbTicketTypes.addActionListener(this);
 
+		cbViewMode.addActionListener(this);
+		
 		PosButton btnOption = new PosButton(Messages.getString("KitchenDisplayView.8")); //$NON-NLS-1$
 		btnOption.addActionListener(new ActionListener() {
 
@@ -223,6 +229,7 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 			viewUpdateTimer.stop();
 			String selectedPrinter = (String) cbPrinters.getSelectedItem();
 			OrderType selectedTicketType = (OrderType) cbTicketTypes.getSelectedItem();
+			ticketPanel.updateViewMode( (String) cbViewMode.getSelectedItem());
 			ticketPanel.updateKDSView(selectedPrinter, selectedTicketType);
 			revalidate();
 			repaint();
