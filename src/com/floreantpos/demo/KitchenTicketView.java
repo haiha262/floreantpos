@@ -155,9 +155,10 @@ public class KitchenTicketView extends JPanel {
 		
 		tableModel = new KitchenTicketTableModel(ticket.getTicketItems());
 		table = new JTable(tableModel);
+		table.setFont(getFont().deriveFont(Font.BOLD, 16f));
 		table.setRowSelectionAllowed(false);
 		table.setCellSelectionEnabled(false);
-		table.setRowHeight(30);
+		table.setRowHeight(27);
 		table.setTableHeader(null);
 		table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
 			@Override
@@ -167,7 +168,8 @@ public class KitchenTicketView extends JPanel {
 				KitchenTicketItem ticketItem = tableModel.getRowData(row);
 				
 				
-						if (ticketItem != null && ticketItem.getStatus() != null) {//hatran : set item background in kitchen display 
+						if (ticketItem != null && ticketItem.getStatus() != null) {//hatran : set item background in kitchen display
+							if(!ticketItem.getCategoryName().contains("FOOD")) {
 							if (ticketItem.getStatus().equalsIgnoreCase(KitchenTicketStatus.DONE.name())) {
 								rendererComponent.setBackground(Color.green);
 							}
@@ -183,6 +185,7 @@ public class KitchenTicketView extends JPanel {
 							{
 								rendererComponent.setBackground(Color.ORANGE);
 							}
+						}
 						}
 					
 					if (column == 1) {
@@ -403,30 +406,30 @@ public class KitchenTicketView extends JPanel {
 		@Override
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			KitchenTicketItem ticketItem = getRowData(rowIndex);
-
-			switch (columnIndex) {
-				case 0:
-					return ticketItem.getMenuItemName();
-
-				case 1:
-					if (ticketItem.isFractionalUnit()) {
-
-						double itemQuantity = ticketItem.getFractionalQuantity();
-
-						if (itemQuantity % 1 == 0) {
-							return String.valueOf((int) itemQuantity) + ticketItem.getUnitName();
+				switch (columnIndex) {
+					case 0:
+						return ticketItem.getMenuItemName();
+	
+					case 1:
+						if (ticketItem.isFractionalUnit()) {
+	
+							double itemQuantity = ticketItem.getFractionalQuantity();
+	
+							if (itemQuantity % 1 == 0) {
+								return String.valueOf((int) itemQuantity) + ticketItem.getUnitName();
+							}
+							return String.valueOf(itemQuantity) + ticketItem.getUnitName();
 						}
-						return String.valueOf(itemQuantity) + ticketItem.getUnitName();
-					}
-					return String.valueOf(ticketItem.getQuantity());
-				case 2:
-					String status = POSConstants.BUMP;
-					if(ticketItem.getStatus().compareTo("DONE")==0) //hatran : add rebump label
-					{	
-						status = Messages.getString("KitchenTicketStatusSelector.REBUMP");
-					}
-					return status;
-			}
+						return String.valueOf(ticketItem.getQuantity());
+					case 2:
+						String status = POSConstants.BUMP;
+						if(ticketItem.getStatus()!=null && ticketItem.getStatus().compareTo("DONE")==0) //hatran : add rebump label && fix : instruction null 
+						{	
+							status = Messages.getString("KitchenTicketStatusSelector.REBUMP");
+						}
+						return status;
+				}
+			
 			return null;
 		}
 
