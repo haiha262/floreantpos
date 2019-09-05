@@ -37,7 +37,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="117">
+		<band height="104">
 			<line>
 				<reportElement x="-10" y="47" width="216" height="1"/>
 				<graphicElement>
@@ -155,14 +155,14 @@
 	<pageFooter>
 		<band height="32" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField" x="0" y="8" width="69" height="12"/>
+				<reportElement key="textField" x="0" y="8" width="110" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Bottom">
+				<textElement verticalAlignment="Bottom">
 					<font size="8" isBold="false" isItalic="true"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{serverName}]]></textFieldExpression>
