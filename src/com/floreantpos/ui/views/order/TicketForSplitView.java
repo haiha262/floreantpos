@@ -492,6 +492,7 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 						newModifier.setPrintedToKitchen(ticketItemModifier.isPrintedToKitchen());
 						newModifier.setShouldPrintToKitchen(ticketItemModifier.isShouldPrintToKitchen());
 						newModifier.setTicketItem(newTicketItem);
+						//hatran : fix split bill has not modified items
 						newTicketItem.addToticketItemModifiers(newModifier);
 					}
 					
