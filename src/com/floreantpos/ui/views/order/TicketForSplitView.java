@@ -492,8 +492,11 @@ public class TicketForSplitView extends com.floreantpos.swing.TransparentPanel i
 						newModifier.setPrintedToKitchen(ticketItemModifier.isPrintedToKitchen());
 						newModifier.setShouldPrintToKitchen(ticketItemModifier.isShouldPrintToKitchen());
 						newModifier.setTicketItem(newTicketItem);
+						newTicketItem.addToticketItemModifiers(newModifier);
 					}
+					
 				}
+				
 //			}
 //		}
 
