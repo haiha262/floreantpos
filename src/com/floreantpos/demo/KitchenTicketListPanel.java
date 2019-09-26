@@ -8,7 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.time.Period;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.AbstractButton;
 import javax.swing.JPanel;
@@ -286,7 +288,16 @@ public class KitchenTicketListPanel extends JPanel implements ComponentListener 
 			for (int i = 0; i < dataModel.getSize(); i++)  
 			{
 				KitchenTicket kitchenTicket = (KitchenTicket)dataModel.getElementAt(i);
-				closeTicket(kitchenTicket,KitchenTicketStatus.DONE);
+				//hatran check time over 30 min
+				Date ticketSetDate = kitchenTicket.getCreateDate();
+				Date now = new Date();
+				long diffInMillies = Math.abs(ticketSetDate.getTime() - now.getTime());
+				// long minutes = (milliseconds / 1000) / 60;
+		        long minutes = TimeUnit.MILLISECONDS.toMinutes(diffInMillies);
+				if(minutes > 30)//hatran set time off for each ticket available
+				{
+					closeTicket(kitchenTicket,KitchenTicketStatus.DONE);
+				}
 			}
 			revalidate();
 			repaint();
@@ -299,6 +310,7 @@ public class KitchenTicketListPanel extends JPanel implements ComponentListener 
 		try {
 			
 
+			
 			kitchenTicket.setStatus(status.name());
 			kitchenTicket.setClosingDate(new Date());
 

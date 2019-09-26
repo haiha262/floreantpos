@@ -229,8 +229,10 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 			viewUpdateTimer.stop();
 			String selectedPrinter = (String) cbPrinters.getSelectedItem();
 			OrderType selectedTicketType = (OrderType) cbTicketTypes.getSelectedItem();
+			ticketPanel.BumpAllTickets();
 			ticketPanel.updateViewMode( (String) cbViewMode.getSelectedItem());
 			ticketPanel.updateKDSView(selectedPrinter, selectedTicketType);
+			
 			revalidate();
 			repaint();
 		} catch (Exception e2) {
