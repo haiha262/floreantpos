@@ -54,7 +54,7 @@ public class KitchenTicketDataSource extends AbstractReportDataSource {
 		}
 		
 		//hatran TODO : filter FOOD in here
-		setRows(ticket.getTicketItems("FOOD"));
+		setRows(ticket.getTicketItems("food"));
 	}
 
 	public Object getValueAt(int rowIndex, int columnIndex) {

@@ -460,8 +460,8 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 		
 		actionButtonPanel.add(btnDeliveryInfo);
 		actionButtonPanel.add(btnTableNumber);
-		actionButtonPanel.add(btnGuestNo);
-		actionButtonPanel.add(btnSeatNo);
+//		actionButtonPanel.add(btnGuestNo);
+//		actionButtonPanel.add(btnSeatNo);
 		actionButtonPanel.add(btnCookingInstruction);
 		//		actionButtonPanel.add(btnAddOn);
 //		actionButtonPanel.add(btnMisc);//hatran rem MISC btn

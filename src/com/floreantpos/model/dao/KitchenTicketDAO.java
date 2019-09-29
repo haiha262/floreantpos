@@ -218,7 +218,7 @@ public class KitchenTicketDAO extends BaseKitchenTicketDAO {
 			cloneKitchenTicket.setTicketItems(new ArrayList<KitchenTicketItem>());
 			
 			for (KitchenTicketItem ticketItem : ticketItems) {
-				if(!ticketItem.getCategoryName().contains("FOOD"))
+				if(!ticketItem.getCategoryName().toLowerCase().contains("food"))
 				{
 					cloneKitchenTicket.addToticketItems(ticketItem);
 				}

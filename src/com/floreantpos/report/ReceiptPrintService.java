@@ -955,7 +955,7 @@ public class ReceiptPrintService {
 		if (ticket.getTableNumbers() != null && ticket.getTableNumbers().size() > 0) {
 			map.put(TABLE_NO, POSConstants.RECEIPT_REPORT_TABLE_NO_LABEL + ticket.getTableNumbers());
 		}
-		if(ticket.getType().toString().contains("PHONE") || ticket.getType().toString().contains("UBER"))
+		if(ticket.getType().toString().toLowerCase().contains("phone") || ticket.getType().toString().toLowerCase().contains("uber"))
 		{
 			if (StringUtils.isNotEmpty(ticket.getCustomerName())) {
 				map.put("customer", Messages.getString("ReceiptPrintService.0") + ticket.getCustomerName()); //$NON-NLS-1$ //$NON-NLS-2$

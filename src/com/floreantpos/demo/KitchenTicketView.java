@@ -169,7 +169,7 @@ public class KitchenTicketView extends JPanel {
 				
 				
 						if (ticketItem != null && ticketItem.getStatus() != null) {//hatran : set item background in kitchen display
-							if(!ticketItem.getCategoryName().contains("FOOD")) {
+							if(!ticketItem.getCategoryName().toLowerCase().contains("food")) {
 							if (ticketItem.getStatus().equalsIgnoreCase(KitchenTicketStatus.DONE.name())) {
 								rendererComponent.setBackground(Color.green);
 							}

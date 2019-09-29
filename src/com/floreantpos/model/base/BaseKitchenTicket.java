@@ -303,7 +303,7 @@ public abstract class BaseKitchenTicket  implements Comparable, Serializable {
 		
 		List<KitchenTicketItem> kitchenTickets =  new ArrayList<KitchenTicketItem>();
 		for (KitchenTicketItem ticketItem : ticketItems) {
-			if(ticketItem.getCategoryName().contains(category))
+			if(ticketItem.getCategoryName().toLowerCase().contains(category))
 			{
 				kitchenTickets.add(ticketItem);
 			}
