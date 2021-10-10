@@ -64,7 +64,7 @@ public class TicketViewerTable extends JTable {
 		setBorder(null);
 
 		setFocusable(false);
-
+		float x = getRowHeight();
 		setRowHeight(50);
 		resizeTableColumns();
 
@@ -72,9 +72,10 @@ public class TicketViewerTable extends JTable {
 	}
 
 	private void resizeTableColumns() {
+		//hatran: set size column in list order 
 		setAutoResizeMode(AUTO_RESIZE_ALL_COLUMNS);
 		//setColumnWidth(1, PosUIManager.getSize(50));
-		setColumnWidth(0, PosUIManager.getSize(50));
+		setColumnWidth(0, PosUIManager.getSize(25));
 		setColumnWidth(2, PosUIManager.getSize(60));
 	}
 
