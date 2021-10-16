@@ -23,14 +23,16 @@ import com.floreantpos.config.TerminalConfig;
 
 public class PosUIManager {
 
-	private static final int DEFAULT_FONT_SIZE = 12;
+	//private static final int DEFAULT_FONT_SIZE = 12;
 	private static final int TITLE_FONT_SIZE = 18;
 	private static final int LARGE_FONT_SIZE = 16;
 	private static final int NUMBER_FIELD_FONT_SIZE = 24;
 	private static final int TABLE_NUMBER_FONT_SIZE = 30;
 
 	private static final double SCREEN_SCALE_FACTOR = TerminalConfig.getScreenScaleFactor();
-
+	
+	//hatran : set font size for all menu
+	private static final double DEFAULT_FONT_SIZE = TerminalConfig.getTouchScreenFontSize();
 	public static Dimension getSize(int w, int h) {
 		int width = (int) (w * SCREEN_SCALE_FACTOR);
 		int height = (int) (h * SCREEN_SCALE_FACTOR);

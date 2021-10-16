@@ -53,13 +53,17 @@ import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.ui.views.order.actions.ItemSelectionListener;
 import com.floreantpos.util.CurrencyUtil;
+import com.floreantpos.config.TerminalConfig;
+
 
 /**
  * 
  * @author MShahriar
  */
 public class MenuItemView extends SelectionView {
-	private static int BUTTON_SIZE = 100;
+	 //hatran get size item button from config
+	private static int BUTTON_SIZE_W = TerminalConfig.getSizeOrderItemButton_W();
+	private static int BUTTON_SIZE_H = TerminalConfig.getSizeOrderItemButton_H();
 	public final static String VIEW_NAME = "ITEM_VIEW"; //$NON-NLS-1$
 
 	private Vector<ItemSelectionListener> listenerList = new Vector<ItemSelectionListener>();
@@ -71,7 +75,7 @@ public class MenuItemView extends SelectionView {
 
 	/** Creates new form GroupView */
 	public MenuItemView() {
-		super(com.floreantpos.POSConstants.ITEMS, PosUIManager.getSize(BUTTON_SIZE), PosUIManager.getSize(BUTTON_SIZE));
+		super(com.floreantpos.POSConstants.ITEMS, PosUIManager.getSize(BUTTON_SIZE_W), PosUIManager.getSize(BUTTON_SIZE_H));
 		remove(actionButtonPanel);
 
 		btnPrev.setText("<");
@@ -186,7 +190,7 @@ public class MenuItemView extends SelectionView {
 
 			updateView(menuItem);
 
-			setPreferredSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
+			setPreferredSize(new Dimension(BUTTON_SIZE_W, BUTTON_SIZE_H));
 			addActionListener(this);
 			addMouseListener(this);
 		}
@@ -194,8 +198,8 @@ public class MenuItemView extends SelectionView {
 		private void updateView(MenuItem menuItem) {
 			this.foodItem = menuItem;
 			if (menuItem.getImage() != null) {
-				int w = BUTTON_SIZE - PosUIManager.getSize(10);
-				int h = BUTTON_SIZE - PosUIManager.getSize(10);
+				int w = BUTTON_SIZE_W - PosUIManager.getSize(10);
+				int h = BUTTON_SIZE_H - PosUIManager.getSize(10);
 
 				if (menuItem.isShowImageOnly()) {
 					setIcon(menuItem.getScaledImage(w, h));

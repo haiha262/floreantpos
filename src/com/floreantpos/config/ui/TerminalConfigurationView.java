@@ -275,9 +275,10 @@ public class TerminalConfigurationView extends ConfigurationView {
 		TerminalConfig.setTouchScreenButtonHeight(buttonHeight);
 		TerminalConfig.setMenuItemButtonWidth(menuItemButtonWidth);
 		TerminalConfig.setMenuItemButtonHeight(buttonHeight);
+		TerminalConfig.setSizeModifierButton(""+buttonHeight);
 		TerminalConfig.setTouchScreenFontSize(fontSize);
 		TerminalConfig.setScreenScaleFactor(scaleFactor);
-
+		
 		TerminalConfig.setAutoLogoffEnable(cbAutoLogoff.isSelected());
 		TerminalConfig.setAutoLogoffTime(tfLogoffTime.getInteger() <= 0 ? 10 : tfLogoffTime.getInteger());
 		TerminalConfig.setUseSettlementPrompt(cbUseSettlementPrompt.isSelected());

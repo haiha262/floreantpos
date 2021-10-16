@@ -133,9 +133,11 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 	private JPanel ticketSummaryView = createTicketSummeryPanel();
 
 	private OrderController orderController = new OrderController(this);
-
-	private JPanel actionButtonPanel = new JPanel(new MigLayout("fill, ins 2, hidemode 3", "sg, fill", ""));
-
+//TODO hatran:
+	private JPanel actionButtonPanel = new JPanel(new MigLayout("fill, ins 2, hidemode 3", " fill", ""));
+	
+//	private JPanel actionButtonPanel = new JPanel(new MigLayout("", "[grow, fill]", ""));
+	
 	private com.floreantpos.swing.PosButton btnHold = new com.floreantpos.swing.PosButton(com.floreantpos.POSConstants.HOLD_BUTTON_TEXT);
 	private com.floreantpos.swing.PosButton btnDone = new com.floreantpos.swing.PosButton(com.floreantpos.POSConstants.SAVE_BUTTON_TEXT);
 	private com.floreantpos.swing.PosButton btnSend = new com.floreantpos.swing.PosButton(com.floreantpos.POSConstants.SEND_TO_KITCHEN);
@@ -170,6 +172,8 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 		this.ticketProcessor.addPaymentListener(this);
 	}
 
+	private int BUTTON_SIZE_WIDTH = 80;
+	private int BUTTON_SIZE_HEIGHT = 50;
 	public void addView(final String viewName, final JComponent view) {
 		JComponent oldView = views.get(viewName);
 		if (oldView != null) {
@@ -279,6 +283,7 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 	}
 
 	private void addActionButtonPanel() {
+		//hatran : checkOrderFoodListButton
 		ticketView.getTicketViewerTable().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
@@ -323,7 +328,7 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 				ticketView.setAllowToLogOut(true);
 			}
 		});
-
+		btnSend.setPreferredSize(new Dimension(50,50));
 		btnSend.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -483,9 +488,9 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 
 		 POSButtonUI ui = new POSButtonUI();
 //		JPanel panelBtn = new JPanel(new GridLayout(0, orderTypes.size(), 2, 2));
+		 //TODO hatran 
 		 btnGroup = new ButtonGroup();
-		int BUTTON_SIZE_WIDTH = 80;
-		int BUTTON_SIZE_HEIGHT = 50;
+		
 		for (com.floreantpos.model.OrderType orderType : orderTypes) {
 			if (!orderType.isEnabled() || orderType.getName().compareTo("TAKE ORDER")==0) {
 				continue;

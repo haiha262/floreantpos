@@ -146,7 +146,8 @@ public class TicketView extends JPanel {
 		add(ticketItemActionPanel, BorderLayout.EAST);
 		ticketViewerTable.getRenderer().setInTicketScreen(true);
 		ticketViewerTable.getSelectionModel().addListSelectionListener(new TicketItemSelectionListener());
-		setPreferredSize(PosUIManager.getSize(360, 463));
+		//hatran : Size ticket view when ordering
+		setPreferredSize(PosUIManager.getSize(280, 463));
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void createItemSearchPanel() {

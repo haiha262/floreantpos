@@ -189,6 +189,9 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 
 		try {
 			ButtonPanel buttonPanel = null;
+			//hatran get size item button from config
+			int BUTTON_SIZE_W = TerminalConfig.getSizeOrderItemButton_W();
+			int BUTTON_SIZE_H = TerminalConfig.getSizeOrderItemButton_H();
 			for (int i = 0; i < items.size(); i++) {
 				if (i % totalItem == 0) {
 					buttonPanel = new ButtonPanel("buttonpanel-" + i);
@@ -202,8 +205,8 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 				if (itemButton == null) {
 					continue;
 				}
-				int BUTTON_SIZE = TerminalConfig.getSizeModifierButton();//hatran set button size in MODIFIER screen 
-				itemButton.setPreferredSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
+				
+				itemButton.setPreferredSize(new Dimension(BUTTON_SIZE_W, BUTTON_SIZE_H));
 
 //				itemButton.setPreferredSize(itemButtonSize);
 				buttonPanel.add(itemButton);
