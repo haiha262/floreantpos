@@ -101,6 +101,8 @@ public class TerminalConfig {
 	private static final String KDS_TICKETS_PER_PAGE = "kds.ticket.per_page";
 
 	private static final String SIZE_MODIFIER_BUTTON = "size_modifer_button";
+	private static final String SIZE_ORDER_ITEM_BUTTON_W = "size_order_item_button_w";
+	private static final String SIZE_ORDER_ITEM_BUTTON_H = "size_order_item_button_h";
 	private static final String FONT_SIZE_MODIFIER_BUTTON = "font_size_modifer_button";
 
 	private static PropertiesConfiguration config = AppConfig.getConfig();
@@ -561,6 +563,24 @@ public class TerminalConfig {
 	public static void setSizeModifierButton(String value)
 	{
 		config.setProperty(SIZE_MODIFIER_BUTTON, value);
+	}
+	
+	public static int getSizeOrderItemButton_W()
+	{
+		return config.getInt(SIZE_ORDER_ITEM_BUTTON_W, 80);
+	}
+	public static void setSizeOrderItemButton_W(String value)
+	{
+		config.setProperty(SIZE_ORDER_ITEM_BUTTON_W, value);
+	}
+	
+	public static int getSizeOrderItemButton_H()
+	{
+		return config.getInt(SIZE_ORDER_ITEM_BUTTON_H, 50);
+	}
+	public static void setSizeOrderItemButton_H(String value)
+	{
+		config.setProperty(SIZE_ORDER_ITEM_BUTTON_H, value);
 	}
 	
 	public static int getFontSizeModifierButton()
