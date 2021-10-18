@@ -141,6 +141,8 @@ public class TicketItemModifierTableView extends JPanel {
 		});
 
 		setPreferredSize(new java.awt.Dimension(360, 463));
+//hatran : set size list view in Modifier window.
+		setPreferredSize(new java.awt.Dimension(250, 463));
 
 	}// </editor-fold>//GEN-END:initComponents
 
@@ -206,8 +208,8 @@ public class TicketItemModifierTableView extends JPanel {
 		//		ticketItemActionPanel.add(btnDecreaseAmount);
 		ticketItemActionPanel.add(btnDelete);
 		ticketItemActionPanel.add(btnScrollDown);
-
-		ticketItemActionPanel.setPreferredSize(new Dimension(60, 360));
+//hatran : size list UP/DOWN/DEL button in modifier window
+		ticketItemActionPanel.setPreferredSize(new Dimension(40, 360));
 	}
 
 	public void addModifierSelectionListener(ModifierSelectionListener listener) {

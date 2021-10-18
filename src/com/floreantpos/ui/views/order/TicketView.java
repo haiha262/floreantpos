@@ -393,7 +393,10 @@ public class TicketView extends JPanel {
 		setTicketNumber(); //hatran set Next Ticket Number
 		saveTicketIfNeeded();
 		if (ticket.getOrderType().isShouldPrintToKitchen()) {
-			if (ticket.needsKitchenPrint()) {
+			if (ticket.needsKitchenPrint()
+					|| true// hatran add : can reprint all item to kitchen  
+					)
+			{
 				ReceiptPrintService.printToKitchen(ticket);
 				TicketDAO.getInstance().refresh(ticket);
 				setCancelable(false);
