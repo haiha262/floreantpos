@@ -89,7 +89,8 @@ public class ModifierGroupView extends JPanel implements ComponentListener {
 		add(simpleScrollPane);
 
 		modifierGroupButtonGroup = new ButtonGroup();
-		setPreferredSize(new Dimension(120, 100));
+		//hatran: set size group buttons Column in Modifier window
+		setPreferredSize(new Dimension(80, 100));
 
 		init();
 
@@ -129,7 +130,8 @@ public class ModifierGroupView extends JPanel implements ComponentListener {
 		ModifierGroup menuModifierGroup = (ModifierGroup) item;
 
 		ModifierGroupButton button = new ModifierGroupButton(menuModifierGroup);
-		button.setPreferredSize(new Dimension(100, 80));
+		//hatran : set Group buttons in modifier window
+		button.setPreferredSize(new Dimension(TerminalConfig.getMenuItemButtonWidth(), TerminalConfig.getMenuItemButtonHeight()));
 		modifierGroupButtonGroup.add(button);
 
 		return button;
