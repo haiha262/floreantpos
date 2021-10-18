@@ -87,6 +87,7 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 
 		btnNext = new PosButton();
 		btnNext.setText(POSConstants.CAPITAL_NEXT);
+		actionButtonPanel.add(btnNext, "span, align center"); //$NON-NLS-1$ ;// hatran fix : after add Pre/Next. should make a new line : grow -> span
 
 		add(actionButtonPanel, BorderLayout.SOUTH);
 
@@ -101,7 +102,8 @@ public abstract class SelectionView extends JPanel implements ComponentListener 
 	}
 
 	public SelectionView(String title) {
-		this(title, 120, TerminalConfig.getMenuItemButtonHeight());
+		//hatran fix : items number is showed depend on size of item buttons
+		this(title, TerminalConfig.getMenuItemButtonWidth(), TerminalConfig.getMenuItemButtonHeight());
 	}
 
 	public void setTitle(String title) {
