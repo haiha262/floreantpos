@@ -139,8 +139,6 @@ public class TicketItemModifierTableView extends JPanel {
 			}
 
 		});
-
-		setPreferredSize(new java.awt.Dimension(360, 463));
 //hatran : set size list view in Modifier window.
 		setPreferredSize(new java.awt.Dimension(250, 463));
 
